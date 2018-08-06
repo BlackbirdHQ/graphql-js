@@ -242,6 +242,26 @@ describe('Type System: Example', () => {
     });
   });
 
+  it('defines an object type with iam field', () => {
+    const TypeWithDeprecatedField = new GraphQLObjectType({
+      name: 'foo',
+      fields: {
+        bar: {
+          type: GraphQLString,
+          iamName: 'TerribleName',
+        },
+      },
+    });
+
+    expect(TypeWithDeprecatedField.getFields().bar).to.deep.equal({
+      type: GraphQLString,
+      iamName: 'TerribleName',
+      isDeprecated: false,
+      name: 'bar',
+      args: [],
+    });
+  });
+
   it('includes nested input objects in the map', () => {
     const NestedInputObject = new GraphQLInputObjectType({
       name: 'NestedInputObject',

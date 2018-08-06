@@ -40,6 +40,7 @@ import {
   GraphQLIncludeDirective,
   GraphQLDeprecatedDirective,
   GraphQLDirective,
+  GraphQLIAMDirective,
 } from '../../type/directives';
 
 import { DirectiveLocation } from '../../language/directiveLocation';
@@ -50,7 +51,7 @@ describe('findBreakingChanges', () => {
       type Type1 {
         field1: String
       }
-      
+
       type Type2 {
         field1: String
       }
@@ -93,7 +94,7 @@ describe('findBreakingChanges', () => {
       type ObjectType {
         field1: String
       }
-      
+
       union Type1 = ObjectType
 
       type Query {
@@ -143,7 +144,7 @@ describe('findBreakingChanges', () => {
       type TypeA {
         field1: String
       }
-      
+
       type TypeB {
         field1: String
       }
@@ -251,7 +252,7 @@ describe('findBreakingChanges', () => {
         field14: [[Int]!]
         field15: [[Int]!]
       }
-      
+
       type Query {
         field1: String
       }
@@ -274,7 +275,7 @@ describe('findBreakingChanges', () => {
         field14: [[Int]]
         field15: [[Int!]!]
       }
-      
+
       type Query {
         field1: String
       }
@@ -345,7 +346,7 @@ describe('findBreakingChanges', () => {
       input InputType1 {
         field1: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -357,7 +358,7 @@ describe('findBreakingChanges', () => {
         requiredField: Int!
         optionalField: Boolean
       }
-      
+
       type Query {
         field1: String
       }
@@ -382,11 +383,11 @@ describe('findBreakingChanges', () => {
       type Type1 {
         field1: String
       }
-      
+
       type Type2 {
         field1: String
       }
-      
+
       union UnionType1 = Type1 | Type2
 
       type Query {
@@ -397,11 +398,11 @@ describe('findBreakingChanges', () => {
       type Type1 {
         field1: String
       }
-      
+
       type Type3 {
         field1: String
       }
-      
+
       union UnionType1 = Type1 | Type3
 
       type Query {
@@ -424,7 +425,7 @@ describe('findBreakingChanges', () => {
         VALUE1
         VALUE2
       }
-      
+
       type Query {
         field1: String
       }
@@ -436,7 +437,7 @@ describe('findBreakingChanges', () => {
         VALUE2
         VALUE3
       }
-      
+
       type Query {
         field1: String
       }
@@ -455,15 +456,15 @@ describe('findBreakingChanges', () => {
       input InputType1 {
         field1: String
       }
-      
+
       interface Interface1 {
         field1(arg1: Boolean, objectArg: InputType1): String
       }
-      
+
       type Type1 {
         field1(name: String): String
       }
-      
+
       type Query {
         field1: String
       }
@@ -473,11 +474,11 @@ describe('findBreakingChanges', () => {
       interface Interface1 {
         field1: String
       }
-      
+
       type Type1 {
         field1: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -652,11 +653,11 @@ describe('findBreakingChanges', () => {
       input InputType1 {
         field1: String
       }
-      
+
       type Type1 {
         field1(arg1: Int!, arg2: InputType1): Int
       }
-      
+
       type Query {
         field1: String
       }
@@ -666,11 +667,11 @@ describe('findBreakingChanges', () => {
       input InputType1 {
         field1: String
       }
-      
+
       type Type1 {
         field1(arg1: Int!, arg2: InputType1): Int
       }
-      
+
       type Query {
         field1: String
       }
@@ -708,11 +709,11 @@ describe('findBreakingChanges', () => {
       interface Interface1 {
         field1: String
       }
-      
+
       type Type1 implements Interface1 {
         field1: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -739,54 +740,54 @@ describe('findBreakingChanges', () => {
   it('should detect all breaking changes', () => {
     const oldSchema = buildSchema(`
       directive @DirectiveThatIsRemoved on FIELD_DEFINITION
-      
+
       directive @DirectiveThatRemovesArg(arg1: String) on FIELD_DEFINITION
-      
+
       directive @NonNullDirectiveAdded on FIELD_DEFINITION
-      
+
       directive @DirectiveName on FIELD_DEFINITION | QUERY
-      
+
       type ArgThatChanges {
         field1(id: Int): String
       }
-      
+
       enum EnumTypeThatLosesAValue {
         VALUE0
         VALUE1
         VALUE2
       }
-      
+
       interface Interface1 {
         field1: String
       }
-      
+
       type TypeThatGainsInterface1 implements Interface1 {
         field1: String
       }
-      
+
       type TypeInUnion1 {
         field1: String
       }
-      
+
       type TypeInUnion2 {
         field1: String
       }
-      
+
       union UnionTypeThatLosesAType = TypeInUnion1 | TypeInUnion2
-      
+
       type TypeThatChangesType {
         field1: String
       }
-      
+
       type TypeThatGetsRemoved {
         field1: String
       }
-      
+
       interface TypeThatHasBreakingFieldChanges {
         field1: String
         field2: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -794,42 +795,42 @@ describe('findBreakingChanges', () => {
 
     const newSchema = buildSchema(`
       directive @DirectiveThatRemovesArg on FIELD_DEFINITION
-      
+
       directive @NonNullDirectiveAdded(arg1: Boolean!) on FIELD_DEFINITION
-      
+
       directive @DirectiveName on FIELD_DEFINITION
-      
+
       type ArgThatChanges {
         field1(id: String): String
       }
-      
+
       enum EnumTypeThatLosesAValue {
         VALUE1
         VALUE2
       }
-      
+
       interface Interface1 {
         field1: String
       }
-      
+
       type TypeInUnion1 {
         field1: String
       }
-      
+
       union UnionTypeThatLosesAType = TypeInUnion1
-      
+
       interface TypeThatChangesType {
         field1: String
       }
-      
+
       type TypeThatGainsInterface1 {
         field1: String
       }
-      
+
       interface TypeThatHasBreakingFieldChanges {
         field2: Boolean
       }
-      
+
       type Query {
         field1: String
       }
@@ -941,6 +942,10 @@ describe('findBreakingChanges', () => {
         type: BreakingChangeType.DIRECTIVE_REMOVED,
         description: `${GraphQLDeprecatedDirective.name} was removed`,
       },
+      {
+        type: BreakingChangeType.DIRECTIVE_REMOVED,
+        description: `${GraphQLIAMDirective.name} was removed`,
+      },
     ]);
   });
 
@@ -1050,7 +1055,7 @@ describe('findDangerousChanges', () => {
         VALUE0
         VALUE1
       }
-      
+
       type Query {
         field1: String
       }
@@ -1062,7 +1067,7 @@ describe('findDangerousChanges', () => {
         VALUE1
         VALUE2
       }
-      
+
       type Query {
         field1: String
       }
@@ -1091,11 +1096,11 @@ describe('findDangerousChanges', () => {
       interface Interface1 {
         field1: String
       }
-      
+
       type Type1 implements Interface1 {
         field1: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -1114,7 +1119,7 @@ describe('findDangerousChanges', () => {
       type Type1 {
         field1: String
       }
-      
+
       union UnionType1 = Type1
 
       type Query {
@@ -1126,11 +1131,11 @@ describe('findDangerousChanges', () => {
       type Type1 {
         field1: String
       }
-      
+
       type Type2 {
         field1: String
       }
-      
+
       union UnionType1 = Type1 | Type2
 
       type Query {
@@ -1151,7 +1156,7 @@ describe('findDangerousChanges', () => {
       input InputType1 {
         field1: String
       }
-      
+
       type Query {
         field1: String
       }
@@ -1162,7 +1167,7 @@ describe('findDangerousChanges', () => {
         field1: String
         field2: Int
       }
-      
+
       type Query {
         field1: String
       }
@@ -1188,21 +1193,21 @@ describe('findDangerousChanges', () => {
         VALUE0
         VALUE1
       }
-      
+
       type Type1 {
         field1(name: String = "test"): String
       }
-      
+
       type TypeThatGainsInterface1 {
         field1: String
       }
-      
+
       type TypeInUnion1 {
         field1: String
       }
-      
+
       union UnionTypeThatGainsAType = TypeInUnion1
-      
+
       type Query {
         field1: String
       }
@@ -1214,29 +1219,29 @@ describe('findDangerousChanges', () => {
         VALUE1
         VALUE2
       }
-      
+
       interface Interface1 {
         field1: String
       }
-      
+
       type TypeThatGainsInterface1 implements Interface1 {
         field1: String
       }
-      
+
       type Type1 {
         field1(name: String = "Test"): String
       }
-      
+
       type TypeInUnion1 {
         field1: String
       }
-      
+
       type TypeInUnion2 {
         field1: String
       }
-      
+
       union UnionTypeThatGainsAType = TypeInUnion1 | TypeInUnion2
-      
+
       type Query {
         field1: String
       }

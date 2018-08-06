@@ -1,10 +1,10 @@
 {
-  "name": "graphql",
+  "name": "@blackbird/graphql",
   "version": "14.0.0-rc.2",
   "description": "A Query Language and Runtime which can target any service.",
   "license": "MIT",
-  "main": "index",
-  "module": "index.mjs",
+  "main": "dist/index",
+  "module": "dist/index.mjs",
   "sideEffects": false,
   "homepage": "https://github.com/graphql/graphql-js",
   "bugs": {

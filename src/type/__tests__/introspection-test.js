@@ -219,6 +219,15 @@ describe('Introspection', () => {
                       },
                       defaultValue: 'false',
                     },
+                    {
+                      name: 'includeIAM',
+                      type: {
+                        kind: 'SCALAR',
+                        name: 'Boolean',
+                        ofType: null,
+                      },
+                      defaultValue: 'false',
+                    },
                   ],
                   type: {
                     kind: 'LIST',
@@ -491,6 +500,17 @@ describe('Introspection', () => {
                   },
                   isDeprecated: false,
                   deprecationReason: null,
+                },
+                {
+                  name: 'iamName',
+                  args: [],
+                  type: {
+                    kind: 'SCALAR',
+                    name: 'String',
+                    ofType: null,
+                  },
+                  deprecationReason: null,
+                  isDeprecated: false,
                 },
               ],
               inputFields: null,
@@ -851,6 +871,21 @@ describe('Introspection', () => {
                 {
                   defaultValue: '"No longer supported"',
                   name: 'reason',
+                  type: {
+                    kind: 'SCALAR',
+                    name: 'String',
+                    ofType: null,
+                  },
+                },
+              ],
+            },
+            {
+              name: 'iam',
+              locations: ['FIELD_DEFINITION'],
+              args: [
+                {
+                  defaultValue: null,
+                  name: 'name',
                   type: {
                     kind: 'SCALAR',
                     name: 'String',
