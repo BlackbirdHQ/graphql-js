@@ -18,6 +18,7 @@ import {
   GraphQLSkipDirective,
   GraphQLIncludeDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
 } from '../../';
 
 /**
@@ -150,12 +151,13 @@ describe('Schema Builder', () => {
       }
     `;
     const schema = buildASTSchema(parse(body));
-    expect(schema.getDirectives().length).to.equal(3);
+    expect(schema.getDirectives().length).to.equal(4);
     expect(schema.getDirective('skip')).to.equal(GraphQLSkipDirective);
     expect(schema.getDirective('include')).to.equal(GraphQLIncludeDirective);
     expect(schema.getDirective('deprecated')).to.equal(
       GraphQLDeprecatedDirective,
     );
+    expect(schema.getDirective('iam')).to.equal(GraphQLIAMDirective);
   });
 
   it('Overriding directives excludes specified', () => {
@@ -163,13 +165,14 @@ describe('Schema Builder', () => {
       directive @skip on FIELD
       directive @include on FIELD
       directive @deprecated on FIELD_DEFINITION
+      directive @iam on FIELD_DEFINITION
 
       type Query {
         str: String
       }
     `;
     const schema = buildASTSchema(parse(body));
-    expect(schema.getDirectives().length).to.equal(3);
+    expect(schema.getDirectives().length).to.equal(4);
     expect(schema.getDirective('skip')).to.not.equal(GraphQLSkipDirective);
     expect(schema.getDirective('include')).to.not.equal(
       GraphQLIncludeDirective,
@@ -177,6 +180,7 @@ describe('Schema Builder', () => {
     expect(schema.getDirective('deprecated')).to.not.equal(
       GraphQLDeprecatedDirective,
     );
+    expect(schema.getDirective('iam')).to.not.equal(GraphQLIAMDirective);
   });
 
   it('Adding directives maintains @skip & @include', () => {
@@ -188,10 +192,11 @@ describe('Schema Builder', () => {
       }
     `;
     const schema = buildASTSchema(parse(body));
-    expect(schema.getDirectives().length).to.equal(4);
+    expect(schema.getDirectives().length).to.equal(5);
     expect(schema.getDirective('skip')).to.not.equal(undefined);
     expect(schema.getDirective('include')).to.not.equal(undefined);
     expect(schema.getDirective('deprecated')).to.not.equal(undefined);
+    expect(schema.getDirective('iam')).to.not.equal(undefined);
   });
 
   it('Type modifiers', () => {

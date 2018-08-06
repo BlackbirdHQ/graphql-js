@@ -58,6 +58,7 @@ import {
   GraphQLSkipDirective,
   GraphQLIncludeDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
 } from '../type/directives';
 
 import { introspectionTypes } from '../type/introspection';
@@ -202,6 +203,10 @@ export function buildASTSchema(
     directives.push(GraphQLDeprecatedDirective);
   }
 
+  if (!directives.some(directive => directive.name === 'iam')) {
+    directives.push(GraphQLIAMDirective);
+  }
+
   // Note: While this could make early assertions to get the correctly
   // typed values below, that would throw immediately while type system
   // validation with validateSchema() will produce more actionable results.
@@ -314,6 +319,7 @@ export class ASTDefinitionBuilder {
       description: getDescription(field, this._options),
       args: field.arguments && this._makeInputValues(field.arguments),
       deprecationReason: getDeprecationReason(field),
+      iamKey: getIAMKey(field),
       astNode: field,
     };
   }
@@ -451,6 +457,15 @@ function getDeprecationReason(
 ): ?string {
   const deprecated = getDirectiveValues(GraphQLDeprecatedDirective, node);
   return deprecated && (deprecated.reason: any);
+}
+
+/**
+ * Given a field, returns the string value for the
+ * IAM key.
+ */
+function getIAMKey(node: FieldDefinitionNode): ?string {
+  const iam = getDirectiveValues(GraphQLIAMDirective, node);
+  return iam && (iam.key: any);
 }
 
 /**

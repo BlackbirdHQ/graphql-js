@@ -151,12 +151,28 @@ export const GraphQLDeprecatedDirective = new GraphQLDirective({
 });
 
 /**
+ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
+ */
+export const GraphQLIAMDirective = new GraphQLDirective({
+  name: 'iam',
+  description: 'Annotates the neccessary access permissions for the element.',
+  locations: [DirectiveLocation.FIELD_DEFINITION],
+  args: {
+    key: {
+      type: GraphQLString,
+      description: 'Defines the access key',
+    },
+  },
+});
+
+/**
  * The full list of specified directives.
  */
 export const specifiedDirectives: $ReadOnlyArray<*> = [
   GraphQLIncludeDirective,
   GraphQLSkipDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
 ];
 
 export function isSpecifiedDirective(

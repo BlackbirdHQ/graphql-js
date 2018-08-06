@@ -832,6 +832,7 @@ export type GraphQLFieldConfig<
   resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>,
   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
   deprecationReason?: ?string,
+  iamKey?: ?string,
   description?: ?string,
   astNode?: ?FieldDefinitionNode,
 };
@@ -862,6 +863,7 @@ export type GraphQLField<
   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
   isDeprecated?: boolean,
   deprecationReason?: ?string,
+  iamKey?: ?string,
   astNode?: ?FieldDefinitionNode,
 };
 

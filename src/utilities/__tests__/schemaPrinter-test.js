@@ -635,6 +635,12 @@ describe('Type System Printer', () => {
         reason: String = "No longer supported"
       ) on FIELD_DEFINITION | ENUM_VALUE
 
+      """Annotates the neccessary access permissions for the element."""
+      directive @iam(
+        """Defines the access key"""
+        key: String
+      ) on FIELD_DEFINITION
+
       """
       A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
 
@@ -736,6 +742,7 @@ describe('Type System Printer', () => {
         type: __Type!
         isDeprecated: Boolean!
         deprecationReason: String
+        iamKey: String
       }
 
       """
@@ -794,7 +801,7 @@ describe('Type System Printer', () => {
         kind: __TypeKind!
         name: String
         description: String
-        fields(includeDeprecated: Boolean = false): [__Field!]
+        fields(includeDeprecated: Boolean = false, includeIAM: Boolean = false): [__Field!]
         interfaces: [__Type!]
         possibleTypes: [__Type!]
         enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
@@ -869,6 +876,12 @@ describe('Type System Printer', () => {
         # [Markdown](https://daringfireball.net/projects/markdown/).
         reason: String = "No longer supported"
       ) on FIELD_DEFINITION | ENUM_VALUE
+
+      # Annotates the neccessary access permissions for the element.
+      directive @iam(
+        # Defines the access key
+        key: String
+      ) on FIELD_DEFINITION
 
       # A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
       #
@@ -963,6 +976,7 @@ describe('Type System Printer', () => {
         type: __Type!
         isDeprecated: Boolean!
         deprecationReason: String
+        iamKey: String
       }
 
       # Arguments provided to Fields or Directives and the input fields of an
@@ -1009,7 +1023,7 @@ describe('Type System Printer', () => {
         kind: __TypeKind!
         name: String
         description: String
-        fields(includeDeprecated: Boolean = false): [__Field!]
+        fields(includeDeprecated: Boolean = false, includeIAM: Boolean = false): [__Field!]
         interfaces: [__Type!]
         possibleTypes: [__Type!]
         enumValues(includeDeprecated: Boolean = false): [__EnumValue!]

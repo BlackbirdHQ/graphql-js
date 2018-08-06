@@ -22,7 +22,7 @@ import { Kind } from '../language/kinds';
 
 import { assertNullableType, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from '../type/definition';
 
-import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective } from '../type/directives';
+import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective } from '../type/directives';
 
 import { introspectionTypes } from '../type/introspection';
 
@@ -138,6 +138,12 @@ export function buildASTSchema(ast, options) {
     directives.push(GraphQLDeprecatedDirective);
   }
 
+  if (!directives.some(function (directive) {
+    return directive.name === 'iam';
+  })) {
+    directives.push(GraphQLIAMDirective);
+  }
+
   // Note: While this could make early assertions to get the correctly
   // typed values below, that would throw immediately while type system
   // validation with validateSchema() will produce more actionable results.
@@ -229,6 +235,7 @@ export var ASTDefinitionBuilder = function () {
       description: getDescription(field, this._options),
       args: field.arguments && this._makeInputValues(field.arguments),
       deprecationReason: getDeprecationReason(field),
+      iamKey: getIAMKey(field),
       astNode: field
     };
   };
@@ -379,6 +386,15 @@ export var ASTDefinitionBuilder = function () {
 function getDeprecationReason(node) {
   var deprecated = getDirectiveValues(GraphQLDeprecatedDirective, node);
   return deprecated && deprecated.reason;
+}
+
+/**
+ * Given a field, returns the string value for the
+ * IAM key.
+ */
+function getIAMKey(node) {
+  var iam = getDirectiveValues(GraphQLIAMDirective, node);
+  return iam && iam.key;
 }
 
 /**

@@ -243,12 +243,16 @@ export const __Type = new GraphQLObjectType({
       type: GraphQLList(GraphQLNonNull(__Field)),
       args: {
         includeDeprecated: { type: GraphQLBoolean, defaultValue: false },
+        includeIAM: { type: GraphQLBoolean, defaultValue: false },
       },
-      resolve(type, { includeDeprecated }) {
+      resolve(type, { includeDeprecated, includeIAM }) {
         if (isObjectType(type) || isInterfaceType(type)) {
           let fields = objectValues(type.getFields());
           if (!includeDeprecated) {
             fields = fields.filter(field => !field.deprecationReason);
+          }
+          if (!includeIAM) {
+            fields = fields.filter(field => !field.iamKey);
           }
           return fields;
         }
@@ -314,6 +318,9 @@ export const __Field = new GraphQLObjectType({
     type: { type: GraphQLNonNull(__Type) },
     isDeprecated: { type: GraphQLNonNull(GraphQLBoolean) },
     deprecationReason: {
+      type: GraphQLString,
+    },
+    iamKey: {
       type: GraphQLString,
     },
   }),

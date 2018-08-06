@@ -62,6 +62,7 @@ export {
   GraphQLIncludeDirective,
   GraphQLSkipDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
   // Constant Deprecation Reason
   DEFAULT_DEPRECATION_REASON,
   // Meta-field definitions.

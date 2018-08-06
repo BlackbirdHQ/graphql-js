@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.specifiedDirectives = exports.GraphQLDeprecatedDirective = exports.DEFAULT_DEPRECATION_REASON = exports.GraphQLSkipDirective = exports.GraphQLIncludeDirective = exports.GraphQLDirective = undefined;
+exports.specifiedDirectives = exports.GraphQLIAMDirective = exports.GraphQLDeprecatedDirective = exports.DEFAULT_DEPRECATION_REASON = exports.GraphQLSkipDirective = exports.GraphQLIncludeDirective = exports.GraphQLDirective = undefined;
 exports.isDirective = isDirective;
 exports.isSpecifiedDirective = isSpecifiedDirective;
 
@@ -127,9 +127,24 @@ var GraphQLDeprecatedDirective = exports.GraphQLDeprecatedDirective = new GraphQ
 });
 
 /**
+ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
+ */
+var GraphQLIAMDirective = exports.GraphQLIAMDirective = new GraphQLDirective({
+  name: 'iam',
+  description: 'Annotates the neccessary access permissions for the element.',
+  locations: [_directiveLocation.DirectiveLocation.FIELD_DEFINITION],
+  args: {
+    key: {
+      type: _scalars.GraphQLString,
+      description: 'Defines the access key'
+    }
+  }
+});
+
+/**
  * The full list of specified directives.
  */
-var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
+var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective];
 
 function isSpecifiedDirective(directive) {
   return specifiedDirectives.some(function (specifiedDirective) {

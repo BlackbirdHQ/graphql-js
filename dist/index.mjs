@@ -44,7 +44,7 @@ TypeKind,
 // Scalars
 specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID,
 // Built-in Directives defined by the Spec
-specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective,
+specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective,
 // Constant Deprecation Reason
 DEFAULT_DEPRECATION_REASON,
 // Meta-field definitions.

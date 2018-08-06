@@ -158,6 +158,12 @@ function buildASTSchema(ast, options) {
     directives.push(_directives.GraphQLDeprecatedDirective);
   }
 
+  if (!directives.some(function (directive) {
+    return directive.name === 'iam';
+  })) {
+    directives.push(_directives.GraphQLIAMDirective);
+  }
+
   // Note: While this could make early assertions to get the correctly
   // typed values below, that would throw immediately while type system
   // validation with validateSchema() will produce more actionable results.
@@ -249,6 +255,7 @@ var ASTDefinitionBuilder = exports.ASTDefinitionBuilder = function () {
       description: getDescription(field, this._options),
       args: field.arguments && this._makeInputValues(field.arguments),
       deprecationReason: getDeprecationReason(field),
+      iamKey: getIAMKey(field),
       astNode: field
     };
   };
@@ -401,6 +408,15 @@ var ASTDefinitionBuilder = exports.ASTDefinitionBuilder = function () {
 function getDeprecationReason(node) {
   var deprecated = (0, _values.getDirectiveValues)(_directives.GraphQLDeprecatedDirective, node);
   return deprecated && deprecated.reason;
+}
+
+/**
+ * Given a field, returns the string value for the
+ * IAM key.
+ */
+function getIAMKey(node) {
+  var iam = (0, _values.getDirectiveValues)(_directives.GraphQLIAMDirective, node);
+  return iam && iam.key;
 }
 
 /**

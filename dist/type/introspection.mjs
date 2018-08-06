@@ -219,16 +219,23 @@ export var __Type = new GraphQLObjectType({
       fields: {
         type: GraphQLList(GraphQLNonNull(__Field)),
         args: {
-          includeDeprecated: { type: GraphQLBoolean, defaultValue: false }
+          includeDeprecated: { type: GraphQLBoolean, defaultValue: false },
+          includeIAM: { type: GraphQLBoolean, defaultValue: false }
         },
         resolve: function resolve(type, _ref) {
-          var includeDeprecated = _ref.includeDeprecated;
+          var includeDeprecated = _ref.includeDeprecated,
+              includeIAM = _ref.includeIAM;
 
           if (isObjectType(type) || isInterfaceType(type)) {
             var fields = objectValues(type.getFields());
             if (!includeDeprecated) {
               fields = fields.filter(function (field) {
                 return !field.deprecationReason;
+              });
+            }
+            if (!includeIAM) {
+              fields = fields.filter(function (field) {
+                return !field.iamKey;
               });
             }
             return fields;
@@ -303,6 +310,9 @@ export var __Field = new GraphQLObjectType({
       type: { type: GraphQLNonNull(__Type) },
       isDeprecated: { type: GraphQLNonNull(GraphQLBoolean) },
       deprecationReason: {
+        type: GraphQLString
+      },
+      iamKey: {
         type: GraphQLString
       }
     };

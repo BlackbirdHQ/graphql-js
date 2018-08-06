@@ -79,6 +79,7 @@ export {
   GraphQLIncludeDirective,
   GraphQLSkipDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
   // Constant Deprecation Reason
   DEFAULT_DEPRECATION_REASON,
 } from './directives';

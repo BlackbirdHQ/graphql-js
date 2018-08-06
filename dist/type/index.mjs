@@ -31,7 +31,7 @@ isDirective,
 // Directives Definition
 GraphQLDirective,
 // Built-in Directives defined by the Spec
-isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective,
+isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective,
 // Constant Deprecation Reason
 DEFAULT_DEPRECATION_REASON } from './directives';
 

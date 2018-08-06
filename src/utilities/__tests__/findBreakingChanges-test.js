@@ -47,6 +47,7 @@ import {
   GraphQLSkipDirective,
   GraphQLIncludeDirective,
   GraphQLDeprecatedDirective,
+  GraphQLIAMDirective,
   GraphQLDirective,
 } from '../../type/directives';
 
@@ -1357,6 +1358,10 @@ describe('findBreakingChanges', () => {
       {
         type: BreakingChangeType.DIRECTIVE_REMOVED,
         description: `${GraphQLDeprecatedDirective.name} was removed`,
+      },
+      {
+        type: BreakingChangeType.DIRECTIVE_REMOVED,
+        description: `${GraphQLIAMDirective.name} was removed`,
       },
     ]);
   });

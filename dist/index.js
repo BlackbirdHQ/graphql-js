@@ -147,6 +147,12 @@ Object.defineProperty(exports, 'GraphQLDeprecatedDirective', {
     return _type.GraphQLDeprecatedDirective;
   }
 });
+Object.defineProperty(exports, 'GraphQLIAMDirective', {
+  enumerable: true,
+  get: function get() {
+    return _type.GraphQLIAMDirective;
+  }
+});
 Object.defineProperty(exports, 'DEFAULT_DEPRECATION_REASON', {
   enumerable: true,
   get: function get() {
