@@ -1,7 +1,7 @@
-diff --git a/error/GraphQLError.js.flow b/error/GraphQLError.js.flow
+diff --git error/GraphQLError.js.flow error/GraphQLError.js.flow
 index ecd7997..89e540e 100644
---- a/error/GraphQLError.js.flow
-+++ b/error/GraphQLError.js.flow
+--- error/GraphQLError.js.flow
++++ error/GraphQLError.js.flow
 @@ -95,7 +95,7 @@ export function GraphQLError( // eslint-disable-line no-redeclare
    source?: ?Source,
    positions?: ?$ReadOnlyArray<number>,
@@ -21,10 +21,10 @@ index ecd7997..89e540e 100644
  
    Object.defineProperties(this, {
      message: {
-diff --git a/error/printError.js b/error/printError.js
+diff --git error/printError.js error/printError.js
 index d40ea8a..80b7ed8 100644
---- a/error/printError.js
-+++ b/error/printError.js
+--- error/printError.js
++++ error/printError.js
 @@ -24,16 +24,57 @@ function printError(error) {
    var printedLocations = [];
  
@@ -129,10 +129,10 @@ index d40ea8a..80b7ed8 100644
        }
      }
    }
-diff --git a/error/printError.js.flow b/error/printError.js.flow
+diff --git error/printError.js.flow error/printError.js.flow
 index 1741464..9012640 100644
---- a/error/printError.js.flow
-+++ b/error/printError.js.flow
+--- error/printError.js.flow
++++ error/printError.js.flow
 @@ -19,7 +19,7 @@ import type { GraphQLError } from './GraphQLError';
  export function printError(error: GraphQLError): string {
    const printedLocations = [];
@@ -158,10 +158,10 @@ index 1741464..9012640 100644
    }
    return printedLocations.length === 0
      ? error.message
-diff --git a/error/printError.mjs b/error/printError.mjs
+diff --git error/printError.mjs error/printError.mjs
 index 256666a..a65d873 100644
---- a/error/printError.mjs
-+++ b/error/printError.mjs
+--- error/printError.mjs
++++ error/printError.mjs
 @@ -16,16 +16,57 @@ export function printError(error) {
    var printedLocations = [];
  
@@ -266,10 +266,10 @@ index 256666a..a65d873 100644
        }
      }
    }
-diff --git a/execution/execute.js b/execution/execute.js
+diff --git execution/execute.js execution/execute.js
 index 2608a0e..55c23f5 100644
---- a/execution/execute.js
-+++ b/execution/execute.js
+--- execution/execute.js
++++ execution/execute.js
 @@ -44,8 +44,6 @@ var _values = require("./values");
  
  var _definition = require("../type/definition");
@@ -288,10 +288,10 @@ index 2608a0e..55c23f5 100644
    }
  
    if (!exeContext.schema.isPossibleType(returnType, runtimeType)) {
-diff --git a/execution/execute.js.flow b/execution/execute.js.flow
+diff --git execution/execute.js.flow execution/execute.js.flow
 index fb04bd6..d1d5d3d 100644
---- a/execution/execute.js.flow
-+++ b/execution/execute.js.flow
+--- execution/execute.js.flow
++++ execution/execute.js.flow
 @@ -46,7 +46,7 @@ import type {
    ResponsePath,
    GraphQLList,
@@ -313,10 +313,10 @@ index fb04bd6..d1d5d3d 100644
          '"isTypeOf" function.',
        fieldNodes,
      );
-diff --git a/execution/execute.mjs b/execution/execute.mjs
+diff --git execution/execute.mjs execution/execute.mjs
 index 8e5e9a1..c3a009d 100644
---- a/execution/execute.mjs
-+++ b/execution/execute.mjs
+--- execution/execute.mjs
++++ execution/execute.mjs
 @@ -23,7 +23,6 @@ import { typeFromAST } from '../utilities/typeFromAST';
  import { Kind } from '../language/kinds';
  import { getVariableValues, getArgumentValues, getDirectiveValues } from './values';
@@ -334,10 +334,10 @@ index 8e5e9a1..c3a009d 100644
    }
  
    if (!exeContext.schema.isPossibleType(returnType, runtimeType)) {
-diff --git a/execution/values.js b/execution/values.js
+diff --git execution/values.js execution/values.js
 index 687da77..06308bb 100644
---- a/execution/values.js
-+++ b/execution/values.js
+--- execution/values.js
++++ execution/values.js
 @@ -53,7 +53,7 @@ function getVariableValues(schema, varDefNodes, inputs) {
    var errors = [];
    var coercedValues = {};
@@ -400,10 +400,10 @@ index 687da77..06308bb 100644
    }
  
    return errors.length === 0 ? {
-diff --git a/execution/values.js.flow b/execution/values.js.flow
+diff --git execution/values.js.flow execution/values.js.flow
 index 5df2440..0f8a9bd 100644
---- a/execution/values.js.flow
-+++ b/execution/values.js.flow
+--- execution/values.js.flow
++++ execution/values.js.flow
 @@ -96,11 +96,11 @@ export function getVariableValues(
            const coerced = coerceValue(value, varType, varDefNode);
            const coercionErrors = coerced.errors;
@@ -419,10 +419,10 @@ index 5df2440..0f8a9bd 100644
              errors.push(...coercionErrors);
            } else {
              coercedValues[varName] = coerced.value;
-diff --git a/execution/values.mjs b/execution/values.mjs
+diff --git execution/values.mjs execution/values.mjs
 index 3051d69..3ef3656 100644
---- a/execution/values.mjs
-+++ b/execution/values.mjs
+--- execution/values.mjs
++++ execution/values.mjs
 @@ -31,7 +31,7 @@ export function getVariableValues(schema, varDefNodes, inputs) {
    var errors = [];
    var coercedValues = {};
@@ -485,10 +485,10 @@ index 3051d69..3ef3656 100644
    }
  
    return errors.length === 0 ? {
-diff --git a/graphql.js b/graphql.js
+diff --git graphql.js graphql.js
 index 1c2ed25..42992f0 100644
---- a/graphql.js
-+++ b/graphql.js
+--- graphql.js
++++ graphql.js
 @@ -41,6 +41,7 @@ function graphql(argsOrSchema, source, rootValue, contextValue, variableValues,
  
  
@@ -497,10 +497,10 @@ index 1c2ed25..42992f0 100644
    // Extract arguments from object args if provided.
    var result = arguments.length === 1 ? graphqlImpl(argsOrSchema.schema, argsOrSchema.source, argsOrSchema.rootValue, argsOrSchema.contextValue, argsOrSchema.variableValues, argsOrSchema.operationName, argsOrSchema.fieldResolver) : graphqlImpl(argsOrSchema, source, rootValue, contextValue, variableValues, operationName, fieldResolver); // Assert that the execution was synchronous.
  
-diff --git a/graphql.js.flow b/graphql.js.flow
+diff --git graphql.js.flow graphql.js.flow
 index 8b0fe06..ab93016 100644
---- a/graphql.js.flow
-+++ b/graphql.js.flow
+--- graphql.js.flow
++++ graphql.js.flow
 @@ -36,6 +36,11 @@ import type { MaybePromise } from './jsutils/MaybePromise';
   * rootValue:
   *    The value provided as the first argument to resolver functions on the top
@@ -521,10 +521,10 @@ index 8b0fe06..ab93016 100644
    // Extract arguments from object args if provided.
    const result =
      arguments.length === 1
-diff --git a/graphql.mjs b/graphql.mjs
+diff --git graphql.mjs graphql.mjs
 index 0e75166..af7509a 100644
---- a/graphql.mjs
-+++ b/graphql.mjs
+--- graphql.mjs
++++ graphql.mjs
 @@ -28,6 +28,7 @@ export function graphql(argsOrSchema, source, rootValue, contextValue, variableV
   */
  
@@ -533,10 +533,10 @@ index 0e75166..af7509a 100644
    // Extract arguments from object args if provided.
    var result = arguments.length === 1 ? graphqlImpl(argsOrSchema.schema, argsOrSchema.source, argsOrSchema.rootValue, argsOrSchema.contextValue, argsOrSchema.variableValues, argsOrSchema.operationName, argsOrSchema.fieldResolver) : graphqlImpl(argsOrSchema, source, rootValue, contextValue, variableValues, operationName, fieldResolver); // Assert that the execution was synchronous.
  
-diff --git a/index.js b/index.js
+diff --git index.js index.js
 index 94a30f3..fe474bd 100644
---- a/index.js
-+++ b/index.js
+--- index.js
++++ index.js
 @@ -141,6 +141,12 @@ Object.defineProperty(exports, "GraphQLDeprecatedDirective", {
      return _type.GraphQLDeprecatedDirective;
    }
@@ -550,10 +550,10 @@ index 94a30f3..fe474bd 100644
  Object.defineProperty(exports, "DEFAULT_DEPRECATION_REASON", {
    enumerable: true,
    get: function get() {
-diff --git a/index.js.flow b/index.js.flow
+diff --git index.js.flow index.js.flow
 index 697734c..1d14365 100644
---- a/index.js.flow
-+++ b/index.js.flow
+--- index.js.flow
++++ index.js.flow
 @@ -62,6 +62,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -603,10 +603,10 @@ index 697734c..1d14365 100644
    isValidLiteralValue,
    // Concatenates multiple AST together.
    concatAST,
-diff --git a/index.mjs b/index.mjs
+diff --git index.mjs index.mjs
 index 9088204..dec7ca8 100644
---- a/index.mjs
-+++ b/index.mjs
+--- index.mjs
++++ index.mjs
 @@ -37,7 +37,7 @@ export { GraphQLSchema, // Definitions
  GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLDirective, // "Enum" of Type Kinds
  TypeKind, // Scalars
@@ -645,10 +645,10 @@ index 9088204..dec7ca8 100644
  isValidLiteralValue, // Concatenates multiple AST together.
  concatAST, // Separates an AST into an AST per Operation.
  separateOperations, // Comparators for types
-diff --git a/jsutils/dedent.js b/jsutils/dedent.js
+diff --git jsutils/dedent.js jsutils/dedent.js
 index 6dfa875..71f3792 100644
---- a/jsutils/dedent.js
-+++ b/jsutils/dedent.js
+--- jsutils/dedent.js
++++ jsutils/dedent.js
 @@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
  });
  exports.default = dedent;
@@ -671,10 +671,10 @@ index 6dfa875..71f3792 100644
  
    return trimmedStr.replace(RegExp('^' + indent, 'mg'), ''); // remove indent
  }
-diff --git a/jsutils/dedent.js.flow b/jsutils/dedent.js.flow
+diff --git jsutils/dedent.js.flow jsutils/dedent.js.flow
 index 0239266..8158198 100644
---- a/jsutils/dedent.js.flow
-+++ b/jsutils/dedent.js.flow
+--- jsutils/dedent.js.flow
++++ jsutils/dedent.js.flow
 @@ -7,6 +7,8 @@
   * @flow strict
   */
@@ -695,10 +695,10 @@ index 0239266..8158198 100644
    return trimmedStr.replace(RegExp('^' + indent, 'mg'), ''); // remove indent
  }
  
-diff --git a/jsutils/dedent.mjs b/jsutils/dedent.mjs
+diff --git jsutils/dedent.mjs jsutils/dedent.mjs
 index ff12dfa..69293f7 100644
---- a/jsutils/dedent.mjs
-+++ b/jsutils/dedent.mjs
+--- jsutils/dedent.mjs
++++ jsutils/dedent.mjs
 @@ -6,15 +6,18 @@
   *
   *  strict
@@ -720,11 +720,11 @@ index ff12dfa..69293f7 100644
  
    return trimmedStr.replace(RegExp('^' + indent, 'mg'), ''); // remove indent
  }
-diff --git a/jsutils/defineToJSON.js b/jsutils/defineToJSON.js
+diff --git jsutils/defineToJSON.js jsutils/defineToJSON.js
 new file mode 100644
 index 0000000..b5a2513
 --- /dev/null
-+++ b/jsutils/defineToJSON.js
++++ jsutils/defineToJSON.js
 @@ -0,0 +1,23 @@
 +"use strict";
 +
@@ -750,11 +750,11 @@ index 0000000..b5a2513
 +  classObject.prototype.toJSON = classObject.prototype.inspect = classObject.prototype.toString;
 +}
 \ No newline at end of file
-diff --git a/jsutils/defineToJSON.js.flow b/jsutils/defineToJSON.js.flow
+diff --git jsutils/defineToJSON.js.flow jsutils/defineToJSON.js.flow
 new file mode 100644
 index 0000000..fde3f6c
 --- /dev/null
-+++ b/jsutils/defineToJSON.js.flow
++++ jsutils/defineToJSON.js.flow
 @@ -0,0 +1,17 @@
 +/**
 + * Copyright (c) 2015-present, Facebook, Inc.
@@ -773,11 +773,11 @@ index 0000000..fde3f6c
 +  classObject.prototype.toJSON = classObject.prototype.inspect =
 +    classObject.prototype.toString;
 +}
-diff --git a/jsutils/defineToJSON.mjs b/jsutils/defineToJSON.mjs
+diff --git jsutils/defineToJSON.mjs jsutils/defineToJSON.mjs
 new file mode 100644
 index 0000000..ba22494
 --- /dev/null
-+++ b/jsutils/defineToJSON.mjs
++++ jsutils/defineToJSON.mjs
 @@ -0,0 +1,16 @@
 +/**
 + * Copyright (c) 2015-present, Facebook, Inc.
@@ -796,13 +796,13 @@ index 0000000..ba22494
 +  classObject.prototype.toJSON = classObject.prototype.inspect = classObject.prototype.toString;
 +}
 \ No newline at end of file
-diff --git a/jsutils/applyToStringTag.js b/jsutils/defineToStringTag.js
+diff --git jsutils/applyToStringTag.js jsutils/defineToStringTag.js
 similarity index 52%
 rename from dist/jsutils/applyToStringTag.js
 rename to dist/jsutils/defineToStringTag.js
 index 195d7f5..fedef31 100644
---- a/jsutils/applyToStringTag.js
-+++ b/jsutils/defineToStringTag.js
+--- jsutils/applyToStringTag.js
++++ jsutils/defineToStringTag.js
 @@ -3,10 +3,7 @@
  Object.defineProperty(exports, "__esModule", {
    value: true
@@ -846,13 +846,13 @@ index 195d7f5..fedef31 100644
 \ No newline at end of file
 +}
 \ No newline at end of file
-diff --git a/jsutils/applyToStringTag.js.flow b/jsutils/defineToStringTag.js.flow
+diff --git jsutils/applyToStringTag.js.flow jsutils/defineToStringTag.js.flow
 similarity index 66%
 rename from dist/jsutils/applyToStringTag.js.flow
 rename to dist/jsutils/defineToStringTag.js.flow
 index 9da9b3e..f539cde 100644
---- a/jsutils/applyToStringTag.js.flow
-+++ b/jsutils/defineToStringTag.js.flow
+--- jsutils/applyToStringTag.js.flow
++++ jsutils/defineToStringTag.js.flow
 @@ -16,15 +16,12 @@
   *
   * @method applyToStringTag
@@ -879,13 +879,13 @@ index 9da9b3e..f539cde 100644
 -
 -/** Support both default export and named `applyToStringTag` export */
 -export default applyToStringTag;
-diff --git a/jsutils/applyToStringTag.mjs b/jsutils/defineToStringTag.mjs
+diff --git jsutils/applyToStringTag.mjs jsutils/defineToStringTag.mjs
 similarity index 51%
 rename from dist/jsutils/applyToStringTag.mjs
 rename to dist/jsutils/defineToStringTag.mjs
 index 5029643..ed0d728 100644
---- a/jsutils/applyToStringTag.mjs
-+++ b/jsutils/defineToStringTag.mjs
+--- jsutils/applyToStringTag.mjs
++++ jsutils/defineToStringTag.mjs
 @@ -1,5 +1,3 @@
 -function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 -
@@ -922,10 +922,10 @@ index 5029643..ed0d728 100644
 \ No newline at end of file
 +}
 \ No newline at end of file
-diff --git a/jsutils/inspect.js b/jsutils/inspect.js
+diff --git jsutils/inspect.js jsutils/inspect.js
 index c5f67c8..f869425 100644
---- a/jsutils/inspect.js
-+++ b/jsutils/inspect.js
+--- jsutils/inspect.js
++++ jsutils/inspect.js
 @@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
  });
  exports.default = inspect;
@@ -954,10 +954,10 @@ index c5f67c8..f869425 100644
 +  }).join(', ') + '}' : typeof value === 'string' ? '"' + value + '"' : typeof value === 'function' ? "[function ".concat(value.name, "]") : String(value);
  }
 \ No newline at end of file
-diff --git a/jsutils/inspect.js.flow b/jsutils/inspect.js.flow
+diff --git jsutils/inspect.js.flow jsutils/inspect.js.flow
 index 70bc6bd..6870175 100644
---- a/jsutils/inspect.js.flow
-+++ b/jsutils/inspect.js.flow
+--- jsutils/inspect.js.flow
++++ jsutils/inspect.js.flow
 @@ -7,9 +7,23 @@
   * @flow strict
   */
@@ -986,10 +986,10 @@ index 70bc6bd..6870175 100644
 +        ? `[function ${value.name}]`
 +        : String(value);
  }
-diff --git a/jsutils/inspect.mjs b/jsutils/inspect.mjs
+diff --git jsutils/inspect.mjs jsutils/inspect.mjs
 index e7ca997..4b7e40d 100644
---- a/jsutils/inspect.mjs
-+++ b/jsutils/inspect.mjs
+--- jsutils/inspect.mjs
++++ jsutils/inspect.mjs
 @@ -1,3 +1,5 @@
 +function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 +
@@ -1015,10 +1015,10 @@ index e7ca997..4b7e40d 100644
 +  }).join(', ') + '}' : typeof value === 'string' ? '"' + value + '"' : typeof value === 'function' ? "[function ".concat(value.name, "]") : String(value);
  }
 \ No newline at end of file
-diff --git a/jsutils/instanceOf.js.flow b/jsutils/instanceOf.js.flow
+diff --git jsutils/instanceOf.js.flow jsutils/instanceOf.js.flow
 index db485c3..1cb4d2a 100644
---- a/jsutils/instanceOf.js.flow
-+++ b/jsutils/instanceOf.js.flow
+--- jsutils/instanceOf.js.flow
++++ jsutils/instanceOf.js.flow
 @@ -20,7 +20,7 @@ declare function instanceOf(
  // See: https://webpack.js.org/guides/production/
  export default (process.env.NODE_ENV === 'production'
@@ -1028,11 +1028,11 @@ index db485c3..1cb4d2a 100644
        return value instanceof constructor;
      }
    : // eslint-disable-next-line no-shadow
-diff --git a/jsutils/isFinite.js b/jsutils/isFinite.js
+diff --git jsutils/isFinite.js jsutils/isFinite.js
 new file mode 100644
 index 0000000..5e5aa0c
 --- /dev/null
-+++ b/jsutils/isFinite.js
++++ jsutils/isFinite.js
 @@ -0,0 +1,24 @@
 +"use strict";
 +
@@ -1059,11 +1059,11 @@ index 0000000..5e5aa0c
 +var _default = isFinite;
 +exports.default = _default;
 \ No newline at end of file
-diff --git a/jsutils/isFinite.js.flow b/jsutils/isFinite.js.flow
+diff --git jsutils/isFinite.js.flow jsutils/isFinite.js.flow
 new file mode 100644
 index 0000000..a874a2d
 --- /dev/null
-+++ b/jsutils/isFinite.js.flow
++++ jsutils/isFinite.js.flow
 @@ -0,0 +1,20 @@
 +/**
 + * Copyright (c) 2018-present, Facebook, Inc.
@@ -1085,11 +1085,11 @@ index 0000000..a874a2d
 +    return typeof value === 'number' && isFinite(value);
 +  };
 +export default isFinite;
-diff --git a/jsutils/isFinite.mjs b/jsutils/isFinite.mjs
+diff --git jsutils/isFinite.mjs jsutils/isFinite.mjs
 new file mode 100644
 index 0000000..f6e317b
 --- /dev/null
-+++ b/jsutils/isFinite.mjs
++++ jsutils/isFinite.mjs
 @@ -0,0 +1,16 @@
 +/**
 + * Copyright (c) 2018-present, Facebook, Inc.
@@ -1108,10 +1108,10 @@ index 0000000..f6e317b
 +
 +export default isFinite;
 \ No newline at end of file
-diff --git a/language/parser.js.flow b/language/parser.js.flow
+diff --git language/parser.js.flow language/parser.js.flow
 index 2876a7e..fdbfce0 100644
---- a/language/parser.js.flow
-+++ b/language/parser.js.flow
+--- language/parser.js.flow
++++ language/parser.js.flow
 @@ -84,7 +84,7 @@ export type ParseOptions = {
     * specification.
     *
@@ -1130,10 +1130,10 @@ index 2876a7e..fdbfce0 100644
     */
    allowLegacySDLImplementsInterfaces?: boolean,
  
-diff --git a/language/source.js b/language/source.js
+diff --git language/source.js language/source.js
 index 618b454..388bc90 100644
---- a/language/source.js
-+++ b/language/source.js
+--- language/source.js
++++ language/source.js
 @@ -7,7 +7,7 @@ exports.Source = void 0;
  
  var _invariant = _interopRequireDefault(require("../jsutils/invariant"));
@@ -1151,10 +1151,10 @@ index 618b454..388bc90 100644
 \ No newline at end of file
 +(0, _defineToStringTag.default)(Source);
 \ No newline at end of file
-diff --git a/language/source.js.flow b/language/source.js.flow
+diff --git language/source.js.flow language/source.js.flow
 index 14817b6..258249f 100644
---- a/language/source.js.flow
-+++ b/language/source.js.flow
+--- language/source.js.flow
++++ language/source.js.flow
 @@ -8,7 +8,7 @@
   */
  
@@ -1170,10 +1170,10 @@ index 14817b6..258249f 100644
  // Conditionally apply `[Symbol.toStringTag]` if `Symbol`s are supported
 -applyToStringTag(Source);
 +defineToStringTag(Source);
-diff --git a/language/source.mjs b/language/source.mjs
+diff --git language/source.mjs language/source.mjs
 index c12a5da..fd1425e 100644
---- a/language/source.mjs
-+++ b/language/source.mjs
+--- language/source.mjs
++++ language/source.mjs
 @@ -9,7 +9,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   *  strict
   */
@@ -1191,10 +1191,10 @@ index c12a5da..fd1425e 100644
 \ No newline at end of file
 +defineToStringTag(Source);
 \ No newline at end of file
-diff --git a/package.json b/package.json
+diff --git package.json package.json
 index 43ea2bb..78c90b0 100644
---- a/package.json
-+++ b/package.json
+--- package.json
++++ package.json
 @@ -1,5 +1,5 @@
  {
 -  "name": "graphql",
@@ -1211,10 +1211,10 @@ index 43ea2bb..78c90b0 100644
    },
    "dependencies": {
      "iterall": "^1.2.2"
-diff --git a/subscription/subscribe.js b/subscription/subscribe.js
+diff --git subscription/subscribe.js subscription/subscribe.js
 index c0926cf..c0134cd 100644
---- a/subscription/subscribe.js
-+++ b/subscription/subscribe.js
+--- subscription/subscribe.js
++++ subscription/subscribe.js
 @@ -16,8 +16,6 @@ var _locatedError = require("../error/locatedError");
  
  var _execute = require("../execution/execute");
@@ -1224,10 +1224,10 @@ index c0926cf..c0134cd 100644
  var _mapAsyncIterator = _interopRequireDefault(require("./mapAsyncIterator"));
  
  var _getOperationRootType = require("../utilities/getOperationRootType");
-diff --git a/subscription/subscribe.js.flow b/subscription/subscribe.js.flow
+diff --git subscription/subscribe.js.flow subscription/subscribe.js.flow
 index b226567..ebd52f8 100644
---- a/subscription/subscribe.js.flow
-+++ b/subscription/subscribe.js.flow
+--- subscription/subscribe.js.flow
++++ subscription/subscribe.js.flow
 @@ -22,7 +22,7 @@ import {
    resolveFieldValueOrError,
    responsePathAsArray,
@@ -1237,10 +1237,10 @@ index b226567..ebd52f8 100644
  import mapAsyncIterator from './mapAsyncIterator';
  
  import type { ObjMap } from '../jsutils/ObjMap';
-diff --git a/subscription/subscribe.mjs b/subscription/subscribe.mjs
+diff --git subscription/subscribe.mjs subscription/subscribe.mjs
 index 32a2084..3ebca4f 100644
---- a/subscription/subscribe.mjs
-+++ b/subscription/subscribe.mjs
+--- subscription/subscribe.mjs
++++ subscription/subscribe.mjs
 @@ -11,7 +11,6 @@ import inspect from '../jsutils/inspect';
  import { GraphQLError } from '../error/GraphQLError';
  import { locatedError } from '../error/locatedError';
@@ -1249,10 +1249,10 @@ index 32a2084..3ebca4f 100644
  import mapAsyncIterator from './mapAsyncIterator';
  import { getOperationRootType } from '../utilities/getOperationRootType';
  /**
-diff --git a/type/definition.js b/type/definition.js
+diff --git type/definition.js type/definition.js
 index 7636b29..ab73ab5 100644
---- a/type/definition.js
-+++ b/type/definition.js
+--- type/definition.js
++++ type/definition.js
 @@ -43,7 +43,9 @@ exports.assertNamedType = assertNamedType;
  exports.getNamedType = getNamedType;
  exports.GraphQLInputObjectType = exports.GraphQLEnumType = exports.GraphQLUnionType = exports.GraphQLInterfaceType = exports.GraphQLObjectType = exports.GraphQLScalarType = void 0;
@@ -1736,10 +1736,10 @@ index 7636b29..ab73ab5 100644
 +  return resultFieldMap;
 +}
 \ No newline at end of file
-diff --git a/type/definition.js.flow b/type/definition.js.flow
+diff --git type/definition.js.flow type/definition.js.flow
 index 827266c..793daf1 100644
---- a/type/definition.js.flow
-+++ b/type/definition.js.flow
+--- type/definition.js.flow
++++ type/definition.js.flow
 @@ -7,7 +7,8 @@
   * @flow strict
   */
@@ -2481,10 +2481,10 @@ index 827266c..793daf1 100644
  
  export type GraphQLInputFieldConfigMap = ObjMap<GraphQLInputFieldConfig>;
  
-diff --git a/type/definition.mjs b/type/definition.mjs
+diff --git type/definition.mjs type/definition.mjs
 index 5354555..4fa1dfa 100644
---- a/type/definition.mjs
-+++ b/type/definition.mjs
+--- type/definition.mjs
++++ type/definition.mjs
 @@ -12,7 +12,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   *
   *  strict
@@ -2965,10 +2965,10 @@ index 5354555..4fa1dfa 100644
 +  return resultFieldMap;
 +}
 \ No newline at end of file
-diff --git a/type/directives.js b/type/directives.js
+diff --git type/directives.js type/directives.js
 index 0545df6..2067d61 100644
---- a/type/directives.js
-+++ b/type/directives.js
+--- type/directives.js
++++ type/directives.js
 @@ -5,13 +5,15 @@ Object.defineProperty(exports, "__esModule", {
  });
  exports.isDirective = isDirective;
@@ -3109,10 +3109,10 @@ index 0545df6..2067d61 100644
  exports.specifiedDirectives = specifiedDirectives;
  
  function isSpecifiedDirective(directive) {
-diff --git a/type/directives.js.flow b/type/directives.js.flow
+diff --git type/directives.js.flow type/directives.js.flow
 index 1d5ecea..bb2ef24 100644
---- a/type/directives.js.flow
-+++ b/type/directives.js.flow
+--- type/directives.js.flow
++++ type/directives.js.flow
 @@ -13,7 +13,8 @@ import type {
  } from './definition';
  import { GraphQLNonNull } from './definition';
@@ -3180,10 +3180,10 @@ index 1d5ecea..bb2ef24 100644
  ];
  
  export function isSpecifiedDirective(
-diff --git a/type/directives.mjs b/type/directives.mjs
+diff --git type/directives.mjs type/directives.mjs
 index a9675b3..fe6ba57 100644
---- a/type/directives.mjs
-+++ b/type/directives.mjs
+--- type/directives.mjs
++++ type/directives.mjs
 @@ -10,7 +10,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   */
  import { GraphQLNonNull } from './definition';
@@ -3314,10 +3314,10 @@ index a9675b3..fe6ba57 100644
  export function isSpecifiedDirective(directive) {
    return specifiedDirectives.some(function (specifiedDirective) {
      return specifiedDirective.name === directive.name;
-diff --git a/type/index.js b/type/index.js
+diff --git type/index.js type/index.js
 index fa73403..c9794b7 100644
---- a/type/index.js
-+++ b/type/index.js
+--- type/index.js
++++ type/index.js
 @@ -321,6 +321,12 @@ Object.defineProperty(exports, "GraphQLDeprecatedDirective", {
      return _directives.GraphQLDeprecatedDirective;
    }
@@ -3331,10 +3331,10 @@ index fa73403..c9794b7 100644
  Object.defineProperty(exports, "DEFAULT_DEPRECATION_REASON", {
    enumerable: true,
    get: function get() {
-diff --git a/type/index.js.flow b/type/index.js.flow
+diff --git type/index.js.flow type/index.js.flow
 index f7ac4fd..bf8c7e0 100644
---- a/type/index.js.flow
-+++ b/type/index.js.flow
+--- type/index.js.flow
++++ type/index.js.flow
 @@ -79,6 +79,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -3353,10 +3353,10 @@ index f7ac4fd..bf8c7e0 100644
  } from './definition';
  
  export { validateSchema, assertValidSchema } from './validate';
-diff --git a/type/index.mjs b/type/index.mjs
+diff --git type/index.mjs type/index.mjs
 index 2a245ee..99bf733 100644
---- a/type/index.mjs
-+++ b/type/index.mjs
+--- type/index.mjs
++++ type/index.mjs
 @@ -18,7 +18,7 @@ GraphQLList, GraphQLNonNull } from './definition';
  export { // Predicate
  isDirective, // Directives Definition
@@ -3366,10 +3366,10 @@ index 2a245ee..99bf733 100644
  DEFAULT_DEPRECATION_REASON } from './directives';
  // Common built-in scalar instances.
  export { isSpecifiedScalarType, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID } from './scalars';
-diff --git a/type/introspection.js b/type/introspection.js
+diff --git type/introspection.js type/introspection.js
 index db2a123..24efcfa 100644
---- a/type/introspection.js
-+++ b/type/introspection.js
+--- type/introspection.js
++++ type/introspection.js
 @@ -32,7 +32,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   */
  var __Schema = new _definition.GraphQLObjectType({
@@ -3507,10 +3507,10 @@ index db2a123..24efcfa 100644
    description: 'An enum describing what kind of type a given `__Type` is.',
    values: {
      SCALAR: {
-diff --git a/type/introspection.js.flow b/type/introspection.js.flow
+diff --git type/introspection.js.flow type/introspection.js.flow
 index e3787ba..0215fcd 100644
---- a/type/introspection.js.flow
-+++ b/type/introspection.js.flow
+--- type/introspection.js.flow
++++ type/introspection.js.flow
 @@ -33,7 +33,6 @@ import type { GraphQLField } from './definition';
  
  export const __Schema = new GraphQLObjectType({
@@ -3631,10 +3631,10 @@ index e3787ba..0215fcd 100644
    description: 'An enum describing what kind of type a given `__Type` is.',
    values: {
      SCALAR: {
-diff --git a/type/introspection.mjs b/type/introspection.mjs
+diff --git type/introspection.mjs type/introspection.mjs
 index f9095eb..fdf375b 100644
---- a/type/introspection.mjs
-+++ b/type/introspection.mjs
+--- type/introspection.mjs
++++ type/introspection.mjs
 @@ -15,7 +15,6 @@ import { GraphQLString, GraphQLBoolean } from './scalars';
  import { DirectiveLocation } from '../language/directiveLocation';
  export var __Schema = new GraphQLObjectType({
@@ -3770,10 +3770,10 @@ index f9095eb..fdf375b 100644
    description: 'An enum describing what kind of type a given `__Type` is.',
    values: {
      SCALAR: {
-diff --git a/type/scalars.js b/type/scalars.js
+diff --git type/scalars.js type/scalars.js
 index 9a650a7..ea797bb 100644
---- a/type/scalars.js
-+++ b/type/scalars.js
+--- type/scalars.js
++++ type/scalars.js
 @@ -8,6 +8,8 @@ exports.specifiedScalarTypes = exports.GraphQLID = exports.GraphQLBoolean = expo
  
  var _inspect = _interopRequireDefault(require("../jsutils/inspect"));
@@ -4007,10 +4007,10 @@ index 9a650a7..ea797bb 100644
    parseLiteral: function parseLiteral(ast) {
      return ast.kind === _kinds.Kind.STRING || ast.kind === _kinds.Kind.INT ? ast.value : undefined;
    }
-diff --git a/type/scalars.js.flow b/type/scalars.js.flow
+diff --git type/scalars.js.flow type/scalars.js.flow
 index 72400b2..89f6ed2 100644
---- a/type/scalars.js.flow
-+++ b/type/scalars.js.flow
+--- type/scalars.js.flow
++++ type/scalars.js.flow
 @@ -8,6 +8,7 @@
   */
  
@@ -4256,10 +4256,10 @@ index 72400b2..89f6ed2 100644
    parseLiteral(ast) {
      return ast.kind === Kind.STRING || ast.kind === Kind.INT
        ? ast.value
-diff --git a/type/scalars.mjs b/type/scalars.mjs
+diff --git type/scalars.mjs type/scalars.mjs
 index dce1890..3eec312 100644
---- a/type/scalars.mjs
-+++ b/type/scalars.mjs
+--- type/scalars.mjs
++++ type/scalars.mjs
 @@ -7,6 +7,7 @@
   *  strict
   */
@@ -4489,10 +4489,10 @@ index dce1890..3eec312 100644
    parseLiteral: function parseLiteral(ast) {
      return ast.kind === Kind.STRING || ast.kind === Kind.INT ? ast.value : undefined;
    }
-diff --git a/type/schema.js b/type/schema.js
+diff --git type/schema.js type/schema.js
 index c58d1cb..3b7d32f 100644
---- a/type/schema.js
-+++ b/type/schema.js
+--- type/schema.js
++++ type/schema.js
 @@ -14,7 +14,7 @@ var _inspect = _interopRequireDefault(require("../jsutils/inspect"));
  
  var _introspection = require("./introspection");
@@ -4661,10 +4661,10 @@ index c58d1cb..3b7d32f 100644
    }
  
    return reducedMap;
-diff --git a/type/schema.js.flow b/type/schema.js.flow
+diff --git type/schema.js.flow type/schema.js.flow
 index 0df086d..ad95d34 100644
---- a/type/schema.js.flow
-+++ b/type/schema.js.flow
+--- type/schema.js.flow
++++ type/schema.js.flow
 @@ -33,7 +33,7 @@ import {
  import type { GraphQLError } from '../error/GraphQLError';
  import inspect from '../jsutils/inspect';
@@ -4759,10 +4759,10 @@ index 0df086d..ad95d34 100644
    }
  
    return reducedMap;
-diff --git a/type/schema.mjs b/type/schema.mjs
+diff --git type/schema.mjs type/schema.mjs
 index 13e7c51..5e3ef73 100644
---- a/type/schema.mjs
-+++ b/type/schema.mjs
+--- type/schema.mjs
++++ type/schema.mjs
 @@ -14,7 +14,7 @@ import { isAbstractType, isObjectType, isInterfaceType, isUnionType, isInputObje
  import { GraphQLDirective, isDirective, specifiedDirectives } from './directives';
  import inspect from '../jsutils/inspect';
@@ -4931,10 +4931,10 @@ index 13e7c51..5e3ef73 100644
    }
  
    return reducedMap;
-diff --git a/type/validate.js b/type/validate.js
+diff --git type/validate.js type/validate.js
 index 4f00478..1a3ffbd 100644
---- a/type/validate.js
-+++ b/type/validate.js
+--- type/validate.js
++++ type/validate.js
 @@ -129,41 +129,19 @@ function validateRootTypes(context) {
  }
  
@@ -5791,10 +5791,10 @@ index 4f00478..1a3ffbd 100644
    });
  }
 \ No newline at end of file
-diff --git a/type/validate.js.flow b/type/validate.js.flow
+diff --git type/validate.js.flow type/validate.js.flow
 index b021347..1d8bdb1 100644
---- a/type/validate.js.flow
-+++ b/type/validate.js.flow
+--- type/validate.js.flow
++++ type/validate.js.flow
 @@ -155,13 +155,10 @@ function getOperationTypeNode(
    type: GraphQLObjectType,
    operation: string,
@@ -6240,10 +6240,10 @@ index b021347..1d8bdb1 100644
 +    valueNode => valueNode.name.value === valueName,
    );
  }
-diff --git a/type/validate.mjs b/type/validate.mjs
+diff --git type/validate.mjs type/validate.mjs
 index af668a1..b0bd911 100644
---- a/type/validate.mjs
-+++ b/type/validate.mjs
+--- type/validate.mjs
++++ type/validate.mjs
 @@ -116,41 +116,19 @@ function validateRootTypes(context) {
  }
  
@@ -7100,10 +7100,10 @@ index af668a1..b0bd911 100644
    });
  }
 \ No newline at end of file
-diff --git a/utilities/TypeInfo.js b/utilities/TypeInfo.js
+diff --git utilities/TypeInfo.js utilities/TypeInfo.js
 index c3b260b..81813c1 100644
---- a/utilities/TypeInfo.js
-+++ b/utilities/TypeInfo.js
+--- utilities/TypeInfo.js
++++ utilities/TypeInfo.js
 @@ -125,12 +125,9 @@ function () {
  
    _proto.getEnumValue = function getEnumValue() {
@@ -7119,10 +7119,10 @@ index c3b260b..81813c1 100644
      var schema = this._schema; // Note: many of the types below are explicitly typed as "mixed" to drop
      // any assumptions of a valid schema to ensure runtime types are properly
      // checked before continuing since TypeInfo is used as part of validation
-diff --git a/utilities/TypeInfo.js.flow b/utilities/TypeInfo.js.flow
+diff --git utilities/TypeInfo.js.flow utilities/TypeInfo.js.flow
 index 6791175..b217131 100644
---- a/utilities/TypeInfo.js.flow
-+++ b/utilities/TypeInfo.js.flow
+--- utilities/TypeInfo.js.flow
++++ utilities/TypeInfo.js.flow
 @@ -139,8 +139,7 @@ export class TypeInfo {
      return this._enumValue;
    }
@@ -7133,10 +7133,10 @@ index 6791175..b217131 100644
      const schema = this._schema;
      // Note: many of the types below are explicitly typed as "mixed" to drop
      // any assumptions of a valid schema to ensure runtime types are properly
-diff --git a/utilities/TypeInfo.mjs b/utilities/TypeInfo.mjs
+diff --git utilities/TypeInfo.mjs utilities/TypeInfo.mjs
 index 7c06618..d74e661 100644
---- a/utilities/TypeInfo.mjs
-+++ b/utilities/TypeInfo.mjs
+--- utilities/TypeInfo.mjs
++++ utilities/TypeInfo.mjs
 @@ -120,12 +120,9 @@ function () {
  
    _proto.getEnumValue = function getEnumValue() {
@@ -7152,10 +7152,10 @@ index 7c06618..d74e661 100644
      var schema = this._schema; // Note: many of the types below are explicitly typed as "mixed" to drop
      // any assumptions of a valid schema to ensure runtime types are properly
      // checked before continuing since TypeInfo is used as part of validation
-diff --git a/utilities/astFromValue.js b/utilities/astFromValue.js
+diff --git utilities/astFromValue.js utilities/astFromValue.js
 index 99ba5c6..bbebca5 100644
---- a/utilities/astFromValue.js
-+++ b/utilities/astFromValue.js
+--- utilities/astFromValue.js
++++ utilities/astFromValue.js
 @@ -97,20 +97,41 @@ function astFromValue(value, type) {
  
      var fields = (0, _objectValues.default)(type.getFields());
@@ -7211,10 +7211,10 @@ index 99ba5c6..bbebca5 100644
      return {
        kind: _kinds.Kind.OBJECT,
        fields: fieldNodes
-diff --git a/utilities/astFromValue.js.flow b/utilities/astFromValue.js.flow
+diff --git utilities/astFromValue.js.flow utilities/astFromValue.js.flow
 index 883eb79..cf73305 100644
---- a/utilities/astFromValue.js.flow
-+++ b/utilities/astFromValue.js.flow
+--- utilities/astFromValue.js.flow
++++ utilities/astFromValue.js.flow
 @@ -86,7 +86,7 @@ export function astFromValue(value: mixed, type: GraphQLInputType): ?ValueNode {
      }
      const fields = objectValues(type.getFields());
@@ -7233,10 +7233,10 @@ index 883eb79..cf73305 100644
      return { kind: Kind.OBJECT, fields: fieldNodes };
    }
  
-diff --git a/utilities/astFromValue.mjs b/utilities/astFromValue.mjs
+diff --git utilities/astFromValue.mjs utilities/astFromValue.mjs
 index 3962582..1403f3d 100644
---- a/utilities/astFromValue.mjs
-+++ b/utilities/astFromValue.mjs
+--- utilities/astFromValue.mjs
++++ utilities/astFromValue.mjs
 @@ -89,20 +89,41 @@ export function astFromValue(value, type) {
  
      var fields = objectValues(type.getFields());
@@ -7292,10 +7292,10 @@ index 3962582..1403f3d 100644
      return {
        kind: Kind.OBJECT,
        fields: fieldNodes
-diff --git a/utilities/buildASTSchema.js b/utilities/buildASTSchema.js
+diff --git utilities/buildASTSchema.js utilities/buildASTSchema.js
 index 22dadf2..ff3bea3 100644
---- a/utilities/buildASTSchema.js
-+++ b/utilities/buildASTSchema.js
+--- utilities/buildASTSchema.js
++++ utilities/buildASTSchema.js
 @@ -14,6 +14,8 @@ var _keyValMap = _interopRequireDefault(require("../jsutils/keyValMap"));
  
  var _valueFromAST = require("./valueFromAST");
@@ -7610,10 +7610,10 @@ index 22dadf2..ff3bea3 100644
   *
   * Accepts options as a second argument:
   *
-diff --git a/utilities/buildASTSchema.js.flow b/utilities/buildASTSchema.js.flow
+diff --git utilities/buildASTSchema.js.flow utilities/buildASTSchema.js.flow
 index 85f85ac..739972d 100644
---- a/utilities/buildASTSchema.js.flow
-+++ b/utilities/buildASTSchema.js.flow
+--- utilities/buildASTSchema.js.flow
++++ utilities/buildASTSchema.js.flow
 @@ -11,6 +11,7 @@ import keyMap from '../jsutils/keyMap';
  import keyValMap from '../jsutils/keyValMap';
  import type { ObjMap } from '../jsutils/ObjMap';
@@ -7870,10 +7870,10 @@ index 85f85ac..739972d 100644
   *
   * Accepts options as a second argument:
   *
-diff --git a/utilities/buildASTSchema.mjs b/utilities/buildASTSchema.mjs
+diff --git utilities/buildASTSchema.mjs utilities/buildASTSchema.mjs
 index d07fba4..1d2bc5e 100644
---- a/utilities/buildASTSchema.mjs
-+++ b/utilities/buildASTSchema.mjs
+--- utilities/buildASTSchema.mjs
++++ utilities/buildASTSchema.mjs
 @@ -11,39 +11,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  import keyMap from '../jsutils/keyMap';
  import keyValMap from '../jsutils/keyValMap';
@@ -8193,10 +8193,10 @@ index d07fba4..1d2bc5e 100644
   *
   * Accepts options as a second argument:
   *
-diff --git a/utilities/buildClientSchema.js b/utilities/buildClientSchema.js
+diff --git utilities/buildClientSchema.js utilities/buildClientSchema.js
 index 350900b..9ac1a5a 100644
---- a/utilities/buildClientSchema.js
-+++ b/utilities/buildClientSchema.js
+--- utilities/buildClientSchema.js
++++ utilities/buildClientSchema.js
 @@ -17,8 +17,6 @@ var _parser = require("../language/parser");
  
  var _schema = require("../type/schema");
@@ -8234,10 +8234,10 @@ index 350900b..9ac1a5a 100644
        args: buildInputValueDefMap(directiveIntrospection.args)
      });
    } // Iterate through all types, getting the type definition for each, ensuring
-diff --git a/utilities/buildClientSchema.js.flow b/utilities/buildClientSchema.js.flow
+diff --git utilities/buildClientSchema.js.flow utilities/buildClientSchema.js.flow
 index b86b9bf..1fa0774 100644
---- a/utilities/buildClientSchema.js.flow
-+++ b/utilities/buildClientSchema.js.flow
+--- utilities/buildClientSchema.js.flow
++++ utilities/buildClientSchema.js.flow
 @@ -14,8 +14,6 @@ import { valueFromAST } from './valueFromAST';
  import { parseValue } from '../language/parser';
  import { GraphQLSchema } from '../type/schema';
@@ -8292,10 +8292,10 @@ index b86b9bf..1fa0774 100644
        args: buildInputValueDefMap(directiveIntrospection.args),
      });
    }
-diff --git a/utilities/buildClientSchema.mjs b/utilities/buildClientSchema.mjs
+diff --git utilities/buildClientSchema.mjs utilities/buildClientSchema.mjs
 index 06b2cee..a7be3f6 100644
---- a/utilities/buildClientSchema.mjs
-+++ b/utilities/buildClientSchema.mjs
+--- utilities/buildClientSchema.mjs
++++ utilities/buildClientSchema.mjs
 @@ -12,7 +12,6 @@ import keyValMap from '../jsutils/keyValMap';
  import { valueFromAST } from './valueFromAST';
  import { parseValue } from '../language/parser';
@@ -8332,10 +8332,10 @@ index 06b2cee..a7be3f6 100644
        args: buildInputValueDefMap(directiveIntrospection.args)
      });
    } // Iterate through all types, getting the type definition for each, ensuring
-diff --git a/utilities/coerceValue.js b/utilities/coerceValue.js
+diff --git utilities/coerceValue.js utilities/coerceValue.js
 index 40f6da8..bb2a6f8 100644
---- a/utilities/coerceValue.js
-+++ b/utilities/coerceValue.js
+--- utilities/coerceValue.js
++++ utilities/coerceValue.js
 @@ -82,19 +82,18 @@ function coerceValue(value, type, blameNode, path) {
      var itemType = type.ofType;
  
@@ -8402,10 +8402,10 @@ index 40f6da8..bb2a6f8 100644
    }
    /* istanbul ignore next */
  
-diff --git a/utilities/coerceValue.mjs b/utilities/coerceValue.mjs
+diff --git utilities/coerceValue.mjs utilities/coerceValue.mjs
 index c6f3eaa..656ee25 100644
---- a/utilities/coerceValue.mjs
-+++ b/utilities/coerceValue.mjs
+--- utilities/coerceValue.mjs
++++ utilities/coerceValue.mjs
 @@ -75,19 +75,18 @@ export function coerceValue(value, type, blameNode, path) {
      var itemType = type.ofType;
  
@@ -8472,10 +8472,10 @@ index c6f3eaa..656ee25 100644
    }
    /* istanbul ignore next */
  
-diff --git a/utilities/extendSchema.js b/utilities/extendSchema.js
+diff --git utilities/extendSchema.js utilities/extendSchema.js
 index 48292a5..6bbfc16 100644
---- a/utilities/extendSchema.js
-+++ b/utilities/extendSchema.js
+--- utilities/extendSchema.js
++++ utilities/extendSchema.js
 @@ -15,12 +15,16 @@ var _objectValues = _interopRequireDefault(require("../jsutils/objectValues"));
  
  var _buildASTSchema = require("./buildASTSchema");
@@ -9198,10 +9198,10 @@ index 48292a5..6bbfc16 100644
      }
  
      return newFieldMap;
-diff --git a/utilities/extendSchema.js.flow b/utilities/extendSchema.js.flow
+diff --git utilities/extendSchema.js.flow utilities/extendSchema.js.flow
 index ae4d439..7be0a0d 100644
---- a/utilities/extendSchema.js.flow
-+++ b/utilities/extendSchema.js.flow
+--- utilities/extendSchema.js.flow
++++ utilities/extendSchema.js.flow
 @@ -12,18 +12,23 @@ import keyMap from '../jsutils/keyMap';
  import keyValMap from '../jsutils/keyValMap';
  import objectValues from '../jsutils/objectValues';
@@ -9630,10 +9630,10 @@ index ae4d439..7be0a0d 100644
      }
  
      return newFieldMap;
-diff --git a/utilities/extendSchema.mjs b/utilities/extendSchema.mjs
+diff --git utilities/extendSchema.mjs utilities/extendSchema.mjs
 index 83245ff..2e5399c 100644
---- a/utilities/extendSchema.mjs
-+++ b/utilities/extendSchema.mjs
+--- utilities/extendSchema.mjs
++++ utilities/extendSchema.mjs
 @@ -1,3 +1,7 @@
 +function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 +
@@ -10343,10 +10343,10 @@ index 83245ff..2e5399c 100644
      }
  
      return newFieldMap;
-diff --git a/utilities/findBreakingChanges.js b/utilities/findBreakingChanges.js
+diff --git utilities/findBreakingChanges.js utilities/findBreakingChanges.js
 index 90d209a..5b10d97 100644
---- a/utilities/findBreakingChanges.js
-+++ b/utilities/findBreakingChanges.js
+--- utilities/findBreakingChanges.js
++++ utilities/findBreakingChanges.js
 @@ -25,10 +25,6 @@ exports.DangerousChangeType = exports.BreakingChangeType = void 0;
  
  var _definition = require("../type/definition");
@@ -11564,10 +11564,10 @@ index 90d209a..5b10d97 100644
    return removedLocations;
  }
  
-diff --git a/utilities/findBreakingChanges.js.flow b/utilities/findBreakingChanges.js.flow
+diff --git utilities/findBreakingChanges.js.flow utilities/findBreakingChanges.js.flow
 index f4b65fd..e2d444d 100644
---- a/utilities/findBreakingChanges.js.flow
-+++ b/utilities/findBreakingChanges.js.flow
+--- utilities/findBreakingChanges.js.flow
++++ utilities/findBreakingChanges.js.flow
 @@ -26,8 +26,8 @@ import type {
    GraphQLArgument,
  } from '../type/definition';
@@ -12096,10 +12096,10 @@ index f4b65fd..e2d444d 100644
  
    return removedLocations;
  }
-diff --git a/utilities/findBreakingChanges.mjs b/utilities/findBreakingChanges.mjs
+diff --git utilities/findBreakingChanges.mjs utilities/findBreakingChanges.mjs
 index c37b690..6fa35b9 100644
---- a/utilities/findBreakingChanges.mjs
-+++ b/utilities/findBreakingChanges.mjs
+--- utilities/findBreakingChanges.mjs
++++ utilities/findBreakingChanges.mjs
 @@ -7,8 +7,6 @@
   *  strict
   */
@@ -13310,10 +13310,10 @@ index c37b690..6fa35b9 100644
    return removedLocations;
  }
  
-diff --git a/utilities/findDeprecatedUsages.js b/utilities/findDeprecatedUsages.js
+diff --git utilities/findDeprecatedUsages.js utilities/findDeprecatedUsages.js
 index 28ff7be..4906b58 100644
---- a/utilities/findDeprecatedUsages.js
-+++ b/utilities/findDeprecatedUsages.js
+--- utilities/findDeprecatedUsages.js
++++ utilities/findDeprecatedUsages.js
 @@ -11,8 +11,6 @@ var _visitor = require("../language/visitor");
  
  var _definition = require("../type/definition");
@@ -13323,10 +13323,10 @@ index 28ff7be..4906b58 100644
  var _TypeInfo = require("./TypeInfo");
  
  /**
-diff --git a/utilities/findDeprecatedUsages.js.flow b/utilities/findDeprecatedUsages.js.flow
+diff --git utilities/findDeprecatedUsages.js.flow utilities/findDeprecatedUsages.js.flow
 index ae4c1de..d2ad48e 100644
---- a/utilities/findDeprecatedUsages.js.flow
-+++ b/utilities/findDeprecatedUsages.js.flow
+--- utilities/findDeprecatedUsages.js.flow
++++ utilities/findDeprecatedUsages.js.flow
 @@ -11,7 +11,7 @@ import { GraphQLError } from '../error/GraphQLError';
  import { visit, visitWithTypeInfo } from '../language/visitor';
  import type { DocumentNode } from '../language/ast';
@@ -13336,10 +13336,10 @@ index ae4c1de..d2ad48e 100644
  import { TypeInfo } from './TypeInfo';
  
  /**
-diff --git a/utilities/findDeprecatedUsages.mjs b/utilities/findDeprecatedUsages.mjs
+diff --git utilities/findDeprecatedUsages.mjs utilities/findDeprecatedUsages.mjs
 index 0ea134f..9330d0d 100644
---- a/utilities/findDeprecatedUsages.mjs
-+++ b/utilities/findDeprecatedUsages.mjs
+--- utilities/findDeprecatedUsages.mjs
++++ utilities/findDeprecatedUsages.mjs
 @@ -9,7 +9,6 @@
  import { GraphQLError } from '../error/GraphQLError';
  import { visit, visitWithTypeInfo } from '../language/visitor';
@@ -13348,10 +13348,10 @@ index 0ea134f..9330d0d 100644
  import { TypeInfo } from './TypeInfo';
  /**
   * A validation rule which reports deprecated usages.
-diff --git a/utilities/getOperationRootType.js b/utilities/getOperationRootType.js
+diff --git utilities/getOperationRootType.js utilities/getOperationRootType.js
 index 53e366e..dc37be7 100644
---- a/utilities/getOperationRootType.js
-+++ b/utilities/getOperationRootType.js
+--- utilities/getOperationRootType.js
++++ utilities/getOperationRootType.js
 @@ -7,8 +7,6 @@ exports.getOperationRootType = getOperationRootType;
  
  var _GraphQLError = require("../error/GraphQLError");
@@ -13361,10 +13361,10 @@ index 53e366e..dc37be7 100644
  /**
   * Copyright (c) 2015-present, Facebook, Inc.
   *
-diff --git a/utilities/getOperationRootType.js.flow b/utilities/getOperationRootType.js.flow
+diff --git utilities/getOperationRootType.js.flow utilities/getOperationRootType.js.flow
 index 72f7b3d..ddc6e99 100644
---- a/utilities/getOperationRootType.js.flow
-+++ b/utilities/getOperationRootType.js.flow
+--- utilities/getOperationRootType.js.flow
++++ utilities/getOperationRootType.js.flow
 @@ -12,7 +12,7 @@ import type {
    OperationDefinitionNode,
    OperationTypeDefinitionNode,
@@ -13374,10 +13374,10 @@ index 72f7b3d..ddc6e99 100644
  import type { GraphQLObjectType } from '../type/definition';
  
  /**
-diff --git a/utilities/getOperationRootType.mjs b/utilities/getOperationRootType.mjs
+diff --git utilities/getOperationRootType.mjs utilities/getOperationRootType.mjs
 index e8c214c..69a9fe3 100644
---- a/utilities/getOperationRootType.mjs
-+++ b/utilities/getOperationRootType.mjs
+--- utilities/getOperationRootType.mjs
++++ utilities/getOperationRootType.mjs
 @@ -7,7 +7,6 @@
   *  strict
   */
@@ -13386,10 +13386,10 @@ index e8c214c..69a9fe3 100644
  
  /**
   * Extracts the root type of the operation from the schema.
-diff --git a/utilities/index.js.flow b/utilities/index.js.flow
+diff --git utilities/index.js.flow utilities/index.js.flow
 index 3fa3529..cf14c71 100644
---- a/utilities/index.js.flow
-+++ b/utilities/index.js.flow
+--- utilities/index.js.flow
++++ utilities/index.js.flow
 @@ -10,7 +10,7 @@
  // The GraphQL query recommended for a full schema introspection.
  export {
@@ -13427,10 +13427,10 @@ index 3fa3529..cf14c71 100644
  export { isValidLiteralValue } from './isValidLiteralValue';
  
  // Concatenates multiple AST together.
-diff --git a/utilities/index.mjs b/utilities/index.mjs
+diff --git utilities/index.mjs utilities/index.mjs
 index d5aae3e..4ba9733 100644
---- a/utilities/index.mjs
-+++ b/utilities/index.mjs
+--- utilities/index.mjs
++++ utilities/index.mjs
 @@ -7,7 +7,7 @@
   *  strict
   */
@@ -13463,10 +13463,10 @@ index d5aae3e..4ba9733 100644
  
  export { isValidLiteralValue } from './isValidLiteralValue'; // Concatenates multiple AST together.
  
-diff --git a/utilities/introspectionFromSchema.js b/utilities/introspectionFromSchema.js
+diff --git utilities/introspectionFromSchema.js utilities/introspectionFromSchema.js
 index b92fba2..5d8fd69 100644
---- a/utilities/introspectionFromSchema.js
-+++ b/utilities/introspectionFromSchema.js
+--- utilities/introspectionFromSchema.js
++++ utilities/introspectionFromSchema.js
 @@ -9,8 +9,6 @@ var _invariant = _interopRequireDefault(require("../jsutils/invariant"));
  
  var _introspectionQuery = require("./introspectionQuery");
@@ -13476,10 +13476,10 @@ index b92fba2..5d8fd69 100644
  var _execute = require("../execution/execute");
  
  var _parser = require("../language/parser");
-diff --git a/utilities/introspectionFromSchema.js.flow b/utilities/introspectionFromSchema.js.flow
+diff --git utilities/introspectionFromSchema.js.flow utilities/introspectionFromSchema.js.flow
 index fa81609..c2690b6 100644
---- a/utilities/introspectionFromSchema.js.flow
-+++ b/utilities/introspectionFromSchema.js.flow
+--- utilities/introspectionFromSchema.js.flow
++++ utilities/introspectionFromSchema.js.flow
 @@ -9,7 +9,7 @@
  
  import invariant from '../jsutils/invariant';
@@ -13498,10 +13498,10 @@ index fa81609..c2690b6 100644
  ): IntrospectionQuery {
    const queryAST = parse(getIntrospectionQuery(options));
    const result = execute(schema, queryAST);
-diff --git a/utilities/introspectionFromSchema.mjs b/utilities/introspectionFromSchema.mjs
+diff --git utilities/introspectionFromSchema.mjs utilities/introspectionFromSchema.mjs
 index 27bc89e..88a0bff 100644
---- a/utilities/introspectionFromSchema.mjs
-+++ b/utilities/introspectionFromSchema.mjs
+--- utilities/introspectionFromSchema.mjs
++++ utilities/introspectionFromSchema.mjs
 @@ -8,7 +8,6 @@
   */
  import invariant from '../jsutils/invariant';
@@ -13510,10 +13510,10 @@ index 27bc89e..88a0bff 100644
  import { execute } from '../execution/execute';
  import { parse } from '../language/parser';
  
-diff --git a/utilities/introspectionQuery.js b/utilities/introspectionQuery.js
+diff --git utilities/introspectionQuery.js utilities/introspectionQuery.js
 index 7dadb90..b0179d3 100644
---- a/utilities/introspectionQuery.js
-+++ b/utilities/introspectionQuery.js
+--- utilities/introspectionQuery.js
++++ utilities/introspectionQuery.js
 @@ -18,6 +18,12 @@ function getIntrospectionQuery(options) {
    var descriptions = !(options && options.descriptions === false);
    return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
@@ -13528,10 +13528,10 @@ index 7dadb90..b0179d3 100644
  var introspectionQuery = getIntrospectionQuery();
  exports.introspectionQuery = introspectionQuery;
 \ No newline at end of file
-diff --git a/utilities/introspectionQuery.js.flow b/utilities/introspectionQuery.js.flow
+diff --git utilities/introspectionQuery.js.flow utilities/introspectionQuery.js.flow
 index 9c67dbd..b6ebe58 100644
---- a/utilities/introspectionQuery.js.flow
-+++ b/utilities/introspectionQuery.js.flow
+--- utilities/introspectionQuery.js.flow
++++ utilities/introspectionQuery.js.flow
 @@ -112,6 +112,11 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
    `;
  }
@@ -13544,10 +13544,10 @@ index 9c67dbd..b6ebe58 100644
  export const introspectionQuery = getIntrospectionQuery();
  
  export type IntrospectionQuery = {|
-diff --git a/utilities/introspectionQuery.mjs b/utilities/introspectionQuery.mjs
+diff --git utilities/introspectionQuery.mjs utilities/introspectionQuery.mjs
 index e6dbb91..8eec21d 100644
---- a/utilities/introspectionQuery.mjs
-+++ b/utilities/introspectionQuery.mjs
+--- utilities/introspectionQuery.mjs
++++ utilities/introspectionQuery.mjs
 @@ -10,4 +10,10 @@ export function getIntrospectionQuery(options) {
    var descriptions = !(options && options.descriptions === false);
    return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
@@ -13560,10 +13560,10 @@ index e6dbb91..8eec21d 100644
 +
  export var introspectionQuery = getIntrospectionQuery();
 \ No newline at end of file
-diff --git a/utilities/isValidJSValue.js b/utilities/isValidJSValue.js
+diff --git utilities/isValidJSValue.js utilities/isValidJSValue.js
 index d94fb51..d1fa12f 100644
---- a/utilities/isValidJSValue.js
-+++ b/utilities/isValidJSValue.js
+--- utilities/isValidJSValue.js
++++ utilities/isValidJSValue.js
 @@ -18,6 +18,8 @@ var _coerceValue = require("./coerceValue");
  
  /**
@@ -13573,10 +13573,10 @@ index d94fb51..d1fa12f 100644
   */
  function isValidJSValue(value, type) {
    var errors = (0, _coerceValue.coerceValue)(value, type).errors;
-diff --git a/utilities/isValidJSValue.js.flow b/utilities/isValidJSValue.js.flow
+diff --git utilities/isValidJSValue.js.flow utilities/isValidJSValue.js.flow
 index c68eeb0..815476b 100644
---- a/utilities/isValidJSValue.js.flow
-+++ b/utilities/isValidJSValue.js.flow
+--- utilities/isValidJSValue.js.flow
++++ utilities/isValidJSValue.js.flow
 @@ -12,6 +12,8 @@ import type { GraphQLInputType } from '../type/definition';
  
  /**
@@ -13586,10 +13586,10 @@ index c68eeb0..815476b 100644
   */
  export function isValidJSValue(
    value: mixed,
-diff --git a/utilities/isValidJSValue.mjs b/utilities/isValidJSValue.mjs
+diff --git utilities/isValidJSValue.mjs utilities/isValidJSValue.mjs
 index 3300951..59c38fa 100644
---- a/utilities/isValidJSValue.mjs
-+++ b/utilities/isValidJSValue.mjs
+--- utilities/isValidJSValue.mjs
++++ utilities/isValidJSValue.mjs
 @@ -10,6 +10,8 @@ import { coerceValue } from './coerceValue';
  
  /**
@@ -13599,10 +13599,10 @@ index 3300951..59c38fa 100644
   */
  export function isValidJSValue(value, type) {
    var errors = coerceValue(value, type).errors;
-diff --git a/utilities/isValidLiteralValue.js b/utilities/isValidLiteralValue.js
+diff --git utilities/isValidLiteralValue.js utilities/isValidLiteralValue.js
 index 9d99abe..c518c0e 100644
---- a/utilities/isValidLiteralValue.js
-+++ b/utilities/isValidLiteralValue.js
+--- utilities/isValidLiteralValue.js
++++ utilities/isValidLiteralValue.js
 @@ -15,9 +15,7 @@ var _schema = require("../type/schema");
  
  var _ValuesOfCorrectType = require("../validation/rules/ValuesOfCorrectType");
@@ -13632,10 +13632,10 @@ index 9d99abe..c518c0e 100644
    var visitor = (0, _ValuesOfCorrectType.ValuesOfCorrectType)(context);
    (0, _visitor.visit)(valueNode, (0, _visitor.visitWithTypeInfo)(typeInfo, visitor));
    return context.getErrors();
-diff --git a/utilities/isValidLiteralValue.js.flow b/utilities/isValidLiteralValue.js.flow
+diff --git utilities/isValidLiteralValue.js.flow utilities/isValidLiteralValue.js.flow
 index 719a2c2..1b7806c 100644
---- a/utilities/isValidLiteralValue.js.flow
-+++ b/utilities/isValidLiteralValue.js.flow
+--- utilities/isValidLiteralValue.js.flow
++++ utilities/isValidLiteralValue.js.flow
 @@ -15,12 +15,14 @@ import { visit, visitWithTypeInfo } from '../language/visitor';
  import type { GraphQLInputType } from '../type/definition';
  import { GraphQLSchema } from '../type/schema';
@@ -13652,10 +13652,10 @@ index 719a2c2..1b7806c 100644
   */
  export function isValidLiteralValue(
    type: GraphQLInputType,
-diff --git a/utilities/isValidLiteralValue.mjs b/utilities/isValidLiteralValue.mjs
+diff --git utilities/isValidLiteralValue.mjs utilities/isValidLiteralValue.mjs
 index 2623a70..103c20c 100644
---- a/utilities/isValidLiteralValue.mjs
-+++ b/utilities/isValidLiteralValue.mjs
+--- utilities/isValidLiteralValue.mjs
++++ utilities/isValidLiteralValue.mjs
 @@ -11,11 +11,13 @@ import { Kind } from '../language/kinds';
  import { visit, visitWithTypeInfo } from '../language/visitor';
  import { GraphQLSchema } from '../type/schema';
@@ -13671,10 +13671,10 @@ index 2623a70..103c20c 100644
   */
  
  export function isValidLiteralValue(type, valueNode) {
-diff --git a/utilities/separateOperations.js b/utilities/separateOperations.js
+diff --git utilities/separateOperations.js utilities/separateOperations.js
 index 54d4053..6e129c8 100644
---- a/utilities/separateOperations.js
-+++ b/utilities/separateOperations.js
+--- utilities/separateOperations.js
++++ utilities/separateOperations.js
 @@ -49,16 +49,23 @@ function separateOperations(documentAST) {
    // is necessary for completing that operation.
  
@@ -13731,10 +13731,10 @@ index 54d4053..6e129c8 100644
    }
  }
 \ No newline at end of file
-diff --git a/utilities/separateOperations.js.flow b/utilities/separateOperations.js.flow
+diff --git utilities/separateOperations.js.flow utilities/separateOperations.js.flow
 index 4087fc1..0fe8f5b 100644
---- a/utilities/separateOperations.js.flow
-+++ b/utilities/separateOperations.js.flow
+--- utilities/separateOperations.js.flow
++++ utilities/separateOperations.js.flow
 @@ -50,7 +50,7 @@ export function separateOperations(
    // For each operation, produce a new synthesized AST which includes only what
    // is necessary for completing that operation.
@@ -13779,10 +13779,10 @@ index 4087fc1..0fe8f5b 100644
 +    }
    }
  }
-diff --git a/utilities/separateOperations.mjs b/utilities/separateOperations.mjs
+diff --git utilities/separateOperations.mjs utilities/separateOperations.mjs
 index 4d9b6e0..0de6835 100644
---- a/utilities/separateOperations.mjs
-+++ b/utilities/separateOperations.mjs
+--- utilities/separateOperations.mjs
++++ utilities/separateOperations.mjs
 @@ -41,16 +41,23 @@ export function separateOperations(documentAST) {
    // is necessary for completing that operation.
  
@@ -13839,10 +13839,10 @@ index 4d9b6e0..0de6835 100644
    }
  }
 \ No newline at end of file
-diff --git a/validation/ValidationContext.js b/validation/ValidationContext.js
+diff --git validation/ValidationContext.js validation/ValidationContext.js
 index deda38b..d69974f 100644
---- a/validation/ValidationContext.js
-+++ b/validation/ValidationContext.js
+--- validation/ValidationContext.js
++++ validation/ValidationContext.js
 @@ -3,18 +3,18 @@
  Object.defineProperty(exports, "__esModule", {
    value: true
@@ -14092,10 +14092,10 @@ index deda38b..d69974f 100644
 \ No newline at end of file
 +exports.ValidationContext = ValidationContext;
 \ No newline at end of file
-diff --git a/validation/ValidationContext.js.flow b/validation/ValidationContext.js.flow
+diff --git validation/ValidationContext.js.flow validation/ValidationContext.js.flow
 index 1d6ef75..27b5243 100644
---- a/validation/ValidationContext.js.flow
-+++ b/validation/ValidationContext.js.flow
+--- validation/ValidationContext.js.flow
++++ validation/ValidationContext.js.flow
 @@ -8,7 +8,7 @@
   */
  
@@ -14205,10 +14205,10 @@ index 1d6ef75..27b5243 100644
  }
 +
 +export type ValidationRule = ValidationContext => ASTVisitor;
-diff --git a/validation/ValidationContext.mjs b/validation/ValidationContext.mjs
+diff --git validation/ValidationContext.mjs validation/ValidationContext.mjs
 index 33d9757..f415073 100644
---- a/validation/ValidationContext.mjs
-+++ b/validation/ValidationContext.mjs
+--- validation/ValidationContext.mjs
++++ validation/ValidationContext.mjs
 @@ -1,3 +1,7 @@
 +function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
 +
@@ -14446,10 +14446,10 @@ index 33d9757..f415073 100644
 \ No newline at end of file
 +}(ASTValidationContext);
 \ No newline at end of file
-diff --git a/validation/index.js b/validation/index.js
+diff --git validation/index.js validation/index.js
 index 96de5f8..f981d60 100644
---- a/validation/index.js
-+++ b/validation/index.js
+--- validation/index.js
++++ validation/index.js
 @@ -12,7 +12,7 @@ Object.defineProperty(exports, "validate", {
  Object.defineProperty(exports, "ValidationContext", {
    enumerable: true,
@@ -14478,10 +14478,10 @@ index 96de5f8..f981d60 100644
 \ No newline at end of file
 +var _VariablesInAllowedPosition = require("./rules/VariablesInAllowedPosition");
 \ No newline at end of file
-diff --git a/validation/index.js.flow b/validation/index.js.flow
+diff --git validation/index.js.flow validation/index.js.flow
 index afcff69..5bd9497 100644
---- a/validation/index.js.flow
-+++ b/validation/index.js.flow
+--- validation/index.js.flow
++++ validation/index.js.flow
 @@ -9,9 +9,7 @@
  
  export { validate } from './validate';
@@ -14493,10 +14493,10 @@ index afcff69..5bd9497 100644
  
  export { specifiedRules } from './specifiedRules';
  
-diff --git a/validation/index.mjs b/validation/index.mjs
+diff --git validation/index.mjs validation/index.mjs
 index a987962..8ec3579 100644
---- a/validation/index.mjs
-+++ b/validation/index.mjs
+--- validation/index.mjs
++++ validation/index.mjs
 @@ -6,10 +6,8 @@
   *
   *  strict
@@ -14510,10 +14510,10 @@ index a987962..8ec3579 100644
  export { specifiedRules } from './specifiedRules'; // Spec Section: "Field Selections on Objects, Interfaces, and Unions Types"
  
  export { FieldsOnCorrectType as FieldsOnCorrectTypeRule } from './rules/FieldsOnCorrectType'; // Spec Section: "Fragments on Composite Types"
-diff --git a/validation/rules/ExecutableDefinitions.js b/validation/rules/ExecutableDefinitions.js
+diff --git validation/rules/ExecutableDefinitions.js validation/rules/ExecutableDefinitions.js
 index 277267c..30e91e4 100644
---- a/validation/rules/ExecutableDefinitions.js
-+++ b/validation/rules/ExecutableDefinitions.js
+--- validation/rules/ExecutableDefinitions.js
++++ validation/rules/ExecutableDefinitions.js
 @@ -32,11 +32,33 @@ function nonExecutableDefinitionMessage(defName) {
  function ExecutableDefinitions(context) {
    return {
@@ -14552,10 +14552,10 @@ index 277267c..30e91e4 100644
        return false;
      }
    };
-diff --git a/validation/rules/ExecutableDefinitions.js.flow b/validation/rules/ExecutableDefinitions.js.flow
+diff --git validation/rules/ExecutableDefinitions.js.flow validation/rules/ExecutableDefinitions.js.flow
 index ac6a5a4..188bbbc 100644
---- a/validation/rules/ExecutableDefinitions.js.flow
-+++ b/validation/rules/ExecutableDefinitions.js.flow
+--- validation/rules/ExecutableDefinitions.js.flow
++++ validation/rules/ExecutableDefinitions.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -14589,10 +14589,10 @@ index ac6a5a4..188bbbc 100644
        return false;
      },
    };
-diff --git a/validation/rules/ExecutableDefinitions.mjs b/validation/rules/ExecutableDefinitions.mjs
+diff --git validation/rules/ExecutableDefinitions.mjs validation/rules/ExecutableDefinitions.mjs
 index 0204c00..68ce975 100644
---- a/validation/rules/ExecutableDefinitions.mjs
-+++ b/validation/rules/ExecutableDefinitions.mjs
+--- validation/rules/ExecutableDefinitions.mjs
++++ validation/rules/ExecutableDefinitions.mjs
 @@ -21,11 +21,33 @@ export function nonExecutableDefinitionMessage(defName) {
  export function ExecutableDefinitions(context) {
    return {
@@ -14631,10 +14631,10 @@ index 0204c00..68ce975 100644
        return false;
      }
    };
-diff --git a/validation/rules/FieldsOnCorrectType.js b/validation/rules/FieldsOnCorrectType.js
+diff --git validation/rules/FieldsOnCorrectType.js validation/rules/FieldsOnCorrectType.js
 index 42836b8..6844b67 100644
---- a/validation/rules/FieldsOnCorrectType.js
-+++ b/validation/rules/FieldsOnCorrectType.js
+--- validation/rules/FieldsOnCorrectType.js
++++ validation/rules/FieldsOnCorrectType.js
 @@ -79,22 +79,65 @@ function getSuggestedTypeNames(schema, type, fieldName) {
    if ((0, _definition.isAbstractType)(type)) {
      var suggestedObjectTypes = [];
@@ -14717,10 +14717,10 @@ index 42836b8..6844b67 100644
  
      var suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(function (a, b) {
        return interfaceUsageCount[b] - interfaceUsageCount[a];
-diff --git a/validation/rules/FieldsOnCorrectType.js.flow b/validation/rules/FieldsOnCorrectType.js.flow
+diff --git validation/rules/FieldsOnCorrectType.js.flow validation/rules/FieldsOnCorrectType.js.flow
 index 168fc1b..a67c394 100644
---- a/validation/rules/FieldsOnCorrectType.js.flow
-+++ b/validation/rules/FieldsOnCorrectType.js.flow
+--- validation/rules/FieldsOnCorrectType.js.flow
++++ validation/rules/FieldsOnCorrectType.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -14758,10 +14758,10 @@ index 168fc1b..a67c394 100644
  
      // Suggest interface types based on how common they are.
      const suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(
-diff --git a/validation/rules/FieldsOnCorrectType.mjs b/validation/rules/FieldsOnCorrectType.mjs
+diff --git validation/rules/FieldsOnCorrectType.mjs validation/rules/FieldsOnCorrectType.mjs
 index ce6ab28..a7c2ee5 100644
---- a/validation/rules/FieldsOnCorrectType.mjs
-+++ b/validation/rules/FieldsOnCorrectType.mjs
+--- validation/rules/FieldsOnCorrectType.mjs
++++ validation/rules/FieldsOnCorrectType.mjs
 @@ -63,22 +63,65 @@ function getSuggestedTypeNames(schema, type, fieldName) {
    if (isAbstractType(type)) {
      var suggestedObjectTypes = [];
@@ -14844,10 +14844,10 @@ index ce6ab28..a7c2ee5 100644
  
      var suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(function (a, b) {
        return interfaceUsageCount[b] - interfaceUsageCount[a];
-diff --git a/validation/rules/FragmentsOnCompositeTypes.js b/validation/rules/FragmentsOnCompositeTypes.js
+diff --git validation/rules/FragmentsOnCompositeTypes.js validation/rules/FragmentsOnCompositeTypes.js
 index 06814ad..deceb96 100644
---- a/validation/rules/FragmentsOnCompositeTypes.js
-+++ b/validation/rules/FragmentsOnCompositeTypes.js
+--- validation/rules/FragmentsOnCompositeTypes.js
++++ validation/rules/FragmentsOnCompositeTypes.js
 @@ -7,8 +7,6 @@ exports.inlineFragmentOnNonCompositeErrorMessage = inlineFragmentOnNonCompositeE
  exports.fragmentOnNonCompositeErrorMessage = fragmentOnNonCompositeErrorMessage;
  exports.FragmentsOnCompositeTypes = FragmentsOnCompositeTypes;
@@ -14880,10 +14880,10 @@ index 06814ad..deceb96 100644
  }
  /**
   * Fragments on composite type
-diff --git a/validation/rules/FragmentsOnCompositeTypes.js.flow b/validation/rules/FragmentsOnCompositeTypes.js.flow
+diff --git validation/rules/FragmentsOnCompositeTypes.js.flow validation/rules/FragmentsOnCompositeTypes.js.flow
 index 9d28534..36d2eac 100644
---- a/validation/rules/FragmentsOnCompositeTypes.js.flow
-+++ b/validation/rules/FragmentsOnCompositeTypes.js.flow
+--- validation/rules/FragmentsOnCompositeTypes.js.flow
++++ validation/rules/FragmentsOnCompositeTypes.js.flow
 @@ -7,28 +7,24 @@
   * @flow strict
   */
@@ -14918,10 +14918,10 @@ index 9d28534..36d2eac 100644
    );
  }
  
-diff --git a/validation/rules/FragmentsOnCompositeTypes.mjs b/validation/rules/FragmentsOnCompositeTypes.mjs
+diff --git validation/rules/FragmentsOnCompositeTypes.mjs validation/rules/FragmentsOnCompositeTypes.mjs
 index 6a1978c..c6414fd 100644
---- a/validation/rules/FragmentsOnCompositeTypes.mjs
-+++ b/validation/rules/FragmentsOnCompositeTypes.mjs
+--- validation/rules/FragmentsOnCompositeTypes.mjs
++++ validation/rules/FragmentsOnCompositeTypes.mjs
 @@ -6,16 +6,15 @@
   *
   *  strict
@@ -14941,10 +14941,10 @@ index 6a1978c..c6414fd 100644
  }
  /**
   * Fragments on composite type
-diff --git a/validation/rules/KnownArgumentNames.js.flow b/validation/rules/KnownArgumentNames.js.flow
+diff --git validation/rules/KnownArgumentNames.js.flow validation/rules/KnownArgumentNames.js.flow
 index a775880..36a5e82 100644
---- a/validation/rules/KnownArgumentNames.js.flow
-+++ b/validation/rules/KnownArgumentNames.js.flow
+--- validation/rules/KnownArgumentNames.js.flow
++++ validation/rules/KnownArgumentNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -14954,10 +14954,10 @@ index a775880..36a5e82 100644
  import { GraphQLError } from '../../error';
  import type { ASTVisitor } from '../../language/visitor';
  import suggestionList from '../../jsutils/suggestionList';
-diff --git a/validation/rules/KnownDirectives.js b/validation/rules/KnownDirectives.js
+diff --git validation/rules/KnownDirectives.js validation/rules/KnownDirectives.js
 index 6f9bd69..db91f61 100644
---- a/validation/rules/KnownDirectives.js
-+++ b/validation/rules/KnownDirectives.js
+--- validation/rules/KnownDirectives.js
++++ validation/rules/KnownDirectives.js
 @@ -9,13 +9,11 @@ exports.KnownDirectives = KnownDirectives;
  
  var _error = require("../../error");
@@ -15058,10 +15058,10 @@ index 6f9bd69..db91f61 100644
        }
      }
    };
-diff --git a/validation/rules/KnownDirectives.js.flow b/validation/rules/KnownDirectives.js.flow
+diff --git validation/rules/KnownDirectives.js.flow validation/rules/KnownDirectives.js.flow
 index 05c12f3..37f273f 100644
---- a/validation/rules/KnownDirectives.js.flow
-+++ b/validation/rules/KnownDirectives.js.flow
+--- validation/rules/KnownDirectives.js.flow
++++ validation/rules/KnownDirectives.js.flow
 @@ -7,12 +7,15 @@
   * @flow strict
   */
@@ -15138,10 +15138,10 @@ index 05c12f3..37f273f 100644
          );
        }
      },
-diff --git a/validation/rules/KnownDirectives.mjs b/validation/rules/KnownDirectives.mjs
+diff --git validation/rules/KnownDirectives.mjs validation/rules/KnownDirectives.mjs
 index e3b6d85..5f68a7e 100644
---- a/validation/rules/KnownDirectives.mjs
-+++ b/validation/rules/KnownDirectives.mjs
+--- validation/rules/KnownDirectives.mjs
++++ validation/rules/KnownDirectives.mjs
 @@ -7,9 +7,9 @@
   *  strict
   */
@@ -15238,10 +15238,10 @@ index e3b6d85..5f68a7e 100644
        }
      }
    };
-diff --git a/validation/rules/KnownFragmentNames.js.flow b/validation/rules/KnownFragmentNames.js.flow
+diff --git validation/rules/KnownFragmentNames.js.flow validation/rules/KnownFragmentNames.js.flow
 index c389341..7135801 100644
---- a/validation/rules/KnownFragmentNames.js.flow
-+++ b/validation/rules/KnownFragmentNames.js.flow
+--- validation/rules/KnownFragmentNames.js.flow
++++ validation/rules/KnownFragmentNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15251,10 +15251,10 @@ index c389341..7135801 100644
  import { GraphQLError } from '../../error';
  import type { ASTVisitor } from '../../language/visitor';
  
-diff --git a/validation/rules/KnownTypeNames.js.flow b/validation/rules/KnownTypeNames.js.flow
+diff --git validation/rules/KnownTypeNames.js.flow validation/rules/KnownTypeNames.js.flow
 index 8ad1b77..04daa41 100644
---- a/validation/rules/KnownTypeNames.js.flow
-+++ b/validation/rules/KnownTypeNames.js.flow
+--- validation/rules/KnownTypeNames.js.flow
++++ validation/rules/KnownTypeNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15264,10 +15264,10 @@ index 8ad1b77..04daa41 100644
  import { GraphQLError } from '../../error';
  import suggestionList from '../../jsutils/suggestionList';
  import quotedOrList from '../../jsutils/quotedOrList';
-diff --git a/validation/rules/LoneAnonymousOperation.js.flow b/validation/rules/LoneAnonymousOperation.js.flow
+diff --git validation/rules/LoneAnonymousOperation.js.flow validation/rules/LoneAnonymousOperation.js.flow
 index 745de20..e3ef981 100644
---- a/validation/rules/LoneAnonymousOperation.js.flow
-+++ b/validation/rules/LoneAnonymousOperation.js.flow
+--- validation/rules/LoneAnonymousOperation.js.flow
++++ validation/rules/LoneAnonymousOperation.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15288,11 +15288,11 @@ index 745de20..e3ef981 100644
    let operationCount = 0;
    return {
      Document(node) {
-diff --git a/validation/rules/LoneSchemaDefinition.js b/validation/rules/LoneSchemaDefinition.js
+diff --git validation/rules/LoneSchemaDefinition.js validation/rules/LoneSchemaDefinition.js
 new file mode 100644
 index 0000000..7c9b2e6
 --- /dev/null
-+++ b/validation/rules/LoneSchemaDefinition.js
++++ validation/rules/LoneSchemaDefinition.js
 @@ -0,0 +1,55 @@
 +"use strict";
 +
@@ -15350,11 +15350,11 @@ index 0000000..7c9b2e6
 +  };
 +}
 \ No newline at end of file
-diff --git a/validation/rules/LoneSchemaDefinition.js.flow b/validation/rules/LoneSchemaDefinition.js.flow
+diff --git validation/rules/LoneSchemaDefinition.js.flow validation/rules/LoneSchemaDefinition.js.flow
 new file mode 100644
 index 0000000..e76f2d9
 --- /dev/null
-+++ b/validation/rules/LoneSchemaDefinition.js.flow
++++ validation/rules/LoneSchemaDefinition.js.flow
 @@ -0,0 +1,59 @@
 +/**
 + * Copyright (c) 2018-present, Facebook, Inc.
@@ -15415,11 +15415,11 @@ index 0000000..e76f2d9
 +    },
 +  };
 +}
-diff --git a/validation/rules/LoneSchemaDefinition.mjs b/validation/rules/LoneSchemaDefinition.mjs
+diff --git validation/rules/LoneSchemaDefinition.mjs validation/rules/LoneSchemaDefinition.mjs
 new file mode 100644
 index 0000000..0fd6f5e
 --- /dev/null
-+++ b/validation/rules/LoneSchemaDefinition.mjs
++++ validation/rules/LoneSchemaDefinition.mjs
 @@ -0,0 +1,43 @@
 +/**
 + * Copyright (c) 2018-present, Facebook, Inc.
@@ -15465,10 +15465,10 @@ index 0000000..0fd6f5e
 +  };
 +}
 \ No newline at end of file
-diff --git a/validation/rules/NoFragmentCycles.js b/validation/rules/NoFragmentCycles.js
+diff --git validation/rules/NoFragmentCycles.js validation/rules/NoFragmentCycles.js
 index 022ca76..9ad6ad8 100644
---- a/validation/rules/NoFragmentCycles.js
-+++ b/validation/rules/NoFragmentCycles.js
+--- validation/rules/NoFragmentCycles.js
++++ validation/rules/NoFragmentCycles.js
 @@ -34,10 +34,7 @@ function NoFragmentCycles(context) {
        return false;
      },
@@ -15527,10 +15527,10 @@ index 022ca76..9ad6ad8 100644
      }
  
      spreadPathIndexByName[fragmentName] = undefined;
-diff --git a/validation/rules/NoFragmentCycles.js.flow b/validation/rules/NoFragmentCycles.js.flow
+diff --git validation/rules/NoFragmentCycles.js.flow validation/rules/NoFragmentCycles.js.flow
 index 0a51122..6321902 100644
---- a/validation/rules/NoFragmentCycles.js.flow
-+++ b/validation/rules/NoFragmentCycles.js.flow
+--- validation/rules/NoFragmentCycles.js.flow
++++ validation/rules/NoFragmentCycles.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15595,10 +15595,10 @@ index 0a51122..6321902 100644
      }
  
      spreadPathIndexByName[fragmentName] = undefined;
-diff --git a/validation/rules/NoFragmentCycles.mjs b/validation/rules/NoFragmentCycles.mjs
+diff --git validation/rules/NoFragmentCycles.mjs validation/rules/NoFragmentCycles.mjs
 index 5d18024..e251245 100644
---- a/validation/rules/NoFragmentCycles.mjs
-+++ b/validation/rules/NoFragmentCycles.mjs
+--- validation/rules/NoFragmentCycles.mjs
++++ validation/rules/NoFragmentCycles.mjs
 @@ -24,10 +24,7 @@ export function NoFragmentCycles(context) {
        return false;
      },
@@ -15657,10 +15657,10 @@ index 5d18024..e251245 100644
      }
  
      spreadPathIndexByName[fragmentName] = undefined;
-diff --git a/validation/rules/NoUndefinedVariables.js b/validation/rules/NoUndefinedVariables.js
+diff --git validation/rules/NoUndefinedVariables.js validation/rules/NoUndefinedVariables.js
 index 0400cfc..99f807f 100644
---- a/validation/rules/NoUndefinedVariables.js
-+++ b/validation/rules/NoUndefinedVariables.js
+--- validation/rules/NoUndefinedVariables.js
++++ validation/rules/NoUndefinedVariables.js
 @@ -36,14 +36,34 @@ function NoUndefinedVariables(context) {
        },
        leave: function leave(operation) {
@@ -15702,10 +15702,10 @@ index 0400cfc..99f807f 100644
        }
      },
      VariableDefinition: function VariableDefinition(node) {
-diff --git a/validation/rules/NoUndefinedVariables.js.flow b/validation/rules/NoUndefinedVariables.js.flow
+diff --git validation/rules/NoUndefinedVariables.js.flow validation/rules/NoUndefinedVariables.js.flow
 index d74a492..0fcfe50 100644
---- a/validation/rules/NoUndefinedVariables.js.flow
-+++ b/validation/rules/NoUndefinedVariables.js.flow
+--- validation/rules/NoUndefinedVariables.js.flow
++++ validation/rules/NoUndefinedVariables.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15733,10 +15733,10 @@ index d74a492..0fcfe50 100644
        },
      },
      VariableDefinition(node) {
-diff --git a/validation/rules/NoUndefinedVariables.mjs b/validation/rules/NoUndefinedVariables.mjs
+diff --git validation/rules/NoUndefinedVariables.mjs validation/rules/NoUndefinedVariables.mjs
 index 14011d3..6551026 100644
---- a/validation/rules/NoUndefinedVariables.mjs
-+++ b/validation/rules/NoUndefinedVariables.mjs
+--- validation/rules/NoUndefinedVariables.mjs
++++ validation/rules/NoUndefinedVariables.mjs
 @@ -26,14 +26,34 @@ export function NoUndefinedVariables(context) {
        },
        leave: function leave(operation) {
@@ -15778,10 +15778,10 @@ index 14011d3..6551026 100644
        }
      },
      VariableDefinition: function VariableDefinition(node) {
-diff --git a/validation/rules/NoUnusedFragments.js b/validation/rules/NoUnusedFragments.js
+diff --git validation/rules/NoUnusedFragments.js validation/rules/NoUnusedFragments.js
 index db193c0..8fe0a57 100644
---- a/validation/rules/NoUnusedFragments.js
-+++ b/validation/rules/NoUnusedFragments.js
+--- validation/rules/NoUnusedFragments.js
++++ validation/rules/NoUnusedFragments.js
 @@ -42,18 +42,42 @@ function NoUnusedFragments(context) {
      Document: {
        leave: function leave() {
@@ -15832,10 +15832,10 @@ index db193c0..8fe0a57 100644
        }
      }
    };
-diff --git a/validation/rules/NoUnusedFragments.js.flow b/validation/rules/NoUnusedFragments.js.flow
+diff --git validation/rules/NoUnusedFragments.js.flow validation/rules/NoUnusedFragments.js.flow
 index 4e2b6e2..a3ff407 100644
---- a/validation/rules/NoUnusedFragments.js.flow
-+++ b/validation/rules/NoUnusedFragments.js.flow
+--- validation/rules/NoUnusedFragments.js.flow
++++ validation/rules/NoUnusedFragments.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -15877,10 +15877,10 @@ index 4e2b6e2..a3ff407 100644
        },
      },
    };
-diff --git a/validation/rules/NoUnusedFragments.mjs b/validation/rules/NoUnusedFragments.mjs
+diff --git validation/rules/NoUnusedFragments.mjs validation/rules/NoUnusedFragments.mjs
 index 2585f5a..4b11543 100644
---- a/validation/rules/NoUnusedFragments.mjs
-+++ b/validation/rules/NoUnusedFragments.mjs
+--- validation/rules/NoUnusedFragments.mjs
++++ validation/rules/NoUnusedFragments.mjs
 @@ -32,18 +32,42 @@ export function NoUnusedFragments(context) {
      Document: {
        leave: function leave() {
@@ -15931,10 +15931,10 @@ index 2585f5a..4b11543 100644
        }
      }
    };
-diff --git a/validation/rules/NoUnusedVariables.js b/validation/rules/NoUnusedVariables.js
+diff --git validation/rules/NoUnusedVariables.js validation/rules/NoUnusedVariables.js
 index a7baa1f..2a7e1d7 100644
---- a/validation/rules/NoUnusedVariables.js
-+++ b/validation/rules/NoUnusedVariables.js
+--- validation/rules/NoUnusedVariables.js
++++ validation/rules/NoUnusedVariables.js
 @@ -38,17 +38,39 @@ function NoUnusedVariables(context) {
          var variableNameUsed = Object.create(null);
          var usages = context.getRecursiveVariableUsages(operation);
@@ -15981,10 +15981,10 @@ index a7baa1f..2a7e1d7 100644
        }
      },
      VariableDefinition: function VariableDefinition(def) {
-diff --git a/validation/rules/NoUnusedVariables.js.flow b/validation/rules/NoUnusedVariables.js.flow
+diff --git validation/rules/NoUnusedVariables.js.flow validation/rules/NoUnusedVariables.js.flow
 index c5637e2..378616f 100644
---- a/validation/rules/NoUnusedVariables.js.flow
-+++ b/validation/rules/NoUnusedVariables.js.flow
+--- validation/rules/NoUnusedVariables.js.flow
++++ validation/rules/NoUnusedVariables.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -16018,10 +16018,10 @@ index c5637e2..378616f 100644
        },
      },
      VariableDefinition(def) {
-diff --git a/validation/rules/NoUnusedVariables.mjs b/validation/rules/NoUnusedVariables.mjs
+diff --git validation/rules/NoUnusedVariables.mjs validation/rules/NoUnusedVariables.mjs
 index bfbbf5b..67cfcd8 100644
---- a/validation/rules/NoUnusedVariables.mjs
-+++ b/validation/rules/NoUnusedVariables.mjs
+--- validation/rules/NoUnusedVariables.mjs
++++ validation/rules/NoUnusedVariables.mjs
 @@ -28,17 +28,39 @@ export function NoUnusedVariables(context) {
          var variableNameUsed = Object.create(null);
          var usages = context.getRecursiveVariableUsages(operation);
@@ -16068,10 +16068,10 @@ index bfbbf5b..67cfcd8 100644
        }
      },
      VariableDefinition: function VariableDefinition(def) {
-diff --git a/validation/rules/OverlappingFieldsCanBeMerged.js b/validation/rules/OverlappingFieldsCanBeMerged.js
+diff --git validation/rules/OverlappingFieldsCanBeMerged.js validation/rules/OverlappingFieldsCanBeMerged.js
 index 043a74f..707d7d9 100644
---- a/validation/rules/OverlappingFieldsCanBeMerged.js
-+++ b/validation/rules/OverlappingFieldsCanBeMerged.js
+--- validation/rules/OverlappingFieldsCanBeMerged.js
++++ validation/rules/OverlappingFieldsCanBeMerged.js
 @@ -60,14 +60,16 @@ function OverlappingFieldsCanBeMerged(context) {
    return {
      SelectionSet: function SelectionSet(selectionSet) {
@@ -16172,10 +16172,10 @@ index 043a74f..707d7d9 100644
        return allFields.concat(fields2);
      }, [node2])];
    }
-diff --git a/validation/rules/OverlappingFieldsCanBeMerged.js.flow b/validation/rules/OverlappingFieldsCanBeMerged.js.flow
+diff --git validation/rules/OverlappingFieldsCanBeMerged.js.flow validation/rules/OverlappingFieldsCanBeMerged.js.flow
 index e3b5ca3..aa54697 100644
---- a/validation/rules/OverlappingFieldsCanBeMerged.js.flow
-+++ b/validation/rules/OverlappingFieldsCanBeMerged.js.flow
+--- validation/rules/OverlappingFieldsCanBeMerged.js.flow
++++ validation/rules/OverlappingFieldsCanBeMerged.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -16239,10 +16239,10 @@ index e3b5ca3..aa54697 100644
  }
  
  // Determines if there is a conflict between two particular fields, including
-diff --git a/validation/rules/OverlappingFieldsCanBeMerged.mjs b/validation/rules/OverlappingFieldsCanBeMerged.mjs
+diff --git validation/rules/OverlappingFieldsCanBeMerged.mjs validation/rules/OverlappingFieldsCanBeMerged.mjs
 index f14759e..7e7c182 100644
---- a/validation/rules/OverlappingFieldsCanBeMerged.mjs
-+++ b/validation/rules/OverlappingFieldsCanBeMerged.mjs
+--- validation/rules/OverlappingFieldsCanBeMerged.mjs
++++ validation/rules/OverlappingFieldsCanBeMerged.mjs
 @@ -51,14 +51,16 @@ export function OverlappingFieldsCanBeMerged(context) {
    return {
      SelectionSet: function SelectionSet(selectionSet) {
@@ -16343,10 +16343,10 @@ index f14759e..7e7c182 100644
        return allFields.concat(fields2);
      }, [node2])];
    }
-diff --git a/validation/rules/PossibleFragmentSpreads.js b/validation/rules/PossibleFragmentSpreads.js
+diff --git validation/rules/PossibleFragmentSpreads.js validation/rules/PossibleFragmentSpreads.js
 index ac374ce..fb7667c 100644
---- a/validation/rules/PossibleFragmentSpreads.js
-+++ b/validation/rules/PossibleFragmentSpreads.js
+--- validation/rules/PossibleFragmentSpreads.js
++++ validation/rules/PossibleFragmentSpreads.js
 @@ -28,11 +28,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   *  strict
   */
@@ -16379,10 +16379,10 @@ index ac374ce..fb7667c 100644
        }
      }
    };
-diff --git a/validation/rules/PossibleFragmentSpreads.js.flow b/validation/rules/PossibleFragmentSpreads.js.flow
+diff --git validation/rules/PossibleFragmentSpreads.js.flow validation/rules/PossibleFragmentSpreads.js.flow
 index 95ee321..465efa1 100644
---- a/validation/rules/PossibleFragmentSpreads.js.flow
-+++ b/validation/rules/PossibleFragmentSpreads.js.flow
+--- validation/rules/PossibleFragmentSpreads.js.flow
++++ validation/rules/PossibleFragmentSpreads.js.flow
 @@ -8,32 +8,31 @@
   */
  
@@ -16448,10 +16448,10 @@ index 95ee321..465efa1 100644
              [node],
            ),
          );
-diff --git a/validation/rules/PossibleFragmentSpreads.mjs b/validation/rules/PossibleFragmentSpreads.mjs
+diff --git validation/rules/PossibleFragmentSpreads.mjs validation/rules/PossibleFragmentSpreads.mjs
 index 1f6186e..dd33e7c 100644
---- a/validation/rules/PossibleFragmentSpreads.mjs
-+++ b/validation/rules/PossibleFragmentSpreads.mjs
+--- validation/rules/PossibleFragmentSpreads.mjs
++++ validation/rules/PossibleFragmentSpreads.mjs
 @@ -12,10 +12,10 @@ import { doTypesOverlap } from '../../utilities/typeComparators';
  import { typeFromAST } from '../../utilities/typeFromAST';
  import { isCompositeType } from '../../type/definition';
@@ -16483,10 +16483,10 @@ index 1f6186e..dd33e7c 100644
        }
      }
    };
-diff --git a/validation/rules/ProvidedRequiredArguments.js b/validation/rules/ProvidedRequiredArguments.js
+diff --git validation/rules/ProvidedRequiredArguments.js validation/rules/ProvidedRequiredArguments.js
 index 010180d..ce3736d 100644
---- a/validation/rules/ProvidedRequiredArguments.js
-+++ b/validation/rules/ProvidedRequiredArguments.js
+--- validation/rules/ProvidedRequiredArguments.js
++++ validation/rules/ProvidedRequiredArguments.js
 @@ -26,11 +26,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   *  strict
   */
@@ -16581,10 +16581,10 @@ index 010180d..ce3736d 100644
        }
      }
    };
-diff --git a/validation/rules/ProvidedRequiredArguments.js.flow b/validation/rules/ProvidedRequiredArguments.js.flow
+diff --git validation/rules/ProvidedRequiredArguments.js.flow validation/rules/ProvidedRequiredArguments.js.flow
 index b6b60a0..38a911b 100644
---- a/validation/rules/ProvidedRequiredArguments.js.flow
-+++ b/validation/rules/ProvidedRequiredArguments.js.flow
+--- validation/rules/ProvidedRequiredArguments.js.flow
++++ validation/rules/ProvidedRequiredArguments.js.flow
 @@ -7,33 +7,32 @@
   * @flow strict
   */
@@ -16674,10 +16674,10 @@ index b6b60a0..38a911b 100644
        },
      },
    };
-diff --git a/validation/rules/ProvidedRequiredArguments.mjs b/validation/rules/ProvidedRequiredArguments.mjs
+diff --git validation/rules/ProvidedRequiredArguments.mjs validation/rules/ProvidedRequiredArguments.mjs
 index 68fde9b..eeb262e 100644
---- a/validation/rules/ProvidedRequiredArguments.mjs
-+++ b/validation/rules/ProvidedRequiredArguments.mjs
+--- validation/rules/ProvidedRequiredArguments.mjs
++++ validation/rules/ProvidedRequiredArguments.mjs
 @@ -11,10 +11,10 @@ import inspect from '../../jsutils/inspect';
  import keyMap from '../../jsutils/keyMap';
  import { isNonNullType } from '../../type/definition';
@@ -16769,10 +16769,10 @@ index 68fde9b..eeb262e 100644
        }
      }
    };
-diff --git a/validation/rules/ScalarLeafs.js b/validation/rules/ScalarLeafs.js
+diff --git validation/rules/ScalarLeafs.js validation/rules/ScalarLeafs.js
 index de64dbe..062d792 100644
---- a/validation/rules/ScalarLeafs.js
-+++ b/validation/rules/ScalarLeafs.js
+--- validation/rules/ScalarLeafs.js
++++ validation/rules/ScalarLeafs.js
 @@ -24,11 +24,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   *  strict
   */
@@ -16800,10 +16800,10 @@ index de64dbe..062d792 100644
          }
        }
      }
-diff --git a/validation/rules/ScalarLeafs.js.flow b/validation/rules/ScalarLeafs.js.flow
+diff --git validation/rules/ScalarLeafs.js.flow validation/rules/ScalarLeafs.js.flow
 index 85f8f38..28b82da 100644
---- a/validation/rules/ScalarLeafs.js.flow
-+++ b/validation/rules/ScalarLeafs.js.flow
+--- validation/rules/ScalarLeafs.js.flow
++++ validation/rules/ScalarLeafs.js.flow
 @@ -8,29 +8,28 @@
   */
  
@@ -16857,10 +16857,10 @@ index 85f8f38..28b82da 100644
                [node],
              ),
            );
-diff --git a/validation/rules/ScalarLeafs.mjs b/validation/rules/ScalarLeafs.mjs
+diff --git validation/rules/ScalarLeafs.mjs validation/rules/ScalarLeafs.mjs
 index 013d97b..7ceae12 100644
---- a/validation/rules/ScalarLeafs.mjs
-+++ b/validation/rules/ScalarLeafs.mjs
+--- validation/rules/ScalarLeafs.mjs
++++ validation/rules/ScalarLeafs.mjs
 @@ -10,10 +10,10 @@ import inspect from '../../jsutils/inspect';
  import { GraphQLError } from '../../error';
  import { getNamedType, isLeafType } from '../../type/definition';
@@ -16887,10 +16887,10 @@ index 013d97b..7ceae12 100644
          }
        }
      }
-diff --git a/validation/rules/SingleFieldSubscriptions.js.flow b/validation/rules/SingleFieldSubscriptions.js.flow
+diff --git validation/rules/SingleFieldSubscriptions.js.flow validation/rules/SingleFieldSubscriptions.js.flow
 index 622e6fc..9002956 100644
---- a/validation/rules/SingleFieldSubscriptions.js.flow
-+++ b/validation/rules/SingleFieldSubscriptions.js.flow
+--- validation/rules/SingleFieldSubscriptions.js.flow
++++ validation/rules/SingleFieldSubscriptions.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -16909,10 +16909,10 @@ index 622e6fc..9002956 100644
  ): ASTVisitor {
    return {
      OperationDefinition(node: OperationDefinitionNode) {
-diff --git a/validation/rules/UniqueArgumentNames.js.flow b/validation/rules/UniqueArgumentNames.js.flow
+diff --git validation/rules/UniqueArgumentNames.js.flow validation/rules/UniqueArgumentNames.js.flow
 index 0516401..474072b 100644
---- a/validation/rules/UniqueArgumentNames.js.flow
-+++ b/validation/rules/UniqueArgumentNames.js.flow
+--- validation/rules/UniqueArgumentNames.js.flow
++++ validation/rules/UniqueArgumentNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -16931,10 +16931,10 @@ index 0516401..474072b 100644
    let knownArgNames = Object.create(null);
    return {
      Field() {
-diff --git a/validation/rules/UniqueDirectivesPerLocation.js b/validation/rules/UniqueDirectivesPerLocation.js
+diff --git validation/rules/UniqueDirectivesPerLocation.js validation/rules/UniqueDirectivesPerLocation.js
 index 8647b4a..1158d45 100644
---- a/validation/rules/UniqueDirectivesPerLocation.js
-+++ b/validation/rules/UniqueDirectivesPerLocation.js
+--- validation/rules/UniqueDirectivesPerLocation.js
++++ validation/rules/UniqueDirectivesPerLocation.js
 @@ -38,15 +38,35 @@ function UniqueDirectivesPerLocation(context) {
  
        if (directives) {
@@ -16978,10 +16978,10 @@ index 8647b4a..1158d45 100644
        }
      }
    };
-diff --git a/validation/rules/UniqueDirectivesPerLocation.js.flow b/validation/rules/UniqueDirectivesPerLocation.js.flow
+diff --git validation/rules/UniqueDirectivesPerLocation.js.flow validation/rules/UniqueDirectivesPerLocation.js.flow
 index fb143d2..393ca0c 100644
---- a/validation/rules/UniqueDirectivesPerLocation.js.flow
-+++ b/validation/rules/UniqueDirectivesPerLocation.js.flow
+--- validation/rules/UniqueDirectivesPerLocation.js.flow
++++ validation/rules/UniqueDirectivesPerLocation.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17018,10 +17018,10 @@ index fb143d2..393ca0c 100644
        }
      },
    };
-diff --git a/validation/rules/UniqueDirectivesPerLocation.mjs b/validation/rules/UniqueDirectivesPerLocation.mjs
+diff --git validation/rules/UniqueDirectivesPerLocation.mjs validation/rules/UniqueDirectivesPerLocation.mjs
 index 0f451d3..f2f854c 100644
---- a/validation/rules/UniqueDirectivesPerLocation.mjs
-+++ b/validation/rules/UniqueDirectivesPerLocation.mjs
+--- validation/rules/UniqueDirectivesPerLocation.mjs
++++ validation/rules/UniqueDirectivesPerLocation.mjs
 @@ -28,15 +28,35 @@ export function UniqueDirectivesPerLocation(context) {
  
        if (directives) {
@@ -17065,10 +17065,10 @@ index 0f451d3..f2f854c 100644
        }
      }
    };
-diff --git a/validation/rules/UniqueFragmentNames.js.flow b/validation/rules/UniqueFragmentNames.js.flow
+diff --git validation/rules/UniqueFragmentNames.js.flow validation/rules/UniqueFragmentNames.js.flow
 index 1a55cd7..9bedb9e 100644
---- a/validation/rules/UniqueFragmentNames.js.flow
-+++ b/validation/rules/UniqueFragmentNames.js.flow
+--- validation/rules/UniqueFragmentNames.js.flow
++++ validation/rules/UniqueFragmentNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17087,10 +17087,10 @@ index 1a55cd7..9bedb9e 100644
    const knownFragmentNames = Object.create(null);
    return {
      OperationDefinition: () => false,
-diff --git a/validation/rules/UniqueInputFieldNames.js.flow b/validation/rules/UniqueInputFieldNames.js.flow
+diff --git validation/rules/UniqueInputFieldNames.js.flow validation/rules/UniqueInputFieldNames.js.flow
 index 9290b60..38ecec0 100644
---- a/validation/rules/UniqueInputFieldNames.js.flow
-+++ b/validation/rules/UniqueInputFieldNames.js.flow
+--- validation/rules/UniqueInputFieldNames.js.flow
++++ validation/rules/UniqueInputFieldNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17111,10 +17111,10 @@ index 9290b60..38ecec0 100644
    const knownNameStack = [];
    let knownNames = Object.create(null);
  
-diff --git a/validation/rules/UniqueOperationNames.js.flow b/validation/rules/UniqueOperationNames.js.flow
+diff --git validation/rules/UniqueOperationNames.js.flow validation/rules/UniqueOperationNames.js.flow
 index 765b0b8..96ba243 100644
---- a/validation/rules/UniqueOperationNames.js.flow
-+++ b/validation/rules/UniqueOperationNames.js.flow
+--- validation/rules/UniqueOperationNames.js.flow
++++ validation/rules/UniqueOperationNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17135,10 +17135,10 @@ index 765b0b8..96ba243 100644
    const knownOperationNames = Object.create(null);
    return {
      OperationDefinition(node) {
-diff --git a/validation/rules/UniqueVariableNames.js.flow b/validation/rules/UniqueVariableNames.js.flow
+diff --git validation/rules/UniqueVariableNames.js.flow validation/rules/UniqueVariableNames.js.flow
 index 90f8448..5b71c00 100644
---- a/validation/rules/UniqueVariableNames.js.flow
-+++ b/validation/rules/UniqueVariableNames.js.flow
+--- validation/rules/UniqueVariableNames.js.flow
++++ validation/rules/UniqueVariableNames.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17157,10 +17157,10 @@ index 90f8448..5b71c00 100644
    let knownVariableNames = Object.create(null);
    return {
      OperationDefinition() {
-diff --git a/validation/rules/ValuesOfCorrectType.js b/validation/rules/ValuesOfCorrectType.js
+diff --git validation/rules/ValuesOfCorrectType.js validation/rules/ValuesOfCorrectType.js
 index 8bdbe65..80ee3f0 100644
---- a/validation/rules/ValuesOfCorrectType.js
-+++ b/validation/rules/ValuesOfCorrectType.js
+--- validation/rules/ValuesOfCorrectType.js
++++ validation/rules/ValuesOfCorrectType.js
 @@ -85,7 +85,11 @@ function ValuesOfCorrectType(context) {
        var fieldNodeMap = (0, _keyMap.default)(node.fields, function (field) {
          return field.name.value;
@@ -17183,10 +17183,10 @@ index 8bdbe65..80ee3f0 100644
      },
      ObjectField: function ObjectField(node) {
        var parentType = (0, _definition.getNamedType)(context.getParentInputType());
-diff --git a/validation/rules/ValuesOfCorrectType.js.flow b/validation/rules/ValuesOfCorrectType.js.flow
+diff --git validation/rules/ValuesOfCorrectType.js.flow validation/rules/ValuesOfCorrectType.js.flow
 index 4b51563..5c2d3b5 100644
---- a/validation/rules/ValuesOfCorrectType.js.flow
-+++ b/validation/rules/ValuesOfCorrectType.js.flow
+--- validation/rules/ValuesOfCorrectType.js.flow
++++ validation/rules/ValuesOfCorrectType.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17214,10 +17214,10 @@ index 4b51563..5c2d3b5 100644
      },
      ObjectField(node) {
        const parentType = getNamedType(context.getParentInputType());
-diff --git a/validation/rules/ValuesOfCorrectType.mjs b/validation/rules/ValuesOfCorrectType.mjs
+diff --git validation/rules/ValuesOfCorrectType.mjs validation/rules/ValuesOfCorrectType.mjs
 index 3e5c02a..0623c07 100644
---- a/validation/rules/ValuesOfCorrectType.mjs
-+++ b/validation/rules/ValuesOfCorrectType.mjs
+--- validation/rules/ValuesOfCorrectType.mjs
++++ validation/rules/ValuesOfCorrectType.mjs
 @@ -62,7 +62,11 @@ export function ValuesOfCorrectType(context) {
        var fieldNodeMap = keyMap(node.fields, function (field) {
          return field.name.value;
@@ -17240,10 +17240,10 @@ index 3e5c02a..0623c07 100644
      },
      ObjectField: function ObjectField(node) {
        var parentType = getNamedType(context.getParentInputType());
-diff --git a/validation/rules/VariablesAreInputTypes.js.flow b/validation/rules/VariablesAreInputTypes.js.flow
+diff --git validation/rules/VariablesAreInputTypes.js.flow validation/rules/VariablesAreInputTypes.js.flow
 index b152025..7076bd8 100644
---- a/validation/rules/VariablesAreInputTypes.js.flow
-+++ b/validation/rules/VariablesAreInputTypes.js.flow
+--- validation/rules/VariablesAreInputTypes.js.flow
++++ validation/rules/VariablesAreInputTypes.js.flow
 @@ -7,7 +7,7 @@
   * @flow strict
   */
@@ -17253,10 +17253,10 @@ index b152025..7076bd8 100644
  import { GraphQLError } from '../../error';
  import type { VariableDefinitionNode } from '../../language/ast';
  import { print } from '../../language/printer';
-diff --git a/validation/rules/VariablesInAllowedPosition.js b/validation/rules/VariablesInAllowedPosition.js
+diff --git validation/rules/VariablesInAllowedPosition.js validation/rules/VariablesInAllowedPosition.js
 index 54faec7..204dc5c 100644
---- a/validation/rules/VariablesInAllowedPosition.js
-+++ b/validation/rules/VariablesInAllowedPosition.js
+--- validation/rules/VariablesInAllowedPosition.js
++++ validation/rules/VariablesInAllowedPosition.js
 @@ -29,7 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   *  strict
   */
@@ -17333,10 +17333,10 @@ index 54faec7..204dc5c 100644
        }
      },
      VariableDefinition: function VariableDefinition(node) {
-diff --git a/validation/rules/VariablesInAllowedPosition.js.flow b/validation/rules/VariablesInAllowedPosition.js.flow
+diff --git validation/rules/VariablesInAllowedPosition.js.flow validation/rules/VariablesInAllowedPosition.js.flow
 index 21c04d5..2d80c37 100644
---- a/validation/rules/VariablesInAllowedPosition.js.flow
-+++ b/validation/rules/VariablesInAllowedPosition.js.flow
+--- validation/rules/VariablesInAllowedPosition.js.flow
++++ validation/rules/VariablesInAllowedPosition.js.flow
 @@ -8,7 +8,7 @@
   */
  
@@ -17392,10 +17392,10 @@ index 21c04d5..2d80c37 100644
        },
      },
      VariableDefinition(node) {
-diff --git a/validation/rules/VariablesInAllowedPosition.mjs b/validation/rules/VariablesInAllowedPosition.mjs
+diff --git validation/rules/VariablesInAllowedPosition.mjs validation/rules/VariablesInAllowedPosition.mjs
 index f54b6fa..7cb31c7 100644
---- a/validation/rules/VariablesInAllowedPosition.mjs
-+++ b/validation/rules/VariablesInAllowedPosition.mjs
+--- validation/rules/VariablesInAllowedPosition.mjs
++++ validation/rules/VariablesInAllowedPosition.mjs
 @@ -13,7 +13,7 @@ import { isNonNullType } from '../../type/definition';
  import { isTypeSubTypeOf } from '../../utilities/typeComparators';
  import { typeFromAST } from '../../utilities/typeFromAST';
@@ -17470,10 +17470,10 @@ index f54b6fa..7cb31c7 100644
        }
      },
      VariableDefinition: function VariableDefinition(node) {
-diff --git a/validation/specifiedRules.js b/validation/specifiedRules.js
+diff --git validation/specifiedRules.js validation/specifiedRules.js
 index df31734..ad3a04e 100644
---- a/validation/specifiedRules.js
-+++ b/validation/specifiedRules.js
+--- validation/specifiedRules.js
++++ validation/specifiedRules.js
 @@ -3,7 +3,7 @@
  Object.defineProperty(exports, "__esModule", {
    value: true
@@ -17503,10 +17503,10 @@ index df31734..ad3a04e 100644
 +var specifiedSDLRules = [_LoneSchemaDefinition.LoneSchemaDefinition, _KnownDirectives.KnownDirectives, _UniqueDirectivesPerLocation.UniqueDirectivesPerLocation, _UniqueArgumentNames.UniqueArgumentNames, _UniqueInputFieldNames.UniqueInputFieldNames];
 +exports.specifiedSDLRules = specifiedSDLRules;
 \ No newline at end of file
-diff --git a/validation/specifiedRules.js.flow b/validation/specifiedRules.js.flow
+diff --git validation/specifiedRules.js.flow validation/specifiedRules.js.flow
 index 77792d6..4bf2b31 100644
---- a/validation/specifiedRules.js.flow
-+++ b/validation/specifiedRules.js.flow
+--- validation/specifiedRules.js.flow
++++ validation/specifiedRules.js.flow
 @@ -7,6 +7,8 @@
   * @flow strict
   */
@@ -17548,10 +17548,10 @@ index 77792d6..4bf2b31 100644
 +  UniqueArgumentNames,
 +  UniqueInputFieldNames,
 +];
-diff --git a/validation/specifiedRules.mjs b/validation/specifiedRules.mjs
+diff --git validation/specifiedRules.mjs validation/specifiedRules.mjs
 index 97eacda..085bcfa 100644
---- a/validation/specifiedRules.mjs
-+++ b/validation/specifiedRules.mjs
+--- validation/specifiedRules.mjs
++++ validation/specifiedRules.mjs
 @@ -58,11 +58,14 @@ import { VariablesInAllowedPosition } from './rules/VariablesInAllowedPosition';
  import { OverlappingFieldsCanBeMerged } from './rules/OverlappingFieldsCanBeMerged'; // Spec Section: "Input Object Field Uniqueness"
  
@@ -17571,10 +17571,10 @@ index 97eacda..085bcfa 100644
 +
 +export var specifiedSDLRules = [LoneSchemaDefinition, KnownDirectives, UniqueDirectivesPerLocation, UniqueArgumentNames, UniqueInputFieldNames];
 \ No newline at end of file
-diff --git a/validation/validate.js b/validation/validate.js
+diff --git validation/validate.js validation/validate.js
 index 45c65a8..f9a4ab5 100644
---- a/validation/validate.js
-+++ b/validation/validate.js
+--- validation/validate.js
++++ validation/validate.js
 @@ -4,22 +4,21 @@ Object.defineProperty(exports, "__esModule", {
    value: true
  });
@@ -17680,10 +17680,10 @@ index 45c65a8..f9a4ab5 100644
 +  }
  }
 \ No newline at end of file
-diff --git a/validation/validate.js.flow b/validation/validate.js.flow
+diff --git validation/validate.js.flow validation/validate.js.flow
 index 61213f8..9fe1b2a 100644
---- a/validation/validate.js.flow
-+++ b/validation/validate.js.flow
+--- validation/validate.js.flow
++++ validation/validate.js.flow
 @@ -8,15 +8,15 @@
   */
  
@@ -17788,10 +17788,10 @@ index 61213f8..9fe1b2a 100644
 +    throw new Error(errors.map(error => error.message).join('\n\n'));
 +  }
  }
-diff --git a/validation/validate.mjs b/validation/validate.mjs
+diff --git validation/validate.mjs validation/validate.mjs
 index 91d4756..4170787 100644
---- a/validation/validate.mjs
-+++ b/validation/validate.mjs
+--- validation/validate.mjs
++++ validation/validate.mjs
 @@ -7,13 +7,11 @@
   *  strict
   */

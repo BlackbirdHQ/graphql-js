@@ -1,7 +1,7 @@
-diff --git a/index.js b/index.js
+diff --git index.js index.js
 index d734462..ff14d92 100644
---- a/index.js
-+++ b/index.js
+--- index.js
++++ index.js
 @@ -147,6 +147,12 @@ Object.defineProperty(exports, 'GraphQLDeprecatedDirective', {
      return _type.GraphQLDeprecatedDirective;
    }
@@ -15,10 +15,10 @@ index d734462..ff14d92 100644
  Object.defineProperty(exports, 'DEFAULT_DEPRECATION_REASON', {
    enumerable: true,
    get: function get() {
-diff --git a/index.js.flow b/index.js.flow
+diff --git index.js.flow index.js.flow
 index 34fbd4b..79dcbd8 100644
---- a/index.js.flow
-+++ b/index.js.flow
+--- index.js.flow
++++ index.js.flow
 @@ -62,6 +62,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -27,10 +27,10 @@ index 34fbd4b..79dcbd8 100644
    // Constant Deprecation Reason
    DEFAULT_DEPRECATION_REASON,
    // Meta-field definitions.
-diff --git a/index.mjs b/index.mjs
+diff --git index.mjs index.mjs
 index 8feb594..4ea629a 100644
---- a/index.mjs
-+++ b/index.mjs
+--- index.mjs
++++ index.mjs
 @@ -44,7 +44,7 @@ TypeKind,
  // Scalars
  specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID,
@@ -40,10 +40,10 @@ index 8feb594..4ea629a 100644
  // Constant Deprecation Reason
  DEFAULT_DEPRECATION_REASON,
  // Meta-field definitions.
-diff --git a/type/definition.js.flow b/type/definition.js.flow
+diff --git type/definition.js.flow type/definition.js.flow
 index c1385da..e5e1a19 100644
---- a/type/definition.js.flow
-+++ b/type/definition.js.flow
+--- type/definition.js.flow
++++ type/definition.js.flow
 @@ -832,6 +832,7 @@ export type GraphQLFieldConfig<
    resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>,
    subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
@@ -60,10 +60,10 @@ index c1385da..e5e1a19 100644
    astNode?: ?FieldDefinitionNode,
  };
  
-diff --git a/type/directives.js b/type/directives.js
+diff --git type/directives.js type/directives.js
 index 2d6861d..3c8434f 100644
---- a/type/directives.js
-+++ b/type/directives.js
+--- type/directives.js
++++ type/directives.js
 @@ -3,7 +3,7 @@
  Object.defineProperty(exports, "__esModule", {
    value: true
@@ -100,10 +100,10 @@ index 2d6861d..3c8434f 100644
  
  function isSpecifiedDirective(directive) {
    return specifiedDirectives.some(function (specifiedDirective) {
-diff --git a/type/directives.js.flow b/type/directives.js.flow
+diff --git type/directives.js.flow type/directives.js.flow
 index 9d4d776..0d3667a 100644
---- a/type/directives.js.flow
-+++ b/type/directives.js.flow
+--- type/directives.js.flow
++++ type/directives.js.flow
 @@ -150,6 +150,21 @@ export const GraphQLDeprecatedDirective = new GraphQLDirective({
    },
  });
@@ -134,10 +134,10 @@ index 9d4d776..0d3667a 100644
  ];
  
  export function isSpecifiedDirective(
-diff --git a/type/directives.mjs b/type/directives.mjs
+diff --git type/directives.mjs type/directives.mjs
 index 7ebf453..92cf953 100644
---- a/type/directives.mjs
-+++ b/type/directives.mjs
+--- type/directives.mjs
++++ type/directives.mjs
 @@ -107,10 +107,25 @@ export var GraphQLDeprecatedDirective = new GraphQLDirective({
    }
  });
@@ -165,10 +165,10 @@ index 7ebf453..92cf953 100644
  
  export function isSpecifiedDirective(directive) {
    return specifiedDirectives.some(function (specifiedDirective) {
-diff --git a/type/index.js b/type/index.js
+diff --git type/index.js type/index.js
 index d2f215c..b63c881 100644
---- a/type/index.js
-+++ b/type/index.js
+--- type/index.js
++++ type/index.js
 @@ -330,6 +330,12 @@ Object.defineProperty(exports, 'GraphQLDeprecatedDirective', {
      return _directives.GraphQLDeprecatedDirective;
    }
@@ -182,10 +182,10 @@ index d2f215c..b63c881 100644
  Object.defineProperty(exports, 'DEFAULT_DEPRECATION_REASON', {
    enumerable: true,
    get: function get() {
-diff --git a/type/index.js.flow b/type/index.js.flow
+diff --git type/index.js.flow type/index.js.flow
 index f7ac4fd..d7d1970 100644
---- a/type/index.js.flow
-+++ b/type/index.js.flow
+--- type/index.js.flow
++++ type/index.js.flow
 @@ -79,6 +79,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -194,10 +194,10 @@ index f7ac4fd..d7d1970 100644
    // Constant Deprecation Reason
    DEFAULT_DEPRECATION_REASON,
  } from './directives';
-diff --git a/type/index.mjs b/type/index.mjs
+diff --git type/index.mjs type/index.mjs
 index 50d5cff..20114c9 100644
---- a/type/index.mjs
-+++ b/type/index.mjs
+--- type/index.mjs
++++ type/index.mjs
 @@ -31,7 +31,7 @@ isDirective,
  // Directives Definition
  GraphQLDirective,
@@ -207,10 +207,10 @@ index 50d5cff..20114c9 100644
  // Constant Deprecation Reason
  DEFAULT_DEPRECATION_REASON } from './directives';
  
-diff --git a/type/introspection.js b/type/introspection.js
+diff --git type/introspection.js type/introspection.js
 index a64fc6c..403cad7 100644
---- a/type/introspection.js
-+++ b/type/introspection.js
+--- type/introspection.js
++++ type/introspection.js
 @@ -236,10 +236,12 @@ var __Type = exports.__Type = new _definition.GraphQLObjectType({
        fields: {
          type: (0, _definition.GraphQLList)((0, _definition.GraphQLNonNull)(__Field)),
@@ -248,10 +248,10 @@ index a64fc6c..403cad7 100644
        }
      };
    }
-diff --git a/type/introspection.js.flow b/type/introspection.js.flow
+diff --git type/introspection.js.flow type/introspection.js.flow
 index a4810c6..6fd6207 100644
---- a/type/introspection.js.flow
-+++ b/type/introspection.js.flow
+--- type/introspection.js.flow
++++ type/introspection.js.flow
 @@ -243,13 +243,17 @@ export const __Type = new GraphQLObjectType({
        type: GraphQLList(GraphQLNonNull(__Field)),
        args: {
@@ -281,10 +281,10 @@ index a4810c6..6fd6207 100644
    }),
  });
  
-diff --git a/type/introspection.mjs b/type/introspection.mjs
+diff --git type/introspection.mjs type/introspection.mjs
 index a75fa1d..437a47d 100644
---- a/type/introspection.mjs
-+++ b/type/introspection.mjs
+--- type/introspection.mjs
++++ type/introspection.mjs
 @@ -219,10 +219,12 @@ export var __Type = new GraphQLObjectType({
        fields: {
          type: GraphQLList(GraphQLNonNull(__Field)),
@@ -322,10 +322,10 @@ index a75fa1d..437a47d 100644
        }
      };
    }
-diff --git a/utilities/buildASTSchema.js b/utilities/buildASTSchema.js
+diff --git utilities/buildASTSchema.js utilities/buildASTSchema.js
 index 74e9fb8..40c0240 100644
---- a/utilities/buildASTSchema.js
-+++ b/utilities/buildASTSchema.js
+--- utilities/buildASTSchema.js
++++ utilities/buildASTSchema.js
 @@ -158,6 +158,12 @@ function buildASTSchema(ast, options) {
      directives.push(_directives.GraphQLDeprecatedDirective);
    }
@@ -363,10 +363,10 @@ index 74e9fb8..40c0240 100644
  /**
   * Given an ast node, returns its string description.
   *
-diff --git a/utilities/buildASTSchema.js.flow b/utilities/buildASTSchema.js.flow
+diff --git utilities/buildASTSchema.js.flow utilities/buildASTSchema.js.flow
 index 2ff2f7d..f91affb 100644
---- a/utilities/buildASTSchema.js.flow
-+++ b/utilities/buildASTSchema.js.flow
+--- utilities/buildASTSchema.js.flow
++++ utilities/buildASTSchema.js.flow
 @@ -58,6 +58,7 @@ import {
    GraphQLSkipDirective,
    GraphQLIncludeDirective,
@@ -410,10 +410,10 @@ index 2ff2f7d..f91affb 100644
  /**
   * Given an ast node, returns its string description.
   *
-diff --git a/utilities/buildASTSchema.mjs b/utilities/buildASTSchema.mjs
+diff --git utilities/buildASTSchema.mjs utilities/buildASTSchema.mjs
 index 755cf9c..e6ad171 100644
---- a/utilities/buildASTSchema.mjs
-+++ b/utilities/buildASTSchema.mjs
+--- utilities/buildASTSchema.mjs
++++ utilities/buildASTSchema.mjs
 @@ -22,7 +22,7 @@ import { Kind } from '../language/kinds';
  
  import { assertNullableType, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from '../type/definition';

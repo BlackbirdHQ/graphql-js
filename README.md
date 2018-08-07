@@ -8,8 +8,8 @@ For v0.13.2,
 
 ```bash
 $ git diff b0.13.2 iam-b0.13.2 dist/* > add-iam-directive-0.13.2.patch
-$ sed -i -e 's/a\/dist\//a\//g' add-iam-directive-0.13.2.patch
-$ sed -i -e 's/b\/dist\//b\//g' add-iam-directive-0.13.2.patch
+$ sed -i -e 's/a\/dist\///g' add-iam-directive-0.13.2.patch
+$ sed -i -e 's/b\/dist\///g' add-iam-directive-0.13.2.patch
 $ rm add-iam-directive-0.13.2.patch-e
 ```
 
@@ -17,8 +17,8 @@ For v14.0.0-rc.2 (not fully cleaned up),
 
 ```bash
 $ git diff b14.0.0-rc.2 master dist/* > add-iam-directive-14.0.0-rc.2.patch
-$ sed -i -e 's/a\/dist\//a\//g' add-iam-directive-14.0.0-rc.2.patch
-$ sed -i -e 's/b\/dist\//b\//g' add-iam-directive-14.0.0-rc.2.patch
+$ sed -i -e 's/a\/dist\///g' add-iam-directive-14.0.0-rc.2.patch
+$ sed -i -e 's/b\/dist\///g' add-iam-directive-14.0.0-rc.2.patch
 $ rm add-iam-directive-14.0.0-rc.2.patch-e
 ```
 
