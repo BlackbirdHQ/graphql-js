@@ -115,4 +115,4 @@ export {
 export type { BreakingChange, DangerousChange } from './findBreakingChanges';
 
 // Report all deprecated usage within a GraphQL document.
-export { findDeprecatedUsages } from './findDeprecatedUsages';
+export { findDeprecatedUsages, findIAMUsages } from './findDeprecatedUsages';

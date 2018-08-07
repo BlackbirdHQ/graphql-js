@@ -248,6 +248,7 @@ export type IntrospectionField = {|
   +type: IntrospectionOutputTypeRef,
   +isDeprecated: boolean,
   +deprecationReason: ?string,
+  +iamKey: ?string,
 |};
 
 export type IntrospectionInputValue = {|

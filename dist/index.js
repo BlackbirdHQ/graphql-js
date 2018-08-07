@@ -1017,3 +1017,9 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _utilities.findDeprecatedUsages;
   }
 });
+Object.defineProperty(exports, 'findIAMUsages', {
+  enumerable: true,
+  get: function get() {
+    return _utilities.findIAMUsages;
+  }
+});

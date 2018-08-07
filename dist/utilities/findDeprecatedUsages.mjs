@@ -48,3 +48,26 @@ export function findDeprecatedUsages(schema, ast) {
 
   return errors;
 }
+
+export function findIAMUsages(schema, ast) {
+  var errors = [];
+  var typeInfo = new TypeInfo(schema);
+
+  visit(ast, visitWithTypeInfo(typeInfo, {
+    Field: function Field(node) {
+      var fieldDef = typeInfo.getFieldDef();
+      if (fieldDef && fieldDef.iamKey) {
+        var parentType = typeInfo.getParentType();
+        if (parentType) {
+          var key = fieldDef.iamKey;
+          if (key === null || key === undefined || key === '') {
+            key = 'NULL';
+          }
+          errors.push(new GraphQLError('The field ' + parentType.name + '.' + fieldDef.name + ' is restricted with key ' + key, [node]));
+        }
+      }
+    }
+  }));
+
+  return errors;
+}

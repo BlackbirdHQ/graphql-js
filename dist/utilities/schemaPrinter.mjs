@@ -168,7 +168,7 @@ function printInputObject(type, options) {
 function printFields(options, type) {
   var fields = objectValues(type.getFields());
   return fields.map(function (f, i) {
-    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f);
+    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f) + printIAM(f);
   }).join('\n');
 }
 
@@ -212,6 +212,17 @@ function printDeprecated(fieldOrEnumVal) {
     return ' @deprecated';
   }
   return ' @deprecated(reason: ' + print(astFromValue(reason, GraphQLString)) + ')';
+}
+
+function printIAM(field) {
+  if (!field.iam) {
+    return '';
+  }
+  var key = field.iamKey;
+  if (key === null || key === undefined || key === '') {
+    return ' @iam';
+  }
+  return ' @iam(key: ' + print(astFromValue(key, GraphQLString)) + ')';
 }
 
 function printDescription(options, def) {

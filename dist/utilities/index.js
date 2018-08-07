@@ -267,3 +267,9 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _findDeprecatedUsages.findDeprecatedUsages;
   }
 });
+Object.defineProperty(exports, 'findIAMUsages', {
+  enumerable: true,
+  get: function get() {
+    return _findDeprecatedUsages.findIAMUsages;
+  }
+});

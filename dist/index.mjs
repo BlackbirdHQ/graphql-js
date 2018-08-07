@@ -145,4 +145,4 @@ isValidNameError,
 // Compares two GraphQLSchemas and detects breaking changes.
 findBreakingChanges, findDangerousChanges, BreakingChangeType, DangerousChangeType,
 // Report all deprecated usage within a GraphQL document.
-findDeprecatedUsages } from './utilities';
+findDeprecatedUsages, findIAMUsages } from './utilities';

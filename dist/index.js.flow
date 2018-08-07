@@ -373,6 +373,7 @@ export {
   DangerousChangeType,
   // Report all deprecated usage within a GraphQL document.
   findDeprecatedUsages,
+  findIAMUsages,
 } from './utilities';
 
 export type {

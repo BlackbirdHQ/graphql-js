@@ -253,7 +253,8 @@ function printFields(options, type) {
         printArgs(options, f.args, '  ') +
         ': ' +
         String(f.type) +
-        printDeprecated(f),
+        printDeprecated(f) +
+        printIAM(f),
     )
     .join('\n');
 }
@@ -319,6 +320,17 @@ function printDeprecated(fieldOrEnumVal) {
   return (
     ' @deprecated(reason: ' + print(astFromValue(reason, GraphQLString)) + ')'
   );
+}
+
+function printIAM(field) {
+  if (!field.iam) {
+    return '';
+  }
+  const key = field.iamKey;
+  if (key === null || key === undefined || key === '') {
+    return ' @iam';
+  }
+  return ' @iam(key: ' + print(astFromValue(key, GraphQLString)) + ')';
 }
 
 function printDescription(

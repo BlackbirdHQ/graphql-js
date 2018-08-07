@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.findDeprecatedUsages = findDeprecatedUsages;
+exports.findIAMUsages = findIAMUsages;
 
 var _GraphQLError = require('../error/GraphQLError');
 
@@ -56,3 +57,26 @@ function findDeprecatedUsages(schema, ast) {
    *
    *  strict
    */
+
+function findIAMUsages(schema, ast) {
+  var errors = [];
+  var typeInfo = new _TypeInfo.TypeInfo(schema);
+
+  (0, _visitor.visit)(ast, (0, _visitor.visitWithTypeInfo)(typeInfo, {
+    Field: function Field(node) {
+      var fieldDef = typeInfo.getFieldDef();
+      if (fieldDef && fieldDef.iamKey) {
+        var parentType = typeInfo.getParentType();
+        if (parentType) {
+          var key = fieldDef.iamKey;
+          if (key === null || key === undefined || key === '') {
+            key = 'NULL';
+          }
+          errors.push(new _GraphQLError.GraphQLError('The field ' + parentType.name + '.' + fieldDef.name + ' is restricted with key ' + key, [node]));
+        }
+      }
+    }
+  }));
+
+  return errors;
+}
