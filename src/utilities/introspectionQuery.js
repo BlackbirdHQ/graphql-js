@@ -41,7 +41,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
       kind
       name
       ${descriptions ? 'description' : ''}
-      fields(includeDeprecated: true) {
+      fields(includeDeprecated: true, includeIAM: true) {
         name
         ${descriptions ? 'description' : ''}
         args {
@@ -52,6 +52,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
         }
         isDeprecated
         deprecationReason
+        iamKey
       }
       inputFields {
         ...InputValue

@@ -1,5 +1,9 @@
 # GraphQL.js
 
+See the README on the master branch!
+
+---
+
 The JavaScript reference implementation for GraphQL, a query language for APIs created by Facebook.
 
 [![npm version](https://badge.fury.io/js/graphql.svg)](http://badge.fury.io/js/graphql)
