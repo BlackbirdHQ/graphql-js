@@ -1,7 +1,7 @@
-diff --git a/dist/index.js b/dist/index.js
+diff --git a/index.js b/index.js
 index d734462..ff14d92 100644
---- a/dist/index.js
-+++ b/dist/index.js
+--- a/index.js
++++ b/index.js
 @@ -147,6 +147,12 @@ Object.defineProperty(exports, 'GraphQLDeprecatedDirective', {
      return _type.GraphQLDeprecatedDirective;
    }
@@ -15,10 +15,10 @@ index d734462..ff14d92 100644
  Object.defineProperty(exports, 'DEFAULT_DEPRECATION_REASON', {
    enumerable: true,
    get: function get() {
-diff --git a/dist/index.js.flow b/dist/index.js.flow
+diff --git a/index.js.flow b/index.js.flow
 index 34fbd4b..79dcbd8 100644
---- a/dist/index.js.flow
-+++ b/dist/index.js.flow
+--- a/index.js.flow
++++ b/index.js.flow
 @@ -62,6 +62,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -27,10 +27,10 @@ index 34fbd4b..79dcbd8 100644
    // Constant Deprecation Reason
    DEFAULT_DEPRECATION_REASON,
    // Meta-field definitions.
-diff --git a/dist/index.mjs b/dist/index.mjs
+diff --git a/index.mjs b/index.mjs
 index 8feb594..4ea629a 100644
---- a/dist/index.mjs
-+++ b/dist/index.mjs
+--- a/index.mjs
++++ b/index.mjs
 @@ -44,7 +44,7 @@ TypeKind,
  // Scalars
  specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID,
@@ -40,10 +40,10 @@ index 8feb594..4ea629a 100644
  // Constant Deprecation Reason
  DEFAULT_DEPRECATION_REASON,
  // Meta-field definitions.
-diff --git a/dist/type/definition.js.flow b/dist/type/definition.js.flow
+diff --git a/type/definition.js.flow b/type/definition.js.flow
 index c1385da..e5e1a19 100644
---- a/dist/type/definition.js.flow
-+++ b/dist/type/definition.js.flow
+--- a/type/definition.js.flow
++++ b/type/definition.js.flow
 @@ -832,6 +832,7 @@ export type GraphQLFieldConfig<
    resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>,
    subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
@@ -59,11 +59,11 @@ index c1385da..e5e1a19 100644
 +  iamKey?: ?string,
    astNode?: ?FieldDefinitionNode,
  };
- 
-diff --git a/dist/type/directives.js b/dist/type/directives.js
+
+diff --git a/type/directives.js b/type/directives.js
 index 2d6861d..3c8434f 100644
---- a/dist/type/directives.js
-+++ b/dist/type/directives.js
+--- a/type/directives.js
++++ b/type/directives.js
 @@ -3,7 +3,7 @@
  Object.defineProperty(exports, "__esModule", {
    value: true
@@ -72,11 +72,11 @@ index 2d6861d..3c8434f 100644
 +exports.specifiedDirectives = exports.GraphQLIAMDirective = exports.GraphQLDeprecatedDirective = exports.DEFAULT_DEPRECATION_REASON = exports.GraphQLSkipDirective = exports.GraphQLIncludeDirective = exports.GraphQLDirective = undefined;
  exports.isDirective = isDirective;
  exports.isSpecifiedDirective = isSpecifiedDirective;
- 
+
 @@ -126,10 +126,25 @@ var GraphQLDeprecatedDirective = exports.GraphQLDeprecatedDirective = new GraphQ
    }
  });
- 
+
 +/**
 + * Used to declare element of a GraphQL schema as restricted via IAM permissions.
 + */
@@ -97,17 +97,17 @@ index 2d6861d..3c8434f 100644
   */
 -var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
 +var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective];
- 
+
  function isSpecifiedDirective(directive) {
    return specifiedDirectives.some(function (specifiedDirective) {
-diff --git a/dist/type/directives.js.flow b/dist/type/directives.js.flow
+diff --git a/type/directives.js.flow b/type/directives.js.flow
 index 9d4d776..0d3667a 100644
---- a/dist/type/directives.js.flow
-+++ b/dist/type/directives.js.flow
+--- a/type/directives.js.flow
++++ b/type/directives.js.flow
 @@ -150,6 +150,21 @@ export const GraphQLDeprecatedDirective = new GraphQLDirective({
    },
  });
- 
+
 +/**
 + * Used to declare element of a GraphQL schema as restricted via IAM permissions.
 + */
@@ -132,16 +132,16 @@ index 9d4d776..0d3667a 100644
    GraphQLDeprecatedDirective,
 +  GraphQLIAMDirective,
  ];
- 
+
  export function isSpecifiedDirective(
-diff --git a/dist/type/directives.mjs b/dist/type/directives.mjs
+diff --git a/type/directives.mjs b/type/directives.mjs
 index 7ebf453..92cf953 100644
---- a/dist/type/directives.mjs
-+++ b/dist/type/directives.mjs
+--- a/type/directives.mjs
++++ b/type/directives.mjs
 @@ -107,10 +107,25 @@ export var GraphQLDeprecatedDirective = new GraphQLDirective({
    }
  });
- 
+
 +/**
 + * Used to declare element of a GraphQL schema as restricted via IAM permissions.
 + */
@@ -162,13 +162,13 @@ index 7ebf453..92cf953 100644
   */
 -export var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
 +export var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective];
- 
+
  export function isSpecifiedDirective(directive) {
    return specifiedDirectives.some(function (specifiedDirective) {
-diff --git a/dist/type/index.js b/dist/type/index.js
+diff --git a/type/index.js b/type/index.js
 index d2f215c..b63c881 100644
---- a/dist/type/index.js
-+++ b/dist/type/index.js
+--- a/type/index.js
++++ b/type/index.js
 @@ -330,6 +330,12 @@ Object.defineProperty(exports, 'GraphQLDeprecatedDirective', {
      return _directives.GraphQLDeprecatedDirective;
    }
@@ -182,10 +182,10 @@ index d2f215c..b63c881 100644
  Object.defineProperty(exports, 'DEFAULT_DEPRECATION_REASON', {
    enumerable: true,
    get: function get() {
-diff --git a/dist/type/index.js.flow b/dist/type/index.js.flow
+diff --git a/type/index.js.flow b/type/index.js.flow
 index f7ac4fd..d7d1970 100644
---- a/dist/type/index.js.flow
-+++ b/dist/type/index.js.flow
+--- a/type/index.js.flow
++++ b/type/index.js.flow
 @@ -79,6 +79,7 @@ export {
    GraphQLIncludeDirective,
    GraphQLSkipDirective,
@@ -194,10 +194,10 @@ index f7ac4fd..d7d1970 100644
    // Constant Deprecation Reason
    DEFAULT_DEPRECATION_REASON,
  } from './directives';
-diff --git a/dist/type/index.mjs b/dist/type/index.mjs
+diff --git a/type/index.mjs b/type/index.mjs
 index 50d5cff..20114c9 100644
---- a/dist/type/index.mjs
-+++ b/dist/type/index.mjs
+--- a/type/index.mjs
++++ b/type/index.mjs
 @@ -31,7 +31,7 @@ isDirective,
  // Directives Definition
  GraphQLDirective,
@@ -206,11 +206,11 @@ index 50d5cff..20114c9 100644
 +isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective,
  // Constant Deprecation Reason
  DEFAULT_DEPRECATION_REASON } from './directives';
- 
-diff --git a/dist/type/introspection.js b/dist/type/introspection.js
+
+diff --git a/type/introspection.js b/type/introspection.js
 index a64fc6c..403cad7 100644
---- a/dist/type/introspection.js
-+++ b/dist/type/introspection.js
+--- a/type/introspection.js
++++ b/type/introspection.js
 @@ -236,10 +236,12 @@ var __Type = exports.__Type = new _definition.GraphQLObjectType({
        fields: {
          type: (0, _definition.GraphQLList)((0, _definition.GraphQLNonNull)(__Field)),
@@ -223,7 +223,7 @@ index a64fc6c..403cad7 100644
 -          var includeDeprecated = _ref.includeDeprecated;
 +          var includeDeprecated = _ref.includeDeprecated,
 +              includeIAM = _ref.includeIAM;
- 
+
            if ((0, _definition.isObjectType)(type) || (0, _definition.isInterfaceType)(type)) {
              var fields = (0, _objectValues2.default)(type.getFields());
 @@ -248,6 +250,11 @@ var __Type = exports.__Type = new _definition.GraphQLObjectType({
@@ -248,10 +248,10 @@ index a64fc6c..403cad7 100644
        }
      };
    }
-diff --git a/dist/type/introspection.js.flow b/dist/type/introspection.js.flow
+diff --git a/type/introspection.js.flow b/type/introspection.js.flow
 index a4810c6..6fd6207 100644
---- a/dist/type/introspection.js.flow
-+++ b/dist/type/introspection.js.flow
+--- a/type/introspection.js.flow
++++ b/type/introspection.js.flow
 @@ -243,13 +243,17 @@ export const __Type = new GraphQLObjectType({
        type: GraphQLList(GraphQLNonNull(__Field)),
        args: {
@@ -280,11 +280,11 @@ index a4810c6..6fd6207 100644
 +    },
    }),
  });
- 
-diff --git a/dist/type/introspection.mjs b/dist/type/introspection.mjs
+
+diff --git a/type/introspection.mjs b/type/introspection.mjs
 index a75fa1d..437a47d 100644
---- a/dist/type/introspection.mjs
-+++ b/dist/type/introspection.mjs
+--- a/type/introspection.mjs
++++ b/type/introspection.mjs
 @@ -219,10 +219,12 @@ export var __Type = new GraphQLObjectType({
        fields: {
          type: GraphQLList(GraphQLNonNull(__Field)),
@@ -297,7 +297,7 @@ index a75fa1d..437a47d 100644
 -          var includeDeprecated = _ref.includeDeprecated;
 +          var includeDeprecated = _ref.includeDeprecated,
 +              includeIAM = _ref.includeIAM;
- 
+
            if (isObjectType(type) || isInterfaceType(type)) {
              var fields = objectValues(type.getFields());
 @@ -231,6 +233,11 @@ export var __Type = new GraphQLObjectType({
@@ -322,14 +322,14 @@ index a75fa1d..437a47d 100644
        }
      };
    }
-diff --git a/dist/utilities/buildASTSchema.js b/dist/utilities/buildASTSchema.js
+diff --git a/utilities/buildASTSchema.js b/utilities/buildASTSchema.js
 index 74e9fb8..40c0240 100644
---- a/dist/utilities/buildASTSchema.js
-+++ b/dist/utilities/buildASTSchema.js
+--- a/utilities/buildASTSchema.js
++++ b/utilities/buildASTSchema.js
 @@ -158,6 +158,12 @@ function buildASTSchema(ast, options) {
      directives.push(_directives.GraphQLDeprecatedDirective);
    }
- 
+
 +  if (!directives.some(function (directive) {
 +    return directive.name === 'iam';
 +  })) {
@@ -350,7 +350,7 @@ index 74e9fb8..40c0240 100644
 @@ -403,6 +410,15 @@ function getDeprecationReason(node) {
    return deprecated && deprecated.reason;
  }
- 
+
 +/**
 + * Given a field, returns the string value for the
 + * IAM key.
@@ -363,22 +363,22 @@ index 74e9fb8..40c0240 100644
  /**
   * Given an ast node, returns its string description.
   *
-diff --git a/dist/utilities/buildASTSchema.js.flow b/dist/utilities/buildASTSchema.js.flow
+diff --git a/utilities/buildASTSchema.js.flow b/utilities/buildASTSchema.js.flow
 index 2ff2f7d..f91affb 100644
---- a/dist/utilities/buildASTSchema.js.flow
-+++ b/dist/utilities/buildASTSchema.js.flow
+--- a/utilities/buildASTSchema.js.flow
++++ b/utilities/buildASTSchema.js.flow
 @@ -58,6 +58,7 @@ import {
    GraphQLSkipDirective,
    GraphQLIncludeDirective,
    GraphQLDeprecatedDirective,
 +  GraphQLIAMDirective,
  } from '../type/directives';
- 
+
  import { introspectionTypes } from '../type/introspection';
 @@ -202,6 +203,10 @@ export function buildASTSchema(
      directives.push(GraphQLDeprecatedDirective);
    }
- 
+
 +  if (!directives.some(directive => directive.name === 'iam')) {
 +    directives.push(GraphQLIAMDirective);
 +  }
@@ -397,7 +397,7 @@ index 2ff2f7d..f91affb 100644
 @@ -453,6 +459,15 @@ function getDeprecationReason(
    return deprecated && (deprecated.reason: any);
  }
- 
+
 +/**
 + * Given a field, returns the string value for the
 + * IAM key.
@@ -410,23 +410,23 @@ index 2ff2f7d..f91affb 100644
  /**
   * Given an ast node, returns its string description.
   *
-diff --git a/dist/utilities/buildASTSchema.mjs b/dist/utilities/buildASTSchema.mjs
+diff --git a/utilities/buildASTSchema.mjs b/utilities/buildASTSchema.mjs
 index 755cf9c..e6ad171 100644
---- a/dist/utilities/buildASTSchema.mjs
-+++ b/dist/utilities/buildASTSchema.mjs
+--- a/utilities/buildASTSchema.mjs
++++ b/utilities/buildASTSchema.mjs
 @@ -22,7 +22,7 @@ import { Kind } from '../language/kinds';
- 
+
  import { assertNullableType, GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from '../type/definition';
- 
+
 -import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective } from '../type/directives';
 +import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective } from '../type/directives';
- 
+
  import { introspectionTypes } from '../type/introspection';
- 
+
 @@ -138,6 +138,12 @@ export function buildASTSchema(ast, options) {
      directives.push(GraphQLDeprecatedDirective);
    }
- 
+
 +  if (!directives.some(function (directive) {
 +    return directive.name === 'iam';
 +  })) {
@@ -447,7 +447,7 @@ index 755cf9c..e6ad171 100644
 @@ -381,6 +388,15 @@ function getDeprecationReason(node) {
    return deprecated && deprecated.reason;
  }
- 
+
 +/**
 + * Given a field, returns the string value for the
 + * IAM key.
