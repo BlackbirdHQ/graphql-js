@@ -1,20 +1,6 @@
 # GraphQL.js
 
-This is a fork of [graphql/graphql-js](https://github.com/graphql/graphql-js) that adds support for our own custom directives to be passed through introspection.
-
-We have currently added this on the master branch, and on the branch for version 0.13.2 (iam-b0.13.2). To get the relevant diff, depending on which version you are interested in:
-
-For 0.13.2,
-
-```bash
-$ git diff b0.13.2 iam-b0.13.2 dist/* > add-iam-directive.patch
-```
-
-For v14.0.0-rc.2 (not fully cleaned up),
-
-```bash
-$ git diff v14.0.0-rc.2 master dist/* > add-iam-directive.patch
-```
+See the README on the master branch!
 
 ---
 
