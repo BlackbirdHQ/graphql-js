@@ -502,6 +502,78 @@ index 755cf9c..e6ad171 100644
  /**
   * Given an ast node, returns its string description.
   *
+diff --git utilities/buildClientSchema.js utilities/buildClientSchema.js
+index 8869940..02cc5f5 100644
+--- utilities/buildClientSchema.js
++++ utilities/buildClientSchema.js
+@@ -233,6 +233,7 @@ function buildClientSchema(introspection, options) {
+       return {
+         description: fieldIntrospection.description,
+         deprecationReason: fieldIntrospection.deprecationReason,
++        iamKey: fieldIntrospection.iamKey,
+         type: getOutputType(fieldIntrospection.type),
+         args: buildInputValueDefMap(fieldIntrospection.args)
+       };
+diff --git utilities/buildClientSchema.js.flow utilities/buildClientSchema.js.flow
+index b86b9bf..c0093bc 100644
+--- utilities/buildClientSchema.js.flow
++++ utilities/buildClientSchema.js.flow
+@@ -312,6 +312,7 @@ export function buildClientSchema(
+         return {
+           description: fieldIntrospection.description,
+           deprecationReason: fieldIntrospection.deprecationReason,
++          iamKey: fieldIntrospection.iamKey,
+           type: getOutputType(fieldIntrospection.type),
+           args: buildInputValueDefMap(fieldIntrospection.args),
+         };
+diff --git utilities/buildClientSchema.mjs utilities/buildClientSchema.mjs
+index b864b7b..04dcb81 100644
+--- utilities/buildClientSchema.mjs
++++ utilities/buildClientSchema.mjs
+@@ -222,6 +222,7 @@ export function buildClientSchema(introspection, options) {
+       return {
+         description: fieldIntrospection.description,
+         deprecationReason: fieldIntrospection.deprecationReason,
++        iamKey: fieldIntrospection.iamKey,
+         type: getOutputType(fieldIntrospection.type),
+         args: buildInputValueDefMap(fieldIntrospection.args)
+       };
+diff --git utilities/extendSchema.js utilities/extendSchema.js
+index 11c77de..1383f4e 100644
+--- utilities/extendSchema.js
++++ utilities/extendSchema.js
+@@ -276,6 +276,7 @@ function extendSchema(schema, documentAST, options) {
+       newFieldMap[fieldName] = {
+         description: field.description,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         type: extendFieldType(field.type),
+         args: (0, _keyMap2.default)(field.args, function (arg) {
+           return arg.name;
+diff --git utilities/extendSchema.js.flow utilities/extendSchema.js.flow
+index cab1321..5df7fcc 100644
+--- utilities/extendSchema.js.flow
++++ utilities/extendSchema.js.flow
+@@ -338,6 +338,7 @@ export function extendSchema(
+       newFieldMap[fieldName] = {
+         description: field.description,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         type: extendFieldType(field.type),
+         args: keyMap(field.args, arg => arg.name),
+         astNode: field.astNode,
+diff --git utilities/extendSchema.mjs utilities/extendSchema.mjs
+index 1585090..b368791 100644
+--- utilities/extendSchema.mjs
++++ utilities/extendSchema.mjs
+@@ -255,6 +255,7 @@ export function extendSchema(schema, documentAST, options) {
+       newFieldMap[fieldName] = {
+         description: field.description,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         type: extendFieldType(field.type),
+         args: keyMap(field.args, function (arg) {
+           return arg.name;
 diff --git utilities/findDeprecatedUsages.js utilities/findDeprecatedUsages.js
 index b46447f..437fad5 100644
 --- utilities/findDeprecatedUsages.js
@@ -718,8 +790,44 @@ index 150b23b..82f6342 100644
  
  export var introspectionQuery = getIntrospectionQuery();
 \ No newline at end of file
+diff --git utilities/lexicographicSortSchema.js utilities/lexicographicSortSchema.js
+index cca9ca4..8c32928 100644
+--- utilities/lexicographicSortSchema.js
++++ utilities/lexicographicSortSchema.js
+@@ -83,6 +83,7 @@ function lexicographicSortSchema(schema) {
+         resolve: field.resolve,
+         subscribe: field.subscribe,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         description: field.description,
+         astNode: field.astNode
+       };
+diff --git utilities/lexicographicSortSchema.js.flow utilities/lexicographicSortSchema.js.flow
+index 570d3e4..ee8c44e 100644
+--- utilities/lexicographicSortSchema.js.flow
++++ utilities/lexicographicSortSchema.js.flow
+@@ -77,6 +77,7 @@ export function lexicographicSortSchema(schema: GraphQLSchema): GraphQLSchema {
+       resolve: field.resolve,
+       subscribe: field.subscribe,
+       deprecationReason: field.deprecationReason,
++      iamKey: field.iamKey,
+       description: field.description,
+       astNode: field.astNode,
+     }));
+diff --git utilities/lexicographicSortSchema.mjs utilities/lexicographicSortSchema.mjs
+index bc9416d..baf5c58 100644
+--- utilities/lexicographicSortSchema.mjs
++++ utilities/lexicographicSortSchema.mjs
+@@ -65,6 +65,7 @@ export function lexicographicSortSchema(schema) {
+         resolve: field.resolve,
+         subscribe: field.subscribe,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         description: field.description,
+         astNode: field.astNode
+       };
 diff --git utilities/schemaPrinter.js utilities/schemaPrinter.js
-index 46ada09..0c75099 100644
+index 46ada09..8a892dd 100644
 --- utilities/schemaPrinter.js
 +++ utilities/schemaPrinter.js
 @@ -189,7 +189,7 @@ function printInputObject(type, options) {
@@ -736,7 +844,7 @@ index 46ada09..0c75099 100644
  }
  
 +function printIAM(field) {
-+  if (!field.iam) {
++  if (!field.iamKey) {
 +    return '';
 +  }
 +  var key = field.iamKey;
@@ -750,7 +858,7 @@ index 46ada09..0c75099 100644
    var indentation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
    var firstInBlock = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
 diff --git utilities/schemaPrinter.js.flow utilities/schemaPrinter.js.flow
-index a630f27..e11f791 100644
+index a630f27..18c3f5a 100644
 --- utilities/schemaPrinter.js.flow
 +++ utilities/schemaPrinter.js.flow
 @@ -253,7 +253,8 @@ function printFields(options, type) {
@@ -768,7 +876,7 @@ index a630f27..e11f791 100644
  }
  
 +function printIAM(field) {
-+  if (!field.iam) {
++  if (!field.iamKey) {
 +    return '';
 +  }
 +  const key = field.iamKey;
@@ -782,7 +890,7 @@ index a630f27..e11f791 100644
    options,
    def,
 diff --git utilities/schemaPrinter.mjs utilities/schemaPrinter.mjs
-index 9dd858a..8ae797e 100644
+index 9dd858a..105b9e8 100644
 --- utilities/schemaPrinter.mjs
 +++ utilities/schemaPrinter.mjs
 @@ -168,7 +168,7 @@ function printInputObject(type, options) {
@@ -799,7 +907,7 @@ index 9dd858a..8ae797e 100644
  }
  
 +function printIAM(field) {
-+  if (!field.iam) {
++  if (!field.iamKey) {
 +    return '';
 +  }
 +  var key = field.iamKey;
