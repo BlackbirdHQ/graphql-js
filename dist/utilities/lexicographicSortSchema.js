@@ -83,6 +83,7 @@ function lexicographicSortSchema(schema) {
         resolve: field.resolve,
         subscribe: field.subscribe,
         deprecationReason: field.deprecationReason,
+        iamKey: field.iamKey,
         description: field.description,
         astNode: field.astNode
       };

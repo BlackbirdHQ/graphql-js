@@ -222,6 +222,7 @@ export function buildClientSchema(introspection, options) {
       return {
         description: fieldIntrospection.description,
         deprecationReason: fieldIntrospection.deprecationReason,
+        iamKey: fieldIntrospection.iamKey,
         type: getOutputType(fieldIntrospection.type),
         args: buildInputValueDefMap(fieldIntrospection.args)
       };

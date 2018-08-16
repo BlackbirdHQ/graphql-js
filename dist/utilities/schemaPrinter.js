@@ -236,7 +236,7 @@ function printDeprecated(fieldOrEnumVal) {
 }
 
 function printIAM(field) {
-  if (!field.iam) {
+  if (!field.iamKey) {
     return '';
   }
   var key = field.iamKey;

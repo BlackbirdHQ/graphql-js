@@ -276,6 +276,7 @@ function extendSchema(schema, documentAST, options) {
       newFieldMap[fieldName] = {
         description: field.description,
         deprecationReason: field.deprecationReason,
+        iamKey: field.iamKey,
         type: extendFieldType(field.type),
         args: (0, _keyMap2.default)(field.args, function (arg) {
           return arg.name;

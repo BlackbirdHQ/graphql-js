@@ -338,6 +338,7 @@ export function extendSchema(
       newFieldMap[fieldName] = {
         description: field.description,
         deprecationReason: field.deprecationReason,
+        iamKey: field.iamKey,
         type: extendFieldType(field.type),
         args: keyMap(field.args, arg => arg.name),
         astNode: field.astNode,
