@@ -1,28 +1,19 @@
 # GraphQL.js
 
-This is a fork of [graphql/graphql-js](https://github.com/graphql/graphql-js) that adds support for our own custom directives to be passed through introspection.
+This is a fork of [graphql/graphql-js](https://github.com/graphql/graphql-js)
+that adds support for our own custom directives to be passed through
+introspection.
 
-We have currently added this on the master branch, and on the branch for version 0.13.2 (iam-b0.13.2). To get the relevant diff, depending on which version you are interested in:
+The `generate-iam-patch.sh` script walks through generating a patch for a tagged
+version that can be used to patch a published release. The `src-changes.patch`
+contains the most reason changes for a custom @iam directive, currently for
+v14.1.1.
 
-For v0.13.2,
-
-```bash
-$ git diff b0.13.2 iam-b0.13.2 dist/* > add-iam-directive-0.13.2.patch &&
-  sed -i -e 's/a\/dist\///g' add-iam-directive-0.13.2.patch &&
-  sed -i -e 's/b\/dist\///g' add-iam-directive-0.13.2.patch &&
-  rm add-iam-directive-0.13.2.patch-e
-```
-
-For v14.0.0-rc.2 (not fully cleaned up),
+To generate the patch, run:
 
 ```bash
-$ git diff b14.0.0-rc.2 master dist/* > add-iam-directive-14.0.0-rc.2.patch &&
-  sed -i -e 's/a\/dist\///g' add-iam-directive-14.0.0-rc.2.patch &&
-  sed -i -e 's/b\/dist\///g' add-iam-directive-14.0.0-rc.2.patch &&
-  rm add-iam-directive-14.0.0-rc.2.patch-e
+$ ./generate-iam-patch.sh
 ```
-
-The replacements (via `sed`) are necessary because the NPM packaged GraphQL will have the dist files in the root folder and not inside a dist folder.
 
 ---
 

@@ -1,0 +1,499 @@
+diff --git a/src/index.js b/src/index.js
+index bc143f0..8a5d993 100644
+--- a/src/index.js
++++ b/src/index.js
+@@ -62,6 +62,7 @@ export {
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+   // Constant Deprecation Reason
+   DEFAULT_DEPRECATION_REASON,
+   // Meta-field definitions.
+@@ -400,6 +401,7 @@ export {
+   DangerousChangeType,
+   // Report all deprecated usage within a GraphQL document.
+   findDeprecatedUsages,
++  findIAMUsages,
+ } from './utilities';
+ 
+ export type {
+diff --git a/src/type/__tests__/definition-test.js b/src/type/__tests__/definition-test.js
+index bb21202..8b78a11 100644
+--- a/src/type/__tests__/definition-test.js
++++ b/src/type/__tests__/definition-test.js
+@@ -257,6 +257,26 @@ describe('Type System: Example', () => {
+     });
+   });
+ 
++  it('defines an object type with iam field', () => {
++    const TypeWithIAMField = new GraphQLObjectType({
++      name: 'foo',
++      fields: {
++        bar: {
++          type: GraphQLString,
++          iamKey: 'TerribleReason',
++        },
++      },
++    });
++
++    expect(TypeWithIAMField.getFields().bar).to.deep.equal({
++      type: GraphQLString,
++      iamKey: 'TerribleReason',
++      isDeprecated: false,
++      name: 'bar',
++      args: [],
++    });
++  });
++
+   it('includes nested input objects in the map', () => {
+     const NestedInputObject = new GraphQLInputObjectType({
+       name: 'NestedInputObject',
+diff --git a/src/type/definition.js b/src/type/definition.js
+index 6da2e1b..7c35a18 100644
+--- a/src/type/definition.js
++++ b/src/type/definition.js
+@@ -813,6 +813,7 @@ export type GraphQLFieldConfig<
+   resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   deprecationReason?: ?string,
++  iamKey?: ?string,
+   description?: ?string,
+   astNode?: ?FieldDefinitionNode,
+ |};
+@@ -843,6 +844,7 @@ export type GraphQLField<
+   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   isDeprecated?: boolean,
+   deprecationReason?: ?string,
++  iamKey?: ?string,
+   astNode?: ?FieldDefinitionNode,
+ };
+ 
+diff --git a/src/type/directives.js b/src/type/directives.js
+index a9f512f..4823eb0 100644
+--- a/src/type/directives.js
++++ b/src/type/directives.js
+@@ -164,6 +164,21 @@ export const GraphQLDeprecatedDirective = new GraphQLDirective({
+   },
+ });
+ 
++/**
++ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
++ */
++export const GraphQLIAMDirective = new GraphQLDirective({
++  name: 'iam',
++  description: 'Annotates the neccessary access permissions for the element.',
++  locations: [DirectiveLocation.FIELD_DEFINITION],
++  args: {
++    key: {
++      type: GraphQLString,
++      description: 'Defines the access key',
++    },
++  },
++});
++
+ /**
+  * The full list of specified directives.
+  */
+@@ -171,6 +186,7 @@ export const specifiedDirectives: $ReadOnlyArray<*> = [
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+ ];
+ 
+ export function isSpecifiedDirective(
+diff --git a/src/type/index.js b/src/type/index.js
+index 4e439ab..8319763 100644
+--- a/src/type/index.js
++++ b/src/type/index.js
+@@ -85,6 +85,7 @@ export {
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+   // Constant Deprecation Reason
+   DEFAULT_DEPRECATION_REASON,
+ } from './directives';
+diff --git a/src/type/introspection.js b/src/type/introspection.js
+index a21249f..e14ad81 100644
+--- a/src/type/introspection.js
++++ b/src/type/introspection.js
+@@ -233,13 +233,17 @@ export const __Type = new GraphQLObjectType({
+       type: GraphQLList(GraphQLNonNull(__Field)),
+       args: {
+         includeDeprecated: { type: GraphQLBoolean, defaultValue: false },
++        includeIAM: { type: GraphQLBoolean, defaultValue: false },
+       },
+-      resolve(type, { includeDeprecated }) {
++      resolve(type, { includeDeprecated, includeIAM }) {
+         if (isObjectType(type) || isInterfaceType(type)) {
+           let fields = objectValues(type.getFields());
+           if (!includeDeprecated) {
+             fields = fields.filter(field => !field.deprecationReason);
+           }
++          if (!includeIAM) {
++            fields = fields.filter(field => !field.iamKey);
++          }
+           return fields;
+         }
+         return null;
+@@ -321,6 +325,9 @@ export const __Field = new GraphQLObjectType({
+       type: GraphQLString,
+       resolve: obj => obj.deprecationReason,
+     },
++    iamKey: {
++      type: GraphQLString,
++    },
+   }),
+ });
+ 
+diff --git a/src/utilities/__tests__/buildASTSchema-test.js b/src/utilities/__tests__/buildASTSchema-test.js
+index 13c4138..925840f 100644
+--- a/src/utilities/__tests__/buildASTSchema-test.js
++++ b/src/utilities/__tests__/buildASTSchema-test.js
+@@ -28,6 +28,7 @@ import {
+   GraphQLSkipDirective,
+   GraphQLIncludeDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+ } from '../../';
+ 
+ /**
+@@ -154,12 +155,13 @@ describe('Schema Builder', () => {
+       }
+     `;
+     const schema = buildSchema(sdl);
+-    expect(schema.getDirectives()).to.have.lengthOf(3);
++    expect(schema.getDirectives().length).to.equal(4);
+     expect(schema.getDirective('skip')).to.equal(GraphQLSkipDirective);
+     expect(schema.getDirective('include')).to.equal(GraphQLIncludeDirective);
+     expect(schema.getDirective('deprecated')).to.equal(
+       GraphQLDeprecatedDirective,
+     );
++    expect(schema.getDirective('iam')).to.equal(GraphQLIAMDirective);
+   });
+ 
+   it('Overriding directives excludes specified', () => {
+@@ -167,13 +169,14 @@ describe('Schema Builder', () => {
+       directive @skip on FIELD
+       directive @include on FIELD
+       directive @deprecated on FIELD_DEFINITION
++      directive @iam on FIELD_DEFINITION
+ 
+       type Query {
+         str: String
+       }
+     `;
+     const schema = buildSchema(sdl);
+-    expect(schema.getDirectives()).to.have.lengthOf(3);
++    expect(schema.getDirectives().length).to.equal(4);
+     expect(schema.getDirective('skip')).to.not.equal(GraphQLSkipDirective);
+     expect(schema.getDirective('include')).to.not.equal(
+       GraphQLIncludeDirective,
+@@ -181,6 +184,7 @@ describe('Schema Builder', () => {
+     expect(schema.getDirective('deprecated')).to.not.equal(
+       GraphQLDeprecatedDirective,
+     );
++    expect(schema.getDirective('iam')).to.not.equal(GraphQLIAMDirective);
+   });
+ 
+   it('Adding directives maintains @skip & @include', () => {
+@@ -192,10 +196,11 @@ describe('Schema Builder', () => {
+       }
+     `;
+     const schema = buildSchema(sdl);
+-    expect(schema.getDirectives()).to.have.lengthOf(4);
++    expect(schema.getDirectives().length).to.equal(5);
+     expect(schema.getDirective('skip')).to.not.equal(undefined);
+     expect(schema.getDirective('include')).to.not.equal(undefined);
+     expect(schema.getDirective('deprecated')).to.not.equal(undefined);
++    expect(schema.getDirective('iam')).to.not.equal(undefined);
+   });
+ 
+   it('Type modifiers', () => {
+diff --git a/src/utilities/__tests__/findBreakingChanges-test.js b/src/utilities/__tests__/findBreakingChanges-test.js
+index 32d969a..a94caca 100644
+--- a/src/utilities/__tests__/findBreakingChanges-test.js
++++ b/src/utilities/__tests__/findBreakingChanges-test.js
+@@ -41,6 +41,7 @@ import {
+   GraphQLSkipDirective,
+   GraphQLIncludeDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+   GraphQLDirective,
+ } from '../../type/directives';
+ 
+@@ -933,6 +934,10 @@ describe('findBreakingChanges', () => {
+         type: BreakingChangeType.DIRECTIVE_REMOVED,
+         description: `${GraphQLDeprecatedDirective.name} was removed`,
+       },
++      {
++        type: BreakingChangeType.DIRECTIVE_REMOVED,
++        description: `${GraphQLIAMDirective.name} was removed`,
++      },
+     ]);
+   });
+ 
+diff --git a/src/utilities/__tests__/schemaPrinter-test.js b/src/utilities/__tests__/schemaPrinter-test.js
+index ccc8e93..a77c7fd 100644
+--- a/src/utilities/__tests__/schemaPrinter-test.js
++++ b/src/utilities/__tests__/schemaPrinter-test.js
+@@ -644,6 +644,12 @@ describe('Type System Printer', () => {
+         reason: String = "No longer supported"
+       ) on FIELD_DEFINITION | ENUM_VALUE
+ 
++      """Annotates the neccessary access permissions for the element."""
++      directive @iam(
++        """Defines the access key"""
++        key: String
++      ) on FIELD_DEFINITION
++
+       """
+       A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+ 
+@@ -745,6 +751,7 @@ describe('Type System Printer', () => {
+         type: __Type!
+         isDeprecated: Boolean!
+         deprecationReason: String
++        iamKey: String
+       }
+ 
+       """
+@@ -803,7 +810,7 @@ describe('Type System Printer', () => {
+         kind: __TypeKind!
+         name: String
+         description: String
+-        fields(includeDeprecated: Boolean = false): [__Field!]
++        fields(includeDeprecated: Boolean = false, includeIAM: Boolean = false): [__Field!]
+         interfaces: [__Type!]
+         possibleTypes: [__Type!]
+         enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+@@ -879,6 +886,12 @@ describe('Type System Printer', () => {
+         reason: String = "No longer supported"
+       ) on FIELD_DEFINITION | ENUM_VALUE
+ 
++      # Annotates the neccessary access permissions for the element.
++      directive @iam(
++        # Defines the access key
++        key: String
++      ) on FIELD_DEFINITION
++
+       # A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+       #
+       # In some cases, you need to provide options to alter GraphQL's execution behavior
+@@ -972,6 +985,7 @@ describe('Type System Printer', () => {
+         type: __Type!
+         isDeprecated: Boolean!
+         deprecationReason: String
++        iamKey: String
+       }
+ 
+       # Arguments provided to Fields or Directives and the input fields of an
+@@ -1018,7 +1032,7 @@ describe('Type System Printer', () => {
+         kind: __TypeKind!
+         name: String
+         description: String
+-        fields(includeDeprecated: Boolean = false): [__Field!]
++        fields(includeDeprecated: Boolean = false, includeIAM: Boolean = false): [__Field!]
+         interfaces: [__Type!]
+         possibleTypes: [__Type!]
+         enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+diff --git a/src/utilities/buildASTSchema.js b/src/utilities/buildASTSchema.js
+index 076845c..4f584e8 100644
+--- a/src/utilities/buildASTSchema.js
++++ b/src/utilities/buildASTSchema.js
+@@ -71,6 +71,7 @@ import {
+   GraphQLSkipDirective,
+   GraphQLIncludeDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+ } from '../type/directives';
+ 
+ import { introspectionTypes } from '../type/introspection';
+@@ -177,6 +178,10 @@ export function buildASTSchema(
+     directives.push(GraphQLDeprecatedDirective);
+   }
+ 
++  if (!directives.some(directive => directive.name === 'iam')) {
++    directives.push(GraphQLIAMDirective);
++  }
++
+   // Note: While this could make early assertions to get the correctly
+   // typed values below, that would throw immediately while type system
+   // validation with validateSchema() will produce more actionable results.
+@@ -281,6 +286,7 @@ export class ASTDefinitionBuilder {
+       description: getDescription(field, this._options),
+       args: keyByNameNode(field.arguments || [], arg => this.buildArg(arg)),
+       deprecationReason: getDeprecationReason(field),
++      iamKey: getIAMKey(field),
+       astNode: field,
+     };
+   }
+@@ -451,6 +457,15 @@ function getDeprecationReason(
+   return deprecated && (deprecated.reason: any);
+ }
+ 
++/**
++ * Given a field, returns the string value for the
++ * IAM key.
++ */
++function getIAMKey(node: FieldDefinitionNode): ?string {
++  const iam = getDirectiveValues(GraphQLIAMDirective, node);
++  return iam && (iam.key: any);
++}
++
+ /**
+  * Given an ast node, returns its string description.
+  * @deprecated: provided to ease adoption and will be removed in v16.
+diff --git a/src/utilities/buildClientSchema.js b/src/utilities/buildClientSchema.js
+index 9d541e3..99d77ea 100644
+--- a/src/utilities/buildClientSchema.js
++++ b/src/utilities/buildClientSchema.js
+@@ -314,6 +314,7 @@ export function buildClientSchema(
+         return {
+           description: fieldIntrospection.description,
+           deprecationReason: fieldIntrospection.deprecationReason,
++          iamKey: fieldIntrospection.iamKey,
+           type: getOutputType(fieldIntrospection.type),
+           args: buildInputValueDefMap(fieldIntrospection.args),
+         };
+diff --git a/src/utilities/extendSchema.js b/src/utilities/extendSchema.js
+index f34efe2..1a1ec11 100644
+--- a/src/utilities/extendSchema.js
++++ b/src/utilities/extendSchema.js
+@@ -489,6 +489,7 @@ export function extendSchema(
+     const newFieldMap = mapValue(type.getFields(), field => ({
+       description: field.description,
+       deprecationReason: field.deprecationReason,
++      iamKey: field.iamKey,
+       type: extendType(field.type),
+       args: extendArgs(field.args),
+       astNode: field.astNode,
+diff --git a/src/utilities/findDeprecatedUsages.js b/src/utilities/findDeprecatedUsages.js
+index d2ad48e..d37dbdf 100644
+--- a/src/utilities/findDeprecatedUsages.js
++++ b/src/utilities/findDeprecatedUsages.js
+@@ -66,3 +66,39 @@ export function findDeprecatedUsages(
+ 
+   return errors;
+ }
++
++export function findIAMUsages(
++  schema: GraphQLSchema,
++  ast: DocumentNode,
++): Array<GraphQLError> {
++  const errors = [];
++  const typeInfo = new TypeInfo(schema);
++
++  visit(
++    ast,
++    visitWithTypeInfo(typeInfo, {
++      Field(node) {
++        const fieldDef = typeInfo.getFieldDef();
++        if (fieldDef && fieldDef.iamKey) {
++          const parentType = typeInfo.getParentType();
++          if (parentType) {
++            let key = fieldDef.iamKey;
++            if (key === null || key === undefined || key === '') {
++              key = 'NULL';
++            }
++            errors.push(
++              new GraphQLError(
++                `The field ${parentType.name}.${
++                  fieldDef.name
++                } is restricted with key ${key}`,
++                [node],
++              ),
++            );
++          }
++        }
++      },
++    }),
++  );
++
++  return errors;
++}
+diff --git a/src/utilities/index.js b/src/utilities/index.js
+index cf14c71..85e6901 100644
+--- a/src/utilities/index.js
++++ b/src/utilities/index.js
+@@ -124,4 +124,4 @@ export {
+ export type { BreakingChange, DangerousChange } from './findBreakingChanges';
+ 
+ // Report all deprecated usage within a GraphQL document.
+-export { findDeprecatedUsages } from './findDeprecatedUsages';
++export { findDeprecatedUsages, findIAMUsages } from './findDeprecatedUsages';
+diff --git a/src/utilities/introspectionQuery.js b/src/utilities/introspectionQuery.js
+index b6ebe58..015d18f 100644
+--- a/src/utilities/introspectionQuery.js
++++ b/src/utilities/introspectionQuery.js
+@@ -41,7 +41,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
+       kind
+       name
+       ${descriptions ? 'description' : ''}
+-      fields(includeDeprecated: true) {
++      fields(includeDeprecated: true, includeIAM: true) {
+         name
+         ${descriptions ? 'description' : ''}
+         args {
+@@ -52,6 +52,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
+         }
+         isDeprecated
+         deprecationReason
++        iamKey
+       }
+       inputFields {
+         ...InputValue
+@@ -252,6 +253,7 @@ export type IntrospectionField = {|
+   +type: IntrospectionOutputTypeRef,
+   +isDeprecated: boolean,
+   +deprecationReason: ?string,
++  +iamKey: ?string,
+ |};
+ 
+ export type IntrospectionInputValue = {|
+diff --git a/src/utilities/lexicographicSortSchema.js b/src/utilities/lexicographicSortSchema.js
+index 14698bd..c6035d0 100644
+--- a/src/utilities/lexicographicSortSchema.js
++++ b/src/utilities/lexicographicSortSchema.js
+@@ -77,6 +77,7 @@ export function lexicographicSortSchema(schema: GraphQLSchema): GraphQLSchema {
+       resolve: field.resolve,
+       subscribe: field.subscribe,
+       deprecationReason: field.deprecationReason,
++      iamKey: field.iamKey,
+       description: field.description,
+       astNode: field.astNode,
+     }));
+diff --git a/src/utilities/schemaPrinter.js b/src/utilities/schemaPrinter.js
+index ac57eef..1236e23 100644
+--- a/src/utilities/schemaPrinter.js
++++ b/src/utilities/schemaPrinter.js
+@@ -263,7 +263,8 @@ function printFields(options, type) {
+         printArgs(options, f.args, '  ') +
+         ': ' +
+         String(f.type) +
+-        printDeprecated(f),
++        printDeprecated(f) +
++        printIAM(f),
+     )
+     .join('\n');
+ }
+@@ -331,6 +332,17 @@ function printDeprecated(fieldOrEnumVal) {
+   );
+ }
+ 
++function printIAM(field) {
++  if (!field.iamKey) {
++    return '';
++  }
++  const key = field.iamKey;
++  if (key === null || key === undefined || key === '') {
++    return ' @iam';
++  }
++  return ' @iam(key: ' + print(astFromValue(key, GraphQLString)) + ')';
++}
++
+ function printDescription(
+   options,
+   def,
