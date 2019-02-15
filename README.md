@@ -12,8 +12,18 @@ v14.1.1.
 To generate the patch, run:
 
 ```bash
-$ ./generate-iam-patch.sh
+$ ./generate-iam-patch.sh v14.1.1
 ```
+
+or another version that you want to patch. The patch will try to run, and will notify you if it fails.
+
+Included patches are:
+
+- add-iam-directive-0.13.2.patch
+- add-iam-directive-14.0.0-rc.2.patch
+- add-iam-directive-v14.1.1.patch
+
+We recommend using the `v14.1.1` patch, as it has been tested the most.
 
 ---
 

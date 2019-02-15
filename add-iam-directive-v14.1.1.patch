@@ -1,0 +1,926 @@
+diff --git index.js index.js
+index 13befd5..3bb563a 100644
+--- index.js
++++ index.js
+@@ -141,6 +141,12 @@ Object.defineProperty(exports, "GraphQLDeprecatedDirective", {
+     return _type.GraphQLDeprecatedDirective;
+   }
+ });
++Object.defineProperty(exports, "GraphQLIAMDirective", {
++  enumerable: true,
++  get: function get() {
++    return _type.GraphQLIAMDirective;
++  }
++});
+ Object.defineProperty(exports, "DEFAULT_DEPRECATION_REASON", {
+   enumerable: true,
+   get: function get() {
+@@ -1065,6 +1071,12 @@ Object.defineProperty(exports, "findDeprecatedUsages", {
+     return _utilities.findDeprecatedUsages;
+   }
+ });
++Object.defineProperty(exports, "findIAMUsages", {
++  enumerable: true,
++  get: function get() {
++    return _utilities.findIAMUsages;
++  }
++});
+ 
+ var _graphql = require("./graphql");
+ 
+diff --git index.js.flow index.js.flow
+index bc143f0..8a5d993 100644
+--- index.js.flow
++++ index.js.flow
+@@ -62,6 +62,7 @@ export {
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+   // Constant Deprecation Reason
+   DEFAULT_DEPRECATION_REASON,
+   // Meta-field definitions.
+@@ -400,6 +401,7 @@ export {
+   DangerousChangeType,
+   // Report all deprecated usage within a GraphQL document.
+   findDeprecatedUsages,
++  findIAMUsages,
+ } from './utilities';
+ 
+ export type {
+diff --git index.mjs index.mjs
+index f2be203..5dbc010 100644
+--- index.mjs
++++ index.mjs
+@@ -37,7 +37,7 @@ export { GraphQLSchema, // Definitions
+ GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLDirective, // "Enum" of Type Kinds
+ TypeKind, // Scalars
+ specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID, // Built-in Directives defined by the Spec
+-specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, // Constant Deprecation Reason
++specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective, // Constant Deprecation Reason
+ DEFAULT_DEPRECATION_REASON, // Meta-field definitions.
+ SchemaMetaFieldDef, TypeMetaFieldDef, TypeNameMetaFieldDef, // GraphQL Types for introspection.
+ introspectionTypes, __Schema, __Directive, __DirectiveLocation, __Type, __Field, __InputValue, __EnumValue, __TypeKind, // Predicates
+@@ -95,4 +95,4 @@ isEqualType, isTypeSubTypeOf, doTypesOverlap, // Asserts a string is a valid Gra
+ assertValidName, // Determine if a string is a valid GraphQL name.
+ isValidNameError, // Compares two GraphQLSchemas and detects breaking changes.
+ findBreakingChanges, findDangerousChanges, BreakingChangeType, DangerousChangeType, // Report all deprecated usage within a GraphQL document.
+-findDeprecatedUsages } from './utilities';
+\ No newline at end of file
++findDeprecatedUsages, findIAMUsages } from './utilities';
+\ No newline at end of file
+diff --git type/definition.js.flow type/definition.js.flow
+index 6da2e1b..7c35a18 100644
+--- type/definition.js.flow
++++ type/definition.js.flow
+@@ -813,6 +813,7 @@ export type GraphQLFieldConfig<
+   resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   deprecationReason?: ?string,
++  iamKey?: ?string,
+   description?: ?string,
+   astNode?: ?FieldDefinitionNode,
+ |};
+@@ -843,6 +844,7 @@ export type GraphQLField<
+   subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>,
+   isDeprecated?: boolean,
+   deprecationReason?: ?string,
++  iamKey?: ?string,
+   astNode?: ?FieldDefinitionNode,
+ };
+ 
+diff --git type/directives.js type/directives.js
+index aa8a2ff..056f1ca 100644
+--- type/directives.js
++++ type/directives.js
+@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
+ exports.isDirective = isDirective;
+ exports.assertDirective = assertDirective;
+ exports.isSpecifiedDirective = isSpecifiedDirective;
+-exports.specifiedDirectives = exports.GraphQLDeprecatedDirective = exports.DEFAULT_DEPRECATION_REASON = exports.GraphQLSkipDirective = exports.GraphQLIncludeDirective = exports.GraphQLDirective = void 0;
++exports.specifiedDirectives = exports.GraphQLIAMDirective = exports.GraphQLDeprecatedDirective = exports.DEFAULT_DEPRECATION_REASON = exports.GraphQLSkipDirective = exports.GraphQLIncludeDirective = exports.GraphQLDirective = void 0;
+ 
+ var _objectEntries = _interopRequireDefault(require("../polyfills/objectEntries"));
+ 
+@@ -138,11 +138,27 @@ var GraphQLDeprecatedDirective = new GraphQLDirective({
+   }
+ });
+ /**
+- * The full list of specified directives.
++ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
+  */
+ 
+ exports.GraphQLDeprecatedDirective = GraphQLDeprecatedDirective;
+-var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
++var GraphQLIAMDirective = new GraphQLDirective({
++  name: 'iam',
++  description: 'Annotates the neccessary access permissions for the element.',
++  locations: [_directiveLocation.DirectiveLocation.FIELD_DEFINITION],
++  args: {
++    key: {
++      type: _scalars.GraphQLString,
++      description: 'Defines the access key'
++    }
++  }
++});
++/**
++ * The full list of specified directives.
++ */
++
++exports.GraphQLIAMDirective = GraphQLIAMDirective;
++var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective];
+ exports.specifiedDirectives = specifiedDirectives;
+ 
+ function isSpecifiedDirective(directive) {
+diff --git type/directives.js.flow type/directives.js.flow
+index a9f512f..4823eb0 100644
+--- type/directives.js.flow
++++ type/directives.js.flow
+@@ -164,6 +164,21 @@ export const GraphQLDeprecatedDirective = new GraphQLDirective({
+   },
+ });
+ 
++/**
++ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
++ */
++export const GraphQLIAMDirective = new GraphQLDirective({
++  name: 'iam',
++  description: 'Annotates the neccessary access permissions for the element.',
++  locations: [DirectiveLocation.FIELD_DEFINITION],
++  args: {
++    key: {
++      type: GraphQLString,
++      description: 'Defines the access key',
++    },
++  },
++});
++
+ /**
+  * The full list of specified directives.
+  */
+@@ -171,6 +186,7 @@ export const specifiedDirectives: $ReadOnlyArray<*> = [
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+ ];
+ 
+ export function isSpecifiedDirective(
+diff --git type/directives.mjs type/directives.mjs
+index b7e7ab5..ae38f55 100644
+--- type/directives.mjs
++++ type/directives.mjs
+@@ -121,11 +121,26 @@ export var GraphQLDeprecatedDirective = new GraphQLDirective({
+     }
+   }
+ });
++/**
++ * Used to declare element of a GraphQL schema as restricted via IAM permissions.
++ */
++
++export var GraphQLIAMDirective = new GraphQLDirective({
++  name: 'iam',
++  description: 'Annotates the neccessary access permissions for the element.',
++  locations: [DirectiveLocation.FIELD_DEFINITION],
++  args: {
++    key: {
++      type: GraphQLString,
++      description: 'Defines the access key'
++    }
++  }
++});
+ /**
+  * The full list of specified directives.
+  */
+ 
+-export var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
++export var specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective];
+ export function isSpecifiedDirective(directive) {
+   return specifiedDirectives.some(function (specifiedDirective) {
+     return specifiedDirective.name === directive.name;
+diff --git type/index.js type/index.js
+index 52eb761..89428be 100644
+--- type/index.js
++++ type/index.js
+@@ -345,6 +345,12 @@ Object.defineProperty(exports, "GraphQLDeprecatedDirective", {
+     return _directives.GraphQLDeprecatedDirective;
+   }
+ });
++Object.defineProperty(exports, "GraphQLIAMDirective", {
++  enumerable: true,
++  get: function get() {
++    return _directives.GraphQLIAMDirective;
++  }
++});
+ Object.defineProperty(exports, "DEFAULT_DEPRECATION_REASON", {
+   enumerable: true,
+   get: function get() {
+diff --git type/index.js.flow type/index.js.flow
+index 4e439ab..8319763 100644
+--- type/index.js.flow
++++ type/index.js.flow
+@@ -85,6 +85,7 @@ export {
+   GraphQLIncludeDirective,
+   GraphQLSkipDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+   // Constant Deprecation Reason
+   DEFAULT_DEPRECATION_REASON,
+ } from './directives';
+diff --git type/index.mjs type/index.mjs
+index e396761..99f22f1 100644
+--- type/index.mjs
++++ type/index.mjs
+@@ -20,7 +20,7 @@ export { // Predicate
+ isDirective, // Assertion
+ assertDirective, // Directives Definition
+ GraphQLDirective, // Built-in Directives defined by the Spec
+-isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, // Constant Deprecation Reason
++isSpecifiedDirective, specifiedDirectives, GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective, // Constant Deprecation Reason
+ DEFAULT_DEPRECATION_REASON } from './directives';
+ // Common built-in scalar instances.
+ export { isSpecifiedScalarType, specifiedScalarTypes, GraphQLInt, GraphQLFloat, GraphQLString, GraphQLBoolean, GraphQLID } from './scalars';
+diff --git type/introspection.js type/introspection.js
+index b1d5caf..437bef9 100644
+--- type/introspection.js
++++ type/introspection.js
+@@ -243,10 +243,15 @@ var __Type = new _definition.GraphQLObjectType({
+           includeDeprecated: {
+             type: _scalars.GraphQLBoolean,
+             defaultValue: false
++          },
++          includeIAM: {
++            type: _scalars.GraphQLBoolean,
++            defaultValue: false
+           }
+         },
+         resolve: function resolve(type, _ref) {
+-          var includeDeprecated = _ref.includeDeprecated;
++          var includeDeprecated = _ref.includeDeprecated,
++              includeIAM = _ref.includeIAM;
+ 
+           if ((0, _definition.isObjectType)(type) || (0, _definition.isInterfaceType)(type)) {
+             var fields = (0, _objectValues.default)(type.getFields());
+@@ -257,6 +262,12 @@ var __Type = new _definition.GraphQLObjectType({
+               });
+             }
+ 
++            if (!includeIAM) {
++              fields = fields.filter(function (field) {
++                return !field.iamKey;
++              });
++            }
++
+             return fields;
+           }
+ 
+@@ -365,6 +376,9 @@ var __Field = new _definition.GraphQLObjectType({
+         resolve: function resolve(obj) {
+           return obj.deprecationReason;
+         }
++      },
++      iamKey: {
++        type: _scalars.GraphQLString
+       }
+     };
+   }
+diff --git type/introspection.js.flow type/introspection.js.flow
+index a21249f..e14ad81 100644
+--- type/introspection.js.flow
++++ type/introspection.js.flow
+@@ -233,13 +233,17 @@ export const __Type = new GraphQLObjectType({
+       type: GraphQLList(GraphQLNonNull(__Field)),
+       args: {
+         includeDeprecated: { type: GraphQLBoolean, defaultValue: false },
++        includeIAM: { type: GraphQLBoolean, defaultValue: false },
+       },
+-      resolve(type, { includeDeprecated }) {
++      resolve(type, { includeDeprecated, includeIAM }) {
+         if (isObjectType(type) || isInterfaceType(type)) {
+           let fields = objectValues(type.getFields());
+           if (!includeDeprecated) {
+             fields = fields.filter(field => !field.deprecationReason);
+           }
++          if (!includeIAM) {
++            fields = fields.filter(field => !field.iamKey);
++          }
+           return fields;
+         }
+         return null;
+@@ -321,6 +325,9 @@ export const __Field = new GraphQLObjectType({
+       type: GraphQLString,
+       resolve: obj => obj.deprecationReason,
+     },
++    iamKey: {
++      type: GraphQLString,
++    },
+   }),
+ });
+ 
+diff --git type/introspection.mjs type/introspection.mjs
+index a83369d..19a4a0f 100644
+--- type/introspection.mjs
++++ type/introspection.mjs
+@@ -217,10 +217,15 @@ export var __Type = new GraphQLObjectType({
+           includeDeprecated: {
+             type: GraphQLBoolean,
+             defaultValue: false
++          },
++          includeIAM: {
++            type: GraphQLBoolean,
++            defaultValue: false
+           }
+         },
+         resolve: function resolve(type, _ref) {
+-          var includeDeprecated = _ref.includeDeprecated;
++          var includeDeprecated = _ref.includeDeprecated,
++              includeIAM = _ref.includeIAM;
+ 
+           if (isObjectType(type) || isInterfaceType(type)) {
+             var fields = objectValues(type.getFields());
+@@ -231,6 +236,12 @@ export var __Type = new GraphQLObjectType({
+               });
+             }
+ 
++            if (!includeIAM) {
++              fields = fields.filter(function (field) {
++                return !field.iamKey;
++              });
++            }
++
+             return fields;
+           }
+ 
+@@ -336,6 +347,9 @@ export var __Field = new GraphQLObjectType({
+         resolve: function resolve(obj) {
+           return obj.deprecationReason;
+         }
++      },
++      iamKey: {
++        type: GraphQLString
+       }
+     };
+   }
+diff --git utilities/buildASTSchema.js utilities/buildASTSchema.js
+index aeb7236..b75d3c1 100644
+--- utilities/buildASTSchema.js
++++ utilities/buildASTSchema.js
+@@ -138,6 +138,12 @@ function buildASTSchema(documentAST, options) {
+     return directive.name === 'deprecated';
+   })) {
+     directives.push(_directives.GraphQLDeprecatedDirective);
++  }
++
++  if (!directives.some(function (directive) {
++    return directive.name === 'iam';
++  })) {
++    directives.push(_directives.GraphQLIAMDirective);
+   } // Note: While this could make early assertions to get the correctly
+   // typed values below, that would throw immediately while type system
+   // validation with validateSchema() will produce more actionable results.
+@@ -260,6 +266,7 @@ function () {
+         return _this2.buildArg(arg);
+       }),
+       deprecationReason: getDeprecationReason(field),
++      iamKey: getIAMKey(field),
+       astNode: field
+     };
+   };
+@@ -449,6 +456,16 @@ function getDeprecationReason(node) {
+   var deprecated = (0, _values.getDirectiveValues)(_directives.GraphQLDeprecatedDirective, node);
+   return deprecated && deprecated.reason;
+ }
++/**
++ * Given a field, returns the string value for the
++ * IAM key.
++ */
++
++
++function getIAMKey(node) {
++  var iam = (0, _values.getDirectiveValues)(_directives.GraphQLIAMDirective, node);
++  return iam && iam.key;
++}
+ /**
+  * Given an ast node, returns its string description.
+  * @deprecated: provided to ease adoption and will be removed in v16.
+diff --git utilities/buildASTSchema.js.flow utilities/buildASTSchema.js.flow
+index 076845c..4f584e8 100644
+--- utilities/buildASTSchema.js.flow
++++ utilities/buildASTSchema.js.flow
+@@ -71,6 +71,7 @@ import {
+   GraphQLSkipDirective,
+   GraphQLIncludeDirective,
+   GraphQLDeprecatedDirective,
++  GraphQLIAMDirective,
+ } from '../type/directives';
+ 
+ import { introspectionTypes } from '../type/introspection';
+@@ -177,6 +178,10 @@ export function buildASTSchema(
+     directives.push(GraphQLDeprecatedDirective);
+   }
+ 
++  if (!directives.some(directive => directive.name === 'iam')) {
++    directives.push(GraphQLIAMDirective);
++  }
++
+   // Note: While this could make early assertions to get the correctly
+   // typed values below, that would throw immediately while type system
+   // validation with validateSchema() will produce more actionable results.
+@@ -281,6 +286,7 @@ export class ASTDefinitionBuilder {
+       description: getDescription(field, this._options),
+       args: keyByNameNode(field.arguments || [], arg => this.buildArg(arg)),
+       deprecationReason: getDeprecationReason(field),
++      iamKey: getIAMKey(field),
+       astNode: field,
+     };
+   }
+@@ -451,6 +457,15 @@ function getDeprecationReason(
+   return deprecated && (deprecated.reason: any);
+ }
+ 
++/**
++ * Given a field, returns the string value for the
++ * IAM key.
++ */
++function getIAMKey(node: FieldDefinitionNode): ?string {
++  const iam = getDirectiveValues(GraphQLIAMDirective, node);
++  return iam && (iam.key: any);
++}
++
+ /**
+  * Given an ast node, returns its string description.
+  * @deprecated: provided to ease adoption and will be removed in v16.
+diff --git utilities/buildASTSchema.mjs utilities/buildASTSchema.mjs
+index 7b998ca..d1e0cba 100644
+--- utilities/buildASTSchema.mjs
++++ utilities/buildASTSchema.mjs
+@@ -19,7 +19,7 @@ import { getDirectiveValues } from '../execution/values';
+ import { Kind } from '../language/kinds';
+ import { isTypeDefinitionNode } from '../language/predicates';
+ import { GraphQLScalarType, GraphQLObjectType, GraphQLInterfaceType, GraphQLUnionType, GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from '../type/definition';
+-import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective } from '../type/directives';
++import { GraphQLDirective, GraphQLSkipDirective, GraphQLIncludeDirective, GraphQLDeprecatedDirective, GraphQLIAMDirective } from '../type/directives';
+ import { introspectionTypes } from '../type/introspection';
+ import { specifiedScalarTypes } from '../type/scalars';
+ import { GraphQLSchema } from '../type/schema';
+@@ -109,6 +109,12 @@ export function buildASTSchema(documentAST, options) {
+     return directive.name === 'deprecated';
+   })) {
+     directives.push(GraphQLDeprecatedDirective);
++  }
++
++  if (!directives.some(function (directive) {
++    return directive.name === 'iam';
++  })) {
++    directives.push(GraphQLIAMDirective);
+   } // Note: While this could make early assertions to get the correctly
+   // typed values below, that would throw immediately while type system
+   // validation with validateSchema() will produce more actionable results.
+@@ -230,6 +236,7 @@ function () {
+         return _this2.buildArg(arg);
+       }),
+       deprecationReason: getDeprecationReason(field),
++      iamKey: getIAMKey(field),
+       astNode: field
+     };
+   };
+@@ -417,6 +424,16 @@ function getDeprecationReason(node) {
+   var deprecated = getDirectiveValues(GraphQLDeprecatedDirective, node);
+   return deprecated && deprecated.reason;
+ }
++/**
++ * Given a field, returns the string value for the
++ * IAM key.
++ */
++
++
++function getIAMKey(node) {
++  var iam = getDirectiveValues(GraphQLIAMDirective, node);
++  return iam && iam.key;
++}
+ /**
+  * Given an ast node, returns its string description.
+  * @deprecated: provided to ease adoption and will be removed in v16.
+diff --git utilities/buildClientSchema.js utilities/buildClientSchema.js
+index 8d8fd3e..a753e24 100644
+--- utilities/buildClientSchema.js
++++ utilities/buildClientSchema.js
+@@ -259,6 +259,7 @@ function buildClientSchema(introspection, options) {
+       return {
+         description: fieldIntrospection.description,
+         deprecationReason: fieldIntrospection.deprecationReason,
++        iamKey: fieldIntrospection.iamKey,
+         type: getOutputType(fieldIntrospection.type),
+         args: buildInputValueDefMap(fieldIntrospection.args)
+       };
+diff --git utilities/buildClientSchema.js.flow utilities/buildClientSchema.js.flow
+index 9d541e3..99d77ea 100644
+--- utilities/buildClientSchema.js.flow
++++ utilities/buildClientSchema.js.flow
+@@ -314,6 +314,7 @@ export function buildClientSchema(
+         return {
+           description: fieldIntrospection.description,
+           deprecationReason: fieldIntrospection.deprecationReason,
++          iamKey: fieldIntrospection.iamKey,
+           type: getOutputType(fieldIntrospection.type),
+           args: buildInputValueDefMap(fieldIntrospection.args),
+         };
+diff --git utilities/buildClientSchema.mjs utilities/buildClientSchema.mjs
+index 8526f46..b72d017 100644
+--- utilities/buildClientSchema.mjs
++++ utilities/buildClientSchema.mjs
+@@ -239,6 +239,7 @@ export function buildClientSchema(introspection, options) {
+       return {
+         description: fieldIntrospection.description,
+         deprecationReason: fieldIntrospection.deprecationReason,
++        iamKey: fieldIntrospection.iamKey,
+         type: getOutputType(fieldIntrospection.type),
+         args: buildInputValueDefMap(fieldIntrospection.args)
+       };
+diff --git utilities/extendSchema.js utilities/extendSchema.js
+index 4309ed2..cc11082 100644
+--- utilities/extendSchema.js
++++ utilities/extendSchema.js
+@@ -636,6 +636,7 @@ function extendSchema(schema, documentAST, options) {
+       return {
+         description: field.description,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         type: extendType(field.type),
+         args: extendArgs(field.args),
+         astNode: field.astNode,
+diff --git utilities/extendSchema.js.flow utilities/extendSchema.js.flow
+index f34efe2..1a1ec11 100644
+--- utilities/extendSchema.js.flow
++++ utilities/extendSchema.js.flow
+@@ -489,6 +489,7 @@ export function extendSchema(
+     const newFieldMap = mapValue(type.getFields(), field => ({
+       description: field.description,
+       deprecationReason: field.deprecationReason,
++      iamKey: field.iamKey,
+       type: extendType(field.type),
+       args: extendArgs(field.args),
+       astNode: field.astNode,
+diff --git utilities/extendSchema.mjs utilities/extendSchema.mjs
+index 047d990..342e9f0 100644
+--- utilities/extendSchema.mjs
++++ utilities/extendSchema.mjs
+@@ -623,6 +623,7 @@ export function extendSchema(schema, documentAST, options) {
+       return {
+         description: field.description,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         type: extendType(field.type),
+         args: extendArgs(field.args),
+         astNode: field.astNode,
+diff --git utilities/findDeprecatedUsages.js utilities/findDeprecatedUsages.js
+index 60e83a7..acaeb2c 100644
+--- utilities/findDeprecatedUsages.js
++++ utilities/findDeprecatedUsages.js
+@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", {
+   value: true
+ });
+ exports.findDeprecatedUsages = findDeprecatedUsages;
++exports.findIAMUsages = findIAMUsages;
+ 
+ var _GraphQLError = require("../error/GraphQLError");
+ 
+@@ -57,4 +58,29 @@ function findDeprecatedUsages(schema, ast) {
+     }
+   }));
+   return errors;
++}
++
++function findIAMUsages(schema, ast) {
++  var errors = [];
++  var typeInfo = new _TypeInfo.TypeInfo(schema);
++  (0, _visitor.visit)(ast, (0, _visitor.visitWithTypeInfo)(typeInfo, {
++    Field: function Field(node) {
++      var fieldDef = typeInfo.getFieldDef();
++
++      if (fieldDef && fieldDef.iamKey) {
++        var parentType = typeInfo.getParentType();
++
++        if (parentType) {
++          var key = fieldDef.iamKey;
++
++          if (key === null || key === undefined || key === '') {
++            key = 'NULL';
++          }
++
++          errors.push(new _GraphQLError.GraphQLError("The field ".concat(parentType.name, ".").concat(fieldDef.name, " is restricted with key ").concat(key), [node]));
++        }
++      }
++    }
++  }));
++  return errors;
+ }
+\ No newline at end of file
+diff --git utilities/findDeprecatedUsages.js.flow utilities/findDeprecatedUsages.js.flow
+index d2ad48e..d37dbdf 100644
+--- utilities/findDeprecatedUsages.js.flow
++++ utilities/findDeprecatedUsages.js.flow
+@@ -66,3 +66,39 @@ export function findDeprecatedUsages(
+ 
+   return errors;
+ }
++
++export function findIAMUsages(
++  schema: GraphQLSchema,
++  ast: DocumentNode,
++): Array<GraphQLError> {
++  const errors = [];
++  const typeInfo = new TypeInfo(schema);
++
++  visit(
++    ast,
++    visitWithTypeInfo(typeInfo, {
++      Field(node) {
++        const fieldDef = typeInfo.getFieldDef();
++        if (fieldDef && fieldDef.iamKey) {
++          const parentType = typeInfo.getParentType();
++          if (parentType) {
++            let key = fieldDef.iamKey;
++            if (key === null || key === undefined || key === '') {
++              key = 'NULL';
++            }
++            errors.push(
++              new GraphQLError(
++                `The field ${parentType.name}.${
++                  fieldDef.name
++                } is restricted with key ${key}`,
++                [node],
++              ),
++            );
++          }
++        }
++      },
++    }),
++  );
++
++  return errors;
++}
+diff --git utilities/findDeprecatedUsages.mjs utilities/findDeprecatedUsages.mjs
+index 8c1e673..3ce1193 100644
+--- utilities/findDeprecatedUsages.mjs
++++ utilities/findDeprecatedUsages.mjs
+@@ -46,4 +46,28 @@ export function findDeprecatedUsages(schema, ast) {
+     }
+   }));
+   return errors;
++}
++export function findIAMUsages(schema, ast) {
++  var errors = [];
++  var typeInfo = new TypeInfo(schema);
++  visit(ast, visitWithTypeInfo(typeInfo, {
++    Field: function Field(node) {
++      var fieldDef = typeInfo.getFieldDef();
++
++      if (fieldDef && fieldDef.iamKey) {
++        var parentType = typeInfo.getParentType();
++
++        if (parentType) {
++          var key = fieldDef.iamKey;
++
++          if (key === null || key === undefined || key === '') {
++            key = 'NULL';
++          }
++
++          errors.push(new GraphQLError("The field ".concat(parentType.name, ".").concat(fieldDef.name, " is restricted with key ").concat(key), [node]));
++        }
++      }
++    }
++  }));
++  return errors;
+ }
+\ No newline at end of file
+diff --git utilities/index.js utilities/index.js
+index 938e66e..d6dd966 100644
+--- utilities/index.js
++++ utilities/index.js
+@@ -207,6 +207,12 @@ Object.defineProperty(exports, "findDeprecatedUsages", {
+     return _findDeprecatedUsages.findDeprecatedUsages;
+   }
+ });
++Object.defineProperty(exports, "findIAMUsages", {
++  enumerable: true,
++  get: function get() {
++    return _findDeprecatedUsages.findIAMUsages;
++  }
++});
+ 
+ var _introspectionQuery = require("./introspectionQuery");
+ 
+diff --git utilities/index.js.flow utilities/index.js.flow
+index cf14c71..85e6901 100644
+--- utilities/index.js.flow
++++ utilities/index.js.flow
+@@ -124,4 +124,4 @@ export {
+ export type { BreakingChange, DangerousChange } from './findBreakingChanges';
+ 
+ // Report all deprecated usage within a GraphQL document.
+-export { findDeprecatedUsages } from './findDeprecatedUsages';
++export { findDeprecatedUsages, findIAMUsages } from './findDeprecatedUsages';
+diff --git utilities/index.mjs utilities/index.mjs
+index 996186a..53d65ef 100644
+--- utilities/index.mjs
++++ utilities/index.mjs
+@@ -55,4 +55,4 @@ export { assertValidName, isValidNameError } from './assertValidName'; // Compar
+ 
+ export { BreakingChangeType, DangerousChangeType, findBreakingChanges, findDangerousChanges } from './findBreakingChanges';
+ // Report all deprecated usage within a GraphQL document.
+-export { findDeprecatedUsages } from './findDeprecatedUsages';
+\ No newline at end of file
++export { findDeprecatedUsages, findIAMUsages } from './findDeprecatedUsages';
+\ No newline at end of file
+diff --git utilities/introspectionQuery.js utilities/introspectionQuery.js
+index 020e6bc..e55a955 100644
+--- utilities/introspectionQuery.js
++++ utilities/introspectionQuery.js
+@@ -16,7 +16,7 @@ exports.introspectionQuery = void 0;
+  */
+ function getIntrospectionQuery(options) {
+   var descriptions = !(options && options.descriptions === false);
+-  return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
++  return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true, includeIAM: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n        iamKey\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
+ }
+ /**
+  * Deprecated, call getIntrospectionQuery directly.
+diff --git utilities/introspectionQuery.js.flow utilities/introspectionQuery.js.flow
+index b6ebe58..015d18f 100644
+--- utilities/introspectionQuery.js.flow
++++ utilities/introspectionQuery.js.flow
+@@ -41,7 +41,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
+       kind
+       name
+       ${descriptions ? 'description' : ''}
+-      fields(includeDeprecated: true) {
++      fields(includeDeprecated: true, includeIAM: true) {
+         name
+         ${descriptions ? 'description' : ''}
+         args {
+@@ -52,6 +52,7 @@ export function getIntrospectionQuery(options?: IntrospectionOptions): string {
+         }
+         isDeprecated
+         deprecationReason
++        iamKey
+       }
+       inputFields {
+         ...InputValue
+@@ -252,6 +253,7 @@ export type IntrospectionField = {|
+   +type: IntrospectionOutputTypeRef,
+   +isDeprecated: boolean,
+   +deprecationReason: ?string,
++  +iamKey: ?string,
+ |};
+ 
+ export type IntrospectionInputValue = {|
+diff --git utilities/introspectionQuery.mjs utilities/introspectionQuery.mjs
+index 25638fc..b04cf5a 100644
+--- utilities/introspectionQuery.mjs
++++ utilities/introspectionQuery.mjs
+@@ -8,7 +8,7 @@
+  */
+ export function getIntrospectionQuery(options) {
+   var descriptions = !(options && options.descriptions === false);
+-  return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
++  return "\n    query IntrospectionQuery {\n      __schema {\n        queryType { name }\n        mutationType { name }\n        subscriptionType { name }\n        types {\n          ...FullType\n        }\n        directives {\n          name\n          ".concat(descriptions ? 'description' : '', "\n          locations\n          args {\n            ...InputValue\n          }\n        }\n      }\n    }\n\n    fragment FullType on __Type {\n      kind\n      name\n      ").concat(descriptions ? 'description' : '', "\n      fields(includeDeprecated: true, includeIAM: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        args {\n          ...InputValue\n        }\n        type {\n          ...TypeRef\n        }\n        isDeprecated\n        deprecationReason\n        iamKey\n      }\n      inputFields {\n        ...InputValue\n      }\n      interfaces {\n        ...TypeRef\n      }\n      enumValues(includeDeprecated: true) {\n        name\n        ").concat(descriptions ? 'description' : '', "\n        isDeprecated\n        deprecationReason\n      }\n      possibleTypes {\n        ...TypeRef\n      }\n    }\n\n    fragment InputValue on __InputValue {\n      name\n      ").concat(descriptions ? 'description' : '', "\n      type { ...TypeRef }\n      defaultValue\n    }\n\n    fragment TypeRef on __Type {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                  ofType {\n                    kind\n                    name\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  ");
+ }
+ /**
+  * Deprecated, call getIntrospectionQuery directly.
+diff --git utilities/lexicographicSortSchema.js utilities/lexicographicSortSchema.js
+index 8d9fa08..c57704b 100644
+--- utilities/lexicographicSortSchema.js
++++ utilities/lexicographicSortSchema.js
+@@ -74,6 +74,7 @@ function lexicographicSortSchema(schema) {
+         resolve: field.resolve,
+         subscribe: field.subscribe,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         description: field.description,
+         astNode: field.astNode
+       };
+diff --git utilities/lexicographicSortSchema.js.flow utilities/lexicographicSortSchema.js.flow
+index 14698bd..c6035d0 100644
+--- utilities/lexicographicSortSchema.js.flow
++++ utilities/lexicographicSortSchema.js.flow
+@@ -77,6 +77,7 @@ export function lexicographicSortSchema(schema: GraphQLSchema): GraphQLSchema {
+       resolve: field.resolve,
+       subscribe: field.subscribe,
+       deprecationReason: field.deprecationReason,
++      iamKey: field.iamKey,
+       description: field.description,
+       astNode: field.astNode,
+     }));
+diff --git utilities/lexicographicSortSchema.mjs utilities/lexicographicSortSchema.mjs
+index e145aa2..3438a7d 100644
+--- utilities/lexicographicSortSchema.mjs
++++ utilities/lexicographicSortSchema.mjs
+@@ -67,6 +67,7 @@ export function lexicographicSortSchema(schema) {
+         resolve: field.resolve,
+         subscribe: field.subscribe,
+         deprecationReason: field.deprecationReason,
++        iamKey: field.iamKey,
+         description: field.description,
+         astNode: field.astNode
+       };
+diff --git utilities/schemaPrinter.js utilities/schemaPrinter.js
+index 3dc4fe8..c3dfa16 100644
+--- utilities/schemaPrinter.js
++++ utilities/schemaPrinter.js
+@@ -192,7 +192,7 @@ function printInputObject(type, options) {
+ function printFields(options, type) {
+   var fields = (0, _objectValues.default)(type.getFields());
+   return fields.map(function (f, i) {
+-    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f);
++    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f) + printIAM(f);
+   }).join('\n');
+ }
+ 
+@@ -243,6 +243,20 @@ function printDeprecated(fieldOrEnumVal) {
+   return ' @deprecated(reason: ' + (0, _printer.print)((0, _astFromValue.astFromValue)(reason, _scalars.GraphQLString)) + ')';
+ }
+ 
++function printIAM(field) {
++  if (!field.iamKey) {
++    return '';
++  }
++
++  var key = field.iamKey;
++
++  if (key === null || key === undefined || key === '') {
++    return ' @iam';
++  }
++
++  return ' @iam(key: ' + (0, _printer.print)((0, _astFromValue.astFromValue)(key, _scalars.GraphQLString)) + ')';
++}
++
+ function printDescription(options, def) {
+   var indentation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+   var firstInBlock = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+diff --git utilities/schemaPrinter.js.flow utilities/schemaPrinter.js.flow
+index ac57eef..1236e23 100644
+--- utilities/schemaPrinter.js.flow
++++ utilities/schemaPrinter.js.flow
+@@ -263,7 +263,8 @@ function printFields(options, type) {
+         printArgs(options, f.args, '  ') +
+         ': ' +
+         String(f.type) +
+-        printDeprecated(f),
++        printDeprecated(f) +
++        printIAM(f),
+     )
+     .join('\n');
+ }
+@@ -331,6 +332,17 @@ function printDeprecated(fieldOrEnumVal) {
+   );
+ }
+ 
++function printIAM(field) {
++  if (!field.iamKey) {
++    return '';
++  }
++  const key = field.iamKey;
++  if (key === null || key === undefined || key === '') {
++    return ' @iam';
++  }
++  return ' @iam(key: ' + print(astFromValue(key, GraphQLString)) + ')';
++}
++
+ function printDescription(
+   options,
+   def,
+diff --git utilities/schemaPrinter.mjs utilities/schemaPrinter.mjs
+index 6cbd2bf..6c393b6 100644
+--- utilities/schemaPrinter.mjs
++++ utilities/schemaPrinter.mjs
+@@ -171,7 +171,7 @@ function printInputObject(type, options) {
+ function printFields(options, type) {
+   var fields = objectValues(type.getFields());
+   return fields.map(function (f, i) {
+-    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f);
++    return printDescription(options, f, '  ', !i) + '  ' + f.name + printArgs(options, f.args, '  ') + ': ' + String(f.type) + printDeprecated(f) + printIAM(f);
+   }).join('\n');
+ }
+ 
+@@ -222,6 +222,20 @@ function printDeprecated(fieldOrEnumVal) {
+   return ' @deprecated(reason: ' + print(astFromValue(reason, GraphQLString)) + ')';
+ }
+ 
++function printIAM(field) {
++  if (!field.iamKey) {
++    return '';
++  }
++
++  var key = field.iamKey;
++
++  if (key === null || key === undefined || key === '') {
++    return ' @iam';
++  }
++
++  return ' @iam(key: ' + print(astFromValue(key, GraphQLString)) + ')';
++}
++
+ function printDescription(options, def) {
+   var indentation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+   var firstInBlock = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
