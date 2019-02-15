@@ -3,7 +3,7 @@
 if [ -z "$1" ]; then
     git fetch
     git tag -l
-    echo "» Now specify tag to apply patch"
+    echo "» Now specify tag as the argument to this script to apply the patch"
     exit 1
 fi
 
@@ -16,6 +16,8 @@ sed -i -e 's/dist//' .gitignore
 git add dist .gitignore
 
 git commit -m "$1 dist"
+
+git checkout master -- src-changes.patch
 
 git apply -3 < src-changes.patch
 
